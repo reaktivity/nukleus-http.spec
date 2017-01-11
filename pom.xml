@@ -8,6 +8,7 @@
   <artifactId>nukleus-http.spec</artifactId>
   <version>develop-SNAPSHOT</version>
   <name>HTTP Nukleus Specification</name>
+  <description>HTTP Nukleus Specification</description>
   <url>https://github.com/reaktivity/nukleus-http.spec</url>
 
   <licenses>
