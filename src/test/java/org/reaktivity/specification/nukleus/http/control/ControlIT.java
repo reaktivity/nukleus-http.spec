@@ -37,189 +37,133 @@ public class ControlIT
 
     @Test
     @Specification({
-        "bind/client/initial/nukleus",
-        "bind/client/initial/controller"
+        "route/input/none/nukleus",
+        "route/input/none/controller"
     })
-    public void shouldBindClientInitial() throws Exception
+    public void shouldRouteInputNone() throws Exception
     {
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "bind/client/reply/nukleus",
-        "bind/client/reply/controller"
+        "route/input/new/nukleus",
+        "route/input/new/controller"
     })
-    public void shouldBindClientReply() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_INITIAL");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "bind/server/initial/nukleus",
-        "bind/server/initial/controller"
-    })
-    public void shouldBindServerInitial() throws Exception
+    public void shouldRouteInputNew() throws Exception
     {
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "bind/server/reply/nukleus",
-        "bind/server/reply/controller"
+        "route/input/established/nukleus",
+        "route/input/established/controller"
     })
-    public void shouldBindServerReply() throws Exception
+    public void shouldRouteInputEstablished() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_INITIAL");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "unbind/initial/nukleus",
-        "unbind/initial/controller"
+        "route/output/none/nukleus",
+        "route/output/none/controller"
     })
-    public void shouldUnbindInitial() throws Exception
+    public void shouldRouteOutputNone() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_INITIAL");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "unbind/reply/nukleus",
-        "unbind/reply/controller"
+        "route/output/new/nukleus",
+        "route/output/new/controller"
     })
-    public void shouldUnbindReply() throws Exception
+    public void shouldRouteOutputNew() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_REPLY");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "route/server/initial/nukleus",
-        "route/server/initial/controller"
+        "route/output/established/nukleus",
+        "route/output/established/controller"
     })
-    public void shouldRouteServerInitial() throws Exception
+    public void shouldRouteOutputEstablished() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_REPLY");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "route/server/reply/nukleus",
-        "route/server/reply/controller"
+        "route/input/none/nukleus",
+        "route/input/none/controller",
+        "unroute/input/none/nukleus",
+        "unroute/input/none/controller"
     })
-    public void shouldRouteServerReply() throws Exception
+    public void shouldUnrouteInputNone() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "route/client/initial/nukleus",
-        "route/client/initial/controller"
+        "route/input/new/nukleus",
+        "route/input/new/controller",
+        "unroute/input/new/nukleus",
+        "unroute/input/new/controller"
     })
-    public void shouldRouteClientInitial() throws Exception
+    public void shouldUnrouteInputNew() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("BOUND_REPLY");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "route/client/reply/nukleus",
-        "route/client/reply/controller"
+        "route/input/established/nukleus",
+        "route/input/established/controller",
+        "unroute/input/established/nukleus",
+        "unroute/input/established/controller"
     })
-    public void shouldRouteClientReply() throws Exception
+    public void shouldUnrouteInputEstablished() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "unroute/client/initial/nukleus",
-        "unroute/client/initial/controller"
+        "route/output/none/nukleus",
+        "route/output/none/controller",
+        "unroute/output/none/nukleus",
+        "unroute/output/none/controller"
     })
-    public void shouldUnrouteClientInitial() throws Exception
+    public void shouldUnrouteOutputNone() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "unroute/client/reply/nukleus",
-        "unroute/client/reply/controller"
+        "route/output/new/nukleus",
+        "route/output/new/controller",
+        "unroute/output/new/nukleus",
+        "unroute/output/new/controller"
     })
-    public void shouldUnrouteClientReply() throws Exception
+    public void shouldUnrouteOutputNew() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_REPLY");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "unroute/server/initial/nukleus",
-        "unroute/server/initial/controller"
+        "route/output/established/nukleus",
+        "route/output/established/controller",
+        "unroute/output/established/nukleus",
+        "unroute/output/established/controller"
     })
-    public void shouldUnrouteServerInitial() throws Exception
+    public void shouldUnrouteOutputEstablished() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "unroute/server/reply/nukleus",
-        "unroute/server/reply/controller"
-    })
-    public void shouldUnrouteServerReply() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_REPLY");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "reject/server/initial/nukleus",
-        "reject/server/initial/controller"
-    })
-    public void shouldRejectServerInitial() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "unreject/server/initial/nukleus",
-        "unreject/server/initial/controller"
-    })
-    public void shouldUnrejectServerInitial() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("REJECTED_INITIAL");
         k3po.finish();
     }
 }

@@ -14,68 +14,65 @@
 # under the License.
 #
 
-property newTargetInitialRef ${nuklei:newReferenceId()} # external scope
-property newRejectTargetRef ${nuklei:newReferenceId()} # external scope
-
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceInitial ${nuklei.streams("http", "source")}
-property sourceReply ${nuklei.streams("rejectTarget", "http#source")}
+property sourceInput ${nuklei.streams("http", "source")}
+property sourceOutputEst ${nuklei.streams("source", "http#target")}
 
-property newRejectTargetId ${nuklei:newStreamId()}
+property newSourceOutputEstId ${nuklei:newStreamId()}
 
-connect await ROUTED_INITIAL
+connect await ROUTED_INPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInitial.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInitial.throttle)}
+        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:initialId)
-read ([0..8]:initialRef)
-read ([0..8]:correlationId)
+read ([0..8]:sourceInputId)
+read ([0..8]:sourceInputRef)
+read ([0..8]:sourceCorrelationId)
 read [0x00]
 
 write [0x40 0x00 0x00 0x02]
-write ${initialId}
+write ${sourceInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${initialId}
+read ${sourceInputId}
 read [0x39]
 read "GET http://username:password@localhost:8000/ HTTP/1.1\r\n"
 read "\r\n"
 
-write notify REQUEST_DECODED
+write notify HTTP_REQUEST_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${initialId}
+write ${sourceInputId}
 write [0x12 0x00 0x00 0x00]
 write flush
 
 close
 closed
 
-connect await REQUEST_DECODED
+connect await HTTP_REQUEST_DECODED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceReply.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceReply.buffer)}
+        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newRejectTargetId}
-write ${newRejectTargetRef}
-write ${correlationId}
+write ${newSourceOutputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${sourceCorrelationId}
 write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newRejectTargetId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newRejectTargetId}
+write ${newSourceOutputEstId}
 write [0x1c]
 write "HTTP/1.1 400 Bad Request\r\n"
 write "\r\n"
@@ -83,7 +80,7 @@ write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newRejectTargetId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 close

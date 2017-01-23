@@ -14,39 +14,38 @@
 # under the License.
 #
 
-property newTargetInitialRef ${nuklei:newReferenceId()} # external scope
-property newSourceReplyRef ${nuklei:newReferenceId()} # external scope
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceInitial ${nuklei.streams("http", "source")}
-property targetInitial ${nuklei.streams("target", "http#source")}
-property targetReply ${nuklei.streams("http", "replySource")}
-property sourceReply ${nuklei.streams("replyTarget", "http#replySource")}
+property sourceInput ${nuklei.streams("http", "source")}
+property targetInput ${nuklei.streams("target", "http#source")}
+property targetOutputEst ${nuklei.streams("http", "target")}
+property sourceOutputEst ${nuklei.streams("source", "http#target")}
 
-property newTargetInitialId ${nuklei:newStreamId()}
-property newSourceReplyId ${nuklei:newStreamId()}
+property newTargetInputId ${nuklei:newStreamId()}
+property newSourceOutputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
-connect await ROUTED_INITIAL
+connect await ROUTED_INPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInitial.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInitial.throttle)}
+        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:initialId)
-read ([0..8]:initialRef)
-read ([0..8]:correlationId)
+read ([0..8]:sourceInputId)
+read ([0..8]:sourceInputRef)
+read ([0..8]:sourceCorrelationId)
 read [0x00]
 
 write [0x40 0x00 0x00 0x02]
-write ${initialId}
+write ${sourceInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${initialId}
+read ${sourceInputId}
 read [0x50]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
@@ -55,40 +54,38 @@ read "Upgrade: protocol\r\n"
 read "\r\n"
 read [0x00]
 
-read notify REQUEST_HEADERS_RECEIVED
+write notify HTTP_REQUEST_HEADERS_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${initialId}
+write ${sourceInputId}
 write [0x50 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${initialId}
+read ${sourceInputId}
 read [0x17]
 read "custom protocol payload"
 read [0x00]
 
-read notify REQUEST_PAYLOAD_RECEIVED
+read notify HTTP_REQUEST_PAYLOAD_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${initialId}
+write ${sourceInputId}
 write [0x28 0x00 0x00 0x00]
 write flush
 
 close
 closed
 
-connect await ROUTED_INITIAL
+connect await HTTP_REQUEST_HEADERS_DECODED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInitial.throttle)}
-        option writer ${agrona:oneToOneWriter(targetInitial.buffer)}
+        option reader ${agrona:oneToOneReader(targetInput.throttle)}
+        option writer ${agrona:oneToOneWriter(targetInput.buffer)}
 connected
 
-write await REQUEST_HEADERS_RECEIVED
-
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInitialId}
-write ${newTargetInitialRef}
+write ${newTargetInputId}
+write ${newTargetInputRef}
 write ${newTargetCorrelationId}
 write [0x5f]
 write [0x00] [0x07] ":scheme" [0x04] "http"
@@ -100,34 +97,34 @@ write [0x00] [0x07] "upgrade" [0x08] "protocol"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInitialId}
+read ${newTargetInputId}
 read [0..4]
 
-write await REQUEST_PAYLOAD_RECEIVED
+write await HTTP_REQUEST_PAYLOAD_DECODED
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInitialId}
+write ${newTargetInputId}
 write [0x17]
 write "custom protocol payload"
 write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInitialId}
+read ${newTargetInputId}
 read [0..4]
 
 close
 closed
 
-connect await ROUTED_REPLY
+connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetReply.buffer)}
-        option writer ${agrona:oneToOneWriter(targetReply.throttle)}
+        option reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetReplyId)
-read ([0..8]:targetReplyRef)
+read ([0..8]:targetOutputEstId)
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
 read [0x1f]
 read [0x00] [0x07] ":status" [0x03] "101"
@@ -136,12 +133,12 @@ read [0x00] [0x07] "upgrade" [0x08] "protocol"
 read notify HTTP_RESPONSE_HEADERS_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetReplyId}
+write ${targetOutputEstId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetReplyId}
+read ${targetOutputEstId}
 read [0x17]
 read "custom protocol payload"
 read [0x00]
@@ -149,34 +146,32 @@ read [0x00]
 read notify HTTP_RESPONSE_PAYLOAD_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetReplyId}
+write ${targetOutputEstId}
 write [0x28 0x00 0x00 0x00]
 write flush
 
 close
 closed
 
-connect await ROUTED_REPLY
+connect await HTTP_RESPONSE_HEADERS_RECEIVED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceReply.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceReply.buffer)}
+        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
-write await HTTP_RESPONSE_HEADERS_RECEIVED
-
 write [0x00 0x00 0x00 0x01]
-write ${newSourceReplyId}
-write ${newSourceReplyRef}
-write ${correlationId}
+write ${newSourceOutputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${sourceCorrelationId}
 write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceReplyId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceReplyId}
+write ${newSourceOutputEstId}
 write [0x37]
 write "HTTP/1.1 101 Switching Protocols\r\n"
 write"Upgrade: protocol\r\n"
@@ -185,20 +180,20 @@ write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceReplyId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 write await HTTP_RESPONSE_PAYLOAD_RECEIVED
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceReplyId}
+write ${newSourceOutputEstId}
 write [0x17]
 write "custom protocol payload"
 write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceReplyId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 close

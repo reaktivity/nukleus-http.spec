@@ -38,10 +38,10 @@ public class ConnectionManagementIT
     private final NukleusRule nukleus = new NukleusRule()
         .directory("target/nukleus-itests")
         .streams("http", "source")
-        .streams("rejectTarget", "http#source")
+        .streams("source", "http#source")
         .streams("target", "http#source")
-        .streams("http", "replySource")
-        .streams("replyTarget", "http#replySource");
+        .streams("http", "target")
+        .streams("source", "http#target");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
@@ -55,8 +55,8 @@ public class ConnectionManagementIT
     public void shouldSwitchProtocolAfterUpgrade() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 }
