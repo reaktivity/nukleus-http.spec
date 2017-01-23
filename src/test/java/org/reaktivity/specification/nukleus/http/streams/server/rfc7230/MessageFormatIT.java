@@ -38,10 +38,10 @@ public class MessageFormatIT
     private final NukleusRule nukleus = new NukleusRule()
         .directory("target/nukleus-itests")
         .streams("http", "source")
-        .streams("rejectTarget", "http#source")
+        .streams("source", "http#source")
         .streams("target", "http#source")
-        .streams("http", "replySource")
-        .streams("replyTarget", "http#replySource");
+        .streams("http", "target")
+        .streams("source", "http#target");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
@@ -55,8 +55,8 @@ public class MessageFormatIT
     public void shouldAcceptRequestWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -69,8 +69,22 @@ public class MessageFormatIT
     public void shouldAcceptRequestWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+//      "${http}/response.with.headers/request",
+        "${streams}/response.with.headers/client/source",
+        "${streams}/response.with.headers/client/nukleus",
+        "${streams}/response.with.headers/client/target" })
+    public void shouldAcceptResponseWithHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 }

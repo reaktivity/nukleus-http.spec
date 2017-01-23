@@ -14,24 +14,22 @@
 # under the License.
 #
 
-property newReplyRef ${nuklei:newReferenceId()}
-
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property targetInitial ${nuklei.streams("target", "http#source")}
-property targetReply ${nuklei.streams("http", "replySource")}
+property targetInput ${nuklei.streams("target", "http#source")}
+property targetOutputEst ${nuklei.streams("http", "target")}
 
-property newReplyId ${nuklei:newStreamId()}
+property newTargetOutputEstId ${nuklei:newStreamId()}
 
-connect await ROUTED_INITIAL
+connect await ROUTED_INPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInitial.buffer)}
-        option writer ${agrona:oneToOneWriter(targetInitial.throttle)}
+        option reader ${agrona:oneToOneReader(targetInput.buffer)}
+        option writer ${agrona:oneToOneWriter(targetInput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInitialId)
-read ([0..8]:targetInitialRef)
+read ([0..8]:targetInputId)
+read ([0..8]:targetInputRef)
 read ([0..8]:targetCorrelationId)
 read [0x4d]
 read [0x00] [0x07] ":scheme" [0x04] "http"
@@ -43,50 +41,48 @@ read [0x00] [0x0e] "content-length" [0x02] "11"
 read notify HTTP_REQUEST_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInitialId}
+write ${targetInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetInitialId}
+read ${targetInputId}
 read [0x0b]
 read "hello world"
 read [0x00]
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInitialId}
+write ${targetInputId}
 write [0x0b 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x03]
-read ${targetInitialId}
+read ${targetInputId}
 read [0x00]
 
 close
 closed
 
-connect await ROUTED_REPLY
+connect await HTTP_REQUEST_RECEIVED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetReply.throttle)}
-        option writer ${agrona:oneToOneWriter(targetReply.buffer)}
+        option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
-write await HTTP_REQUEST_RECEIVED
-
 write [0x00 0x00 0x00 0x01]
-write ${newReplyId}
-write ${newReplyRef}
+write ${newTargetOutputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
 write [0x0d]
 write [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newReplyId}
+read ${newTargetOutputEstId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x03]
-write ${newReplyId}
+write ${newTargetOutputEstId}
 write [0x00]
 write flush
 

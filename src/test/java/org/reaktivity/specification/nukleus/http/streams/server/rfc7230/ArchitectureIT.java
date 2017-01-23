@@ -30,18 +30,18 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class ArchitectureIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/architecture")
-            .addScriptRoot("http", "org/kaazing/specification/http/rfc7230/architecture");
+        .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/architecture")
+        .addScriptRoot("http", "org/kaazing/specification/http/rfc7230/architecture");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
     private final NukleusRule nukleus = new NukleusRule()
         .directory("target/nukleus-itests")
         .streams("http", "source")
-        .streams("rejectTarget", "http#source")
+        .streams("source", "http#source")
         .streams("target", "http#source")
-        .streams("http", "replySource")
-        .streams("replyTarget", "http#replySource");
+        .streams("http", "target")
+        .streams("source", "http#target");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
@@ -55,8 +55,8 @@ public class ArchitectureIT
     public void shouldCorrelateRequestAndResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -68,8 +68,8 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenHostHeaderMissing() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("REJECTED_INITIAL");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -82,8 +82,8 @@ public class ArchitectureIT
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -95,8 +95,8 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenVersionInvalid() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("REJECTED_INITIAL");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -108,8 +108,8 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenVersionNotHttp1x() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("REJECTED_INITIAL");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -121,8 +121,8 @@ public class ArchitectureIT
     public void shouldRejectRequestWithUserInfo() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("REJECTED_INITIAL");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -135,8 +135,8 @@ public class ArchitectureIT
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INITIAL");
-        k3po.notifyBarrier("ROUTED_REPLY");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 }
