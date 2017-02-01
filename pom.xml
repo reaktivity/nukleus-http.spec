@@ -112,6 +112,10 @@
           <excludes>
             <exclude>src/conf/**</exclude>
           </excludes>
+          <mapping>
+            <idl>SLASHSTAR_STYLE</idl>
+            <rpt>SCRIPT_STYLE</rpt>
+          </mapping>
           <failIfUnknown>true</failIfUnknown>
         </configuration>
         <executions>
