@@ -48,9 +48,21 @@ public class ConnectionManagementIT
     @Test
     @Specification({
         "${streams}/connection.established/server/source",
-        "${streams}/connection.established/server/nukleus",
-        "${streams}/connection.established/server/target" })
-    public void shouldSwitchProtocolAfterUpgrade() throws Exception
+        "${streams}/connection.established/server/nukleus" })
+    public void connectionEstablished() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/http.get.exchange/server/source",
+            "${streams}/http.get.exchange/server/nukleus",
+            "${streams}/http.get.exchange/server/target" })
+    public void httpGetExchange() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

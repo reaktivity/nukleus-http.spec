@@ -19,8 +19,6 @@ property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
 property sourceInput ${nuklei.streams("http2", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http2#source")}
-
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
@@ -62,26 +60,26 @@ closed
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceOutputEst.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceOutputEst.throttle)}
+        option reader ${agrona:oneToOneReader(sourceHandshake.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceHandshake.throttle)}
 connected
 
 # begin frame
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceOutputEstId)
+read ([0..8]:sourceHandshakeId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newSourceCorrelationId}
 read [0x00]
 
 # flow control frame
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
+write ${sourceHandshakeId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (server connection preface - SETTINGS frame)
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId}
+read ${sourceHandshakeId}
 read [0x0F]
 # HTTP2 SETTINGS frame <length=6, flags=0x00, stream_id=0> (niv=1) [SETTINGS_MAX_CONCURRENT_STREAMS(0x03):100]
 read [0x00 0x00 0x06 0x04 0x00 0x00 0x00 0x00 0x00 0x00 0x03 0x00 0x00 0x00 0x64]
@@ -89,7 +87,7 @@ read [0x00]
 
 # flow control frame
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
+write ${sourceHandshakeId}
 write [0x13 0x00 0x00 0x00]
 write flush
 
