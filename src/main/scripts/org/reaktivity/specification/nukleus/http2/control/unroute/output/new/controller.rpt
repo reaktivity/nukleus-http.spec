@@ -19,7 +19,7 @@ property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
 
 property nukleiUR020101C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020101C ${nukleiUR020101C.control("http")}
+property controlUR020101C ${nukleiUR020101C.control("http2")}
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional

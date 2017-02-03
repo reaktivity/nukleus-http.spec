@@ -16,7 +16,7 @@
 
 property nukleiRG010000N ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlRG010000N ${nukleiRG010000N.controlNew("http")}
+property controlRG010000N ${nukleiRG010000N.controlNew("http2")}
 
 connect agrona://stream/bidirectional
         option reader ${agrona:manyToOneReader(controlRG010000N.nukleus)}

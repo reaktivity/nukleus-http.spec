@@ -16,7 +16,7 @@
 
 property nukleiUR020102N ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020102N ${nukleiUR020102N.controlNew("http")}
+property controlUR020102N ${nukleiUR020102N.controlNew("http2")}
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
