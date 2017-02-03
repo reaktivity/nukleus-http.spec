@@ -22,6 +22,8 @@ property sourceInput ${nuklei.streams("http2", "source")}
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
+property sourceHandshake ${nuklei.streams("source", "http2#source")}
+
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceInput.throttle)}
