@@ -31,11 +31,11 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetInputId)
 read ([0..8]:targetInputRef)
 read ([0..8]:targetCorrelationId)
-read [0x4d]
+read [0x53]
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x04] "POST"
 read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x04] "host" [0x0e] "localhost:8080"
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 read [0x00] [0x0e] "content-length" [0x02] "11"
 
 read notify HTTP_REQUEST_RECEIVED

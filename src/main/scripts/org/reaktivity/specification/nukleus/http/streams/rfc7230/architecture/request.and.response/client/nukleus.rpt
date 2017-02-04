@@ -42,7 +42,7 @@ read ([0..8]:sourceReplyRef)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x04] "host" [0x0e] "localhost:8080"
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 connect await ROUTED
         agrona://stream/bidirectional
