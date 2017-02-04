@@ -37,11 +37,11 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:sourceOutputId)
 read ([0..8]:sourceOutputRef)
 read ([0..8]:sourceCorrelationId)
-read [0x39]
+read [0x3f]
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x04] "host" [0x0e] "localhost:8080"
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read notify HTTP_REQUEST_RECEIVED
 

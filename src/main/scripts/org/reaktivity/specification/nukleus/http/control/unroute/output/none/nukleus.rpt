@@ -32,8 +32,8 @@ read [0x06] "source"
 read ([0..8]:sourceOutputRefUR020100N)
 read [0x06] "target"
 read ([0..8]:targetOutputRefRG010101N)
-read [0x15]
-read [0x00] [0x04] "host" [0x0e] "localhost:8080"
+read [0x1b]
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 write [0x40 0x00 0x00 0x02]
 write ${correlationIdUR020100N}
