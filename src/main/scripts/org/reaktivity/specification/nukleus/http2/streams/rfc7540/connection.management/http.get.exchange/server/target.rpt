@@ -16,6 +16,7 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
+property targetInput ${nuklei.streams("target", "http2#source")}
 property targetOutputEst ${nuklei.streams("http2", "target")}
 
 property newTargetOutputEstId ${nuklei:newStreamId()}

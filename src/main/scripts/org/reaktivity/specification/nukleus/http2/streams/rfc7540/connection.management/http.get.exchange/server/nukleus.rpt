@@ -108,6 +108,12 @@ read [0x00]
 
 read notify HTTP_REQUEST_HEADERS_DECODED
 
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${sourceInputId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
 close
 closed
 
