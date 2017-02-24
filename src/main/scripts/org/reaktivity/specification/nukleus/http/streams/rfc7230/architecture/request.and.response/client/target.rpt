@@ -42,7 +42,7 @@ write notify CONNECTION_POOL_READY
 read await CONNECTION_POOL_READY
 read [0x00 0x00 0x00 0x02]
 read ${targetId}
-read [0x28]
+read [0x00 0x28]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
