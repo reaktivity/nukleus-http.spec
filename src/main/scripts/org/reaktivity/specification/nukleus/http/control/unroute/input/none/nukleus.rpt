@@ -32,7 +32,6 @@ read [0x06] "source"
 read  ([0..8]:sourceInputRefRG010001N)
 read [0x06] "target"
 read ([0..8]:targetInputRefRG010001N)
-read [0x1b]
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 write [0x40 0x00 0x00 0x02]

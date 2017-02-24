@@ -65,7 +65,7 @@ read ${newTargetRef}
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetId}
-write [0x28]
+write [0x00 0x28]
 write "GET / HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
 write "\r\n"

@@ -31,7 +31,6 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetInputId)
 read ([0..8]:targetInputRef)
 read ([0..8]:targetCorrelationId)
-read [0x00]
 
 read notify HTTP_CONNECTION_POOL_OPENED
 
@@ -42,7 +41,7 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${targetInputId}
-read [0x28]
+read [0x00 0x28]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
@@ -68,7 +67,6 @@ write [0x00 0x00 0x00 0x01]
 write ${newTargetInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -79,11 +77,10 @@ write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId}
-write [0x21]
+write [0x00 0x21]
 write "HTTP/1.1 200 OK\r\n"
 write "some: header\r\n"
 write "\r\n"
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]

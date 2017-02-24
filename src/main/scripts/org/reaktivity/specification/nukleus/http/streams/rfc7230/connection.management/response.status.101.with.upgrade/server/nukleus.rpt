@@ -37,7 +37,6 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:sourceInputId)
 read ([0..8]:sourceInputRef)
 read ([0..8]:sourceCorrelationId)
-read [0x00]
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceInputId}
@@ -46,13 +45,12 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
-read [0x50]
+read [0x00 0x50]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "Connection: Upgrade\r\n"
 read "Upgrade: protocol\r\n"
 read "\r\n"
-read [0x00]
 
 write notify HTTP_REQUEST_HEADERS_DECODED
 
@@ -63,9 +61,8 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
-read [0x17]
+read [0x00 0x17]
 read "custom protocol payload"
-read [0x00]
 
 read notify HTTP_REQUEST_PAYLOAD_DECODED
 
@@ -87,7 +84,6 @@ write [0x00 0x00 0x00 0x01]
 write ${newTargetInputId}
 write ${newTargetInputRef}
 write ${newTargetCorrelationId}
-write [0x65]
 write [0x00] [0x07] ":scheme" [0x04] "http"
 write [0x00] [0x07] ":method" [0x03] "GET"
 write [0x00] [0x05] ":path" [0x01] "/"
@@ -104,9 +100,8 @@ write await HTTP_REQUEST_PAYLOAD_DECODED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputId}
-write [0x17]
+write [0x00 0x17]
 write "custom protocol payload"
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -126,7 +121,6 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetOutputEstId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
-read [0x1f]
 read [0x00] [0x07] ":status" [0x03] "101"
 read [0x00] [0x07] "upgrade" [0x08] "protocol"
 
@@ -139,9 +133,8 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${targetOutputEstId}
-read [0x17]
+read [0x00 0x17]
 read "custom protocol payload"
-read [0x00]
 
 read notify HTTP_RESPONSE_PAYLOAD_RECEIVED
 
@@ -163,7 +156,6 @@ write [0x00 0x00 0x00 0x01]
 write ${newSourceOutputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${sourceCorrelationId}
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -172,11 +164,10 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x37]
+write [0x00 0x37]
 write "HTTP/1.1 101 Switching Protocols\r\n"
 write"Upgrade: protocol\r\n"
 write "\r\n"
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -187,9 +178,8 @@ write await HTTP_RESPONSE_PAYLOAD_RECEIVED
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x17]
+write [0x00 0x17]
 write "custom protocol payload"
-write [0x00]
 write flush
 
 read [0x40 0x00 0x00 0x02]
