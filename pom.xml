@@ -44,8 +44,8 @@
 
     <junit.version>4.12</junit.version>
     <k3po.version>3.0.0-alpha-54</k3po.version>
-    <nukleus.spec.version>0.5</nukleus.spec.version>
-    <nukleus.plugin.version>0.5</nukleus.plugin.version>
+    <nukleus.spec.version>0.6</nukleus.spec.version>
+    <nukleus.plugin.version>0.7.3</nukleus.plugin.version>
   </properties>
 
   <dependencies>
@@ -111,6 +111,10 @@
           <excludes>
             <exclude>src/conf/**</exclude>
           </excludes>
+          <mapping>
+            <idl>SLASHSTAR_STYLE</idl>
+            <rpt>SCRIPT_STYLE</rpt>
+          </mapping>
           <failIfUnknown>true</failIfUnknown>
         </configuration>
         <executions>
@@ -164,34 +168,6 @@
         </executions>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.reaktivity</groupId>
-                    <artifactId>nukleus-maven-plugin</artifactId>
-                    <versionRange>[0.4,)</versionRange>
-                    <goals>
-                      <goal>validate</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
 
   <profiles>
