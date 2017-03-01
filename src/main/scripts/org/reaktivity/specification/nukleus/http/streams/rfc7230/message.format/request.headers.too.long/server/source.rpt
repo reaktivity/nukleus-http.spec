@@ -19,7 +19,7 @@ property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
 property sourceInput ${nuklei.streams("http", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http#target")}
+property sourceOutputEst ${nuklei.streams("source", "http#source")}
 
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
@@ -38,20 +38,40 @@ write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0..4]
+read [0x1a 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x3a]
+write [0x00 0x1a]
 write "GET / HTTP/1.1\r\n"
-write "Host: localhost:8080\r\n"
-write "X-Custom: header\r\n"
+write "Host: loca"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputId}
+read [0x1a 0x00 0x00 0x00]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceInputId}
+write [0x00 0x1a]
+write "lhost:8080\r\n"
+write "X-Custom: head"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputId}
+read [0x1a 0x00 0x00 0x00]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceInputId}
+write [0x00 0x06]
+write "er\r\n"
 write "\r\n"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0x3a 0x00 0x00 0x00]
+read [0x06 0x00 0x00 0x00]
 
 close
 closed
