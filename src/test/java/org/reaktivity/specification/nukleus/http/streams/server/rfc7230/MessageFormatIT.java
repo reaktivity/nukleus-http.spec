@@ -87,6 +87,19 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+        "${streams}/request.fragmented.with.content.length/server/source",
+        "${streams}/request.fragmented.with.content.length/server/nukleus",
+        "${streams}/request.fragmented.with.content.length/server/target" })
+    public void shouldAcceptFragmentedRequestWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/request.headers.too.long/server/source",
         "${streams}/request.headers.too.long/server/nukleus" })
     public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception

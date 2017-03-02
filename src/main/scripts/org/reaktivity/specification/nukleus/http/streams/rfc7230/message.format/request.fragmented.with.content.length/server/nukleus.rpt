@@ -14,12 +14,18 @@
 # under the License.
 #
 
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
 property sourceInput ${nuklei.streams("http", "source")}
+property targetInput ${nuklei.streams("target", "http#source")}
+property targetOutputEst ${nuklei.streams("http", "target")}
 property sourceOutputEst ${nuklei.streams("source", "http#target")}
 
+property newTargetInputId ${nuklei:newStreamId()}
 property newSourceOutputEstId ${nuklei:newStreamId()}
+property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
@@ -34,37 +40,27 @@ read ([0..8]:sourceCorrelationId)
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceInputId}
-write [0x40 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
-read [0x00 0x1a]
-read "GET / HTTP/1.1\r\n"
-read "Host: loca"
+read [0x00 0x35]
+read "POST / HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "Content-Length"
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
-write [0x1a 0x00 0x00 0x00]
+write ${newSourceInputId}
+write [0x35 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceInputId}
-read [0x00 0x3e]
-read "lhost:8080\r\n"
-read "X-Custom-header-1: header 1"
-read "X-Custom-header-2: head"
-
-write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
-write [0x3e 0x00 0x00 0x00]
-write flush
-
-read [0x00 0x00 0x00 0x02]
-read ${sourceInputId}
-read [0x00 0x08]
-read "er 2\r\n"
+read ${newSourceInputId}
+read [0x00 0x13]
+read ": 11\r\n"
 read "\r\n"
+read "hello world"
 
 write notify HTTP_REQUEST_DECODED
 
@@ -73,10 +69,75 @@ write ${sourceInputId}
 write [0x08 0x00 0x00 0x00]
 write flush
 
+write [0x40 0x00 0x00 0x02]
+write ${sourceInputId}
+write [0x0b 0x00 0x00 0x00]
+write flush
+
 close
 closed
 
 connect await HTTP_REQUEST_DECODED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetInput.throttle)}
+        option writer ${agrona:oneToOneWriter(targetInput.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newTargetInputId}
+write ${newTargetInputRef}
+write ${newTargetCorrelationId}
+write [0x00] [0x07] ":scheme" [0x04] "http"
+write [0x00] [0x07] ":method" [0x04] "POST"
+write [0x00] [0x05] ":path" [0x01] "/"
+write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write [0x00] [0x0e] "content-length" [0x02] "11"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputId}
+read [0x00 0x02 0x00 0x00]
+
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputId}
+write [0x00 0x0b]
+write "hello world"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputId}
+read [0x0b 0x00 0x00 0x00]
+
+write [0x00 0x00 0x00 0x03]
+write ${newTargetInputId}
+write flush
+
+close
+closed
+
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:targetOutputEstId)
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+read ${newTargetCorrelationId}
+read [0x00] [0x07] ":status" [0x03] "200"
+
+read notify HTTP_RESPONSE_RECEIVED
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+close
+closed
+
+connect await HTTP_RESPONSE_RECEIVED
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
         option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
@@ -94,8 +155,8 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x35]
-write "HTTP/1.1 400 Bad Request (request headers too long)\r\n"
+write [0x00 0x13]
+write "HTTP/1.1 200 OK\r\n"
 write "\r\n"
 write flush
 

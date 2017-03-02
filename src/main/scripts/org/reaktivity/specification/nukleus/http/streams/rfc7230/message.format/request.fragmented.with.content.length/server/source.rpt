@@ -19,7 +19,7 @@ property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
 property sourceInput ${nuklei.streams("http", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http#source")}
+property sourceOutputEst ${nuklei.streams("source", "http#target")}
 
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
@@ -42,41 +42,34 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x1a]
-write "GET / HTTP/1.1\r\n"
-write "Host: loca"
+write [0x00 0x35]
+write "POST / HTTP/1.1\r\n"
+write "Host: localhost:8080\r\n"
+write "Content-Length"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0x1a 0x00 0x00 0x00]
+read [0x35 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x3e]
-write "lhost:8080\r\n"
-write "X-Custom-header-1: header 1"
-write "X-Custom-header-2: head"
-write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x3e 0x00 0x00 0x00]
-
-write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
-write [0x00 0x08]
-write "er 2\r\n"
+write [0x00 0x13]
+write ": 11\r\n"
 write "\r\n"
+write "hello world"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
 read [0x08 0x00 0x00 0x00]
 
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputId}
+read [0x0b 0x00 0x00 0x00]
+
 close
 closed
-
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
@@ -96,15 +89,13 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00]
-read (byte:lengthByte)
-read /HTTP\/1.1 400 Bad Request.*\r\n/
+read [0x00 0x13]
+read "HTTP/1.1 200 OK\r\n"
 read "\r\n"
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write ${lengthByte}
-write [0x00 0x00 0x00]
+write [0x13 0x00 0x00 0x00]
 write flush
 
 close
