@@ -48,7 +48,6 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-//      "${http}/request.with.content.length/request",
         "${streams}/request.with.content.length/server/source",
         "${streams}/request.with.content.length/server/nukleus",
         "${streams}/request.with.content.length/server/target" })
@@ -62,7 +61,6 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-//      "${http}/request.with.headers/request",
         "${streams}/request.with.headers/server/source",
         "${streams}/request.with.headers/server/nukleus",
         "${streams}/request.with.headers/server/target" })
@@ -73,6 +71,45 @@ public class MessageFormatIT
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/request.fragmented/server/source",
+        "${streams}/request.fragmented/server/nukleus",
+        "${streams}/request.fragmented/server/target" })
+    public void shouldAcceptFragmentedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/request.fragmented.with.content.length/server/source",
+        "${streams}/request.fragmented.with.content.length/server/nukleus",
+        "${streams}/request.fragmented.with.content.length/server/target" })
+    public void shouldAcceptFragmentedRequestWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/request.headers.too.long/server/source",
+        "${streams}/request.headers.too.long/server/nukleus" })
+    public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
 
     @Test
     @Specification({
