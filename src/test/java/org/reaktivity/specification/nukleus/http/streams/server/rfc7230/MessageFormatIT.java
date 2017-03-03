@@ -120,8 +120,8 @@ public class MessageFormatIT
     public void shouldAcceptResponseWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 }

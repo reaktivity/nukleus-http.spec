@@ -49,6 +49,20 @@ public class ArchitectureIT
     @Test
     @Specification({
 //      "${http}/request.and.response/request",
+        "${streams}/request.and.response/client/source",
+        "${streams}/request.and.response/client/nukleus",
+        "${streams}/request.and.response/client/target" })
+    public void shouldCorrelateRequestAndResponseClient() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+//      "${http}/request.and.response/request",
         "${streams}/request.and.response/server/source",
         "${streams}/request.and.response/server/nukleus",
         "${streams}/request.and.response/server/target" })

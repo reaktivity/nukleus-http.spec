@@ -16,33 +16,75 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property targetInitial ${nuklei.streams("target", "http#source")}
-property targetReply ${nuklei.streams("http", "target")}
+property targetOutput ${nuklei.streams("target", "http#source")}
+property targetInputEst ${nuklei.streams("http", "target")}
 
-connect await ROUTED
+property newTargetInputEstId ${nuklei:newStreamId()}
+
+connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInitial.buffer)}
-        option writer ${agrona:oneToOneWriter(targetReply.buffer)}
+        option reader ${agrona:oneToOneReader(targetOutput.buffer)}
+        option writer ${agrona:oneToOneWriter(targetOutput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetId)
-read ([0..8]:targetRef)
-read ([0..8]:targetReplyId)
-read ([0..8]:targetReplyRef)
+read ([0..8]:targetInputId)
+read ([0..8]:targetInputRef)
+read ([0..8]:targetCorrelationId)
 
-write [0x00 0x00 0x00 0x01]
-write ${targetReplyId}
-write ${targetReplyRef}
-write ${targetId}
-write ${targetRef}
+read notify HTTP_CONNECTION_POOL_OPENED
+
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId}
+write [0x00 0x02 0x00 0x00]
 write flush
-write notify CONNECTION_POOL_READY
 
-read await CONNECTION_POOL_READY
 read [0x00 0x00 0x00 0x02]
-read ${targetId}
+read ${targetInputId}
 read [0x00 0x28]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
+
+read notify HTTP_REQUEST_DECODED
+
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId}
+write [0x28 0x00 0x00 0x00] # TODO: native int
+write flush
+
+close
+closed
+
+
+connect await HTTP_CONNECTION_POOL_OPENED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetInputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(targetInputEst.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newTargetInputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${targetCorrelationId}
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputEstId}
+read [0..4]
+
+write await HTTP_REQUEST_DECODED
+
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputEstId}
+write [0x00 0x13]
+write "HTTP/1.1 200 OK\r\n"
+write "\r\n"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputEstId}
+read [0..4]
+
+close
+closed
