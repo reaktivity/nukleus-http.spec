@@ -18,7 +18,8 @@ property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceHandshake ${nuklei.streams("source", "http2#source")}
+property sourceHandshake ${nuklei.streams("http2", "source")}
+property sourceHandshakeEst ${nuklei.streams("source", "http2#source")}
 property targetInput ${nuklei.streams("target", "http2#source")}
 property sourceOutputEst ${nuklei.streams("source", "http2#target")}
 
@@ -34,8 +35,8 @@ property newSourceHandshakeId ${nuklei:newStreamId()}
 #
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
+        option reader ${agrona:oneToOneReader(sourceHandshake.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceHandshake.throttle)}
 connected
 
 # begin frame
@@ -120,8 +121,8 @@ closed
 #
 connect await CONNECTION_ESTABLISHED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceHandshake.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceHandshake.buffer)}
+        option reader ${agrona:oneToOneReader(sourceHandshakeEst.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceHandshakeEst.buffer)}
 connected
 
 # begin frame
