@@ -18,15 +18,12 @@ property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceHandshake ${nuklei.streams("http2", "source")}
 property sourceInput ${nuklei.streams("http2", "source")}
+property sourceHandshakeEst ${nuklei.streams("source", "http2#source")}
+property sourceOutputEst ${nuklei.streams("source", "http2#target")}
 
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
-property sourceHandshakeEst ${nuklei.streams("source", "http2#source")}
-property targetOutputEst ${nuklei.streams("http2", "target")}
-property sourceOutputEst ${nuklei.streams("source", "http2#target")}
-
 
 #
 #
@@ -35,8 +32,8 @@ property sourceOutputEst ${nuklei.streams("source", "http2#target")}
 #
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceHandshake.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceHandshake.buffer)}
+        option reader ${agrona:oneToOneReader(sourceInput.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceInput.buffer)}
 connected
 
 # begin frame
@@ -55,7 +52,10 @@ read [0..4]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
 write [0x00 0x18]
-write "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n"
+write "PRI * HTTP/2.0\r\n"
+      "\r\n"
+      "SM\r\n"
+      "\r\n"
 write flush
 
 # window frame
@@ -67,8 +67,11 @@ read [0..4]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
 write [0x00 0x0f]
-# SETTINGS frame <length=6, flags=0x00, stream_id=0> (niv=1) [SETTINGS_INITIAL_WINDOW_SIZE(0x04):65535]
-write [0x00 0x00 0x06 0x04 0x00 0x00 0x00 0x00 0x00 0x00 0x04 0x00 0x00 0xff 0xff]
+write [0x00 0x00 0x06]                   # length = 6
+      [0x04]                             # HTTP2 SETTINGS frame
+      [0x00]                             # flags = 0x00
+      [0x00 0x00 0x00 0x00]              # stream_id = 0
+      [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
 write flush
 
 # window frame
@@ -80,8 +83,10 @@ read [0..4]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
 write [0x00 0x09]
-# SETTINGS frame <length=0, flags=0x01, stream_id=0> ; ACK (niv=0)
-write [0x00 0x00 0x00 0x04 0x01 0x00 0x00 0x00 0x00]
+write [0x00 0x00 0x00]          # length = 0
+      [0x04]                    # HTTP2 SETTINGS frame
+      [0x01]                    # ACK
+      [0x00 0x00 0x00 0x00]     # stream_id = 0
 write flush
 
 # window frame
@@ -93,12 +98,14 @@ read [0..4]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
 write [0x00 0x18]
-# HEADERS frame <length=15, flags=0x05, stream_id=1> ; END_STREAM | END_HEADERS (padlen=0) ; Open new stream
-# :method: GET
-# :scheme: http
-# :path: /
-# :authority: localhost:8080
-write [0x00 0x00 0x0f 0x01 0x05 0x00 0x00 0x00 0x01 0x82 0x86 0x84 0x41 0x8a 0xa0 0xe4 0x1d 0x13 0x9d 0x09 0xb8 0xf0 0x1e 0x07]
+write [0x00 0x00 0x0f]                                                  # length = 15
+      [0x01]                                                            # HEADERS frame
+      [0x05]                                                            # END_STREAM | END_HEADERS
+      [0x00 0x00 0x00 0x01]                                             # stream_id = 1
+      [0x82]                                                            # :method: GET
+      [0x86]                                                            # :scheme: http
+      [0x84]                                                            # :path: /
+      [0x41] [0x8a 0xa0 0xe4 0x1d 0x13 0x9d 0x09 0xb8 0xf0 0x1e 0x07]   # :authority: localhost:8080
 write flush
 
 # window frame
@@ -137,8 +144,11 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceHandshakeId}
 read [0x00 0x0F]
-# HTTP2 SETTINGS frame <length=6, flags=0x00, stream_id=0> (niv=1) [SETTINGS_MAX_CONCURRENT_STREAMS(0x03):100]
-read [0x00 0x00 0x06 0x04 0x00 0x00 0x00 0x00 0x00 0x00 0x03 0x00 0x00 0x00 0x64]
+read [0x00 0x00 0x06]                   # length = 6
+     [0x04]                             # HTTP2 SETTINGS frame
+     [0x00]                             # flags = 0x00
+     [0x00 0x00 0x00 0x00]              # stream_id = 0
+     [0x00 0x03] [0x00 0x00 0x00 0x64]  # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -150,8 +160,10 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceHandshakeId}
 read [0x00 0x09]
-# SETTINGS frame <length=0, flags=0x01, stream_id=0> ; ACK (niv=0)
-read [0x00 0x00 0x00 0x04 0x01 0x00 0x00 0x00 0x00]
+read [0x00 0x00 0x00]           # length = 0
+     [0x04]                     # HTTP2 SETTINGS frame
+     [0x01]                     # ACK
+     [0x00 0x00 0x00 0x00]      # stream_id = 0
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -190,22 +202,16 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
 read [0x00 0x64]
-# HEADERS frame <length=69, flags=0x04, stream_id=1>
-#          ; END_HEADERS
-#          (padlen=0)
-#          ; First response header
-#          :status: 404
-#          server: nghttpd nghttp2/1.19.0
-#          date: Wed, 01 Feb 2017 19:12:46 GMT
-#          content-type: text/html; charset=UTF-8
-#          content-length: 147
-read      [0x00 0x00 0x5b 0x01 0x04 0x00 0x00 0x00 0x01]
-          [0x8d 0x0f 0x27 0x16 0x6e 0x67 0x68 0x74 0x74 0x70 0x64 0x20 0x6e 0x67 0x68 0x74]
-          [0x74 0x70 0x32 0x2f 0x31 0x2e 0x31 0x39 0x2e 0x30 0x0f 0x12 0x1d 0x57 0x65 0x64]
-          [0x2c 0x20 0x30 0x31 0x20 0x46 0x65 0x62 0x20 0x32 0x30 0x31 0x37 0x20 0x31 0x39]
-          [0x3a 0x31 0x32 0x3a 0x34 0x36 0x20 0x47 0x4d 0x54 0x0f 0x10 0x18 0x74 0x65 0x78]
-          [0x74 0x2f 0x68 0x74 0x6d 0x6c 0x3b 0x20 0x63 0x68 0x61 0x72 0x73 0x65 0x74 0x3d]
-          [0x55 0x54 0x46 0x2d 0x38 0x0f 0x0d 0x03 0x31 0x34 0x37]
+
+read [0x00 0x00 0x5b]                                      # length
+     [0x01]                                                # HTTP2 HEADERS frame
+     [0x04]                                                # END_HEADERS
+     [0x00 0x00 0x00 0x01]                                 # stream_id=1
+     [0x8d]                                                # :status: 404
+     [0x0f 0x27] [0x16] "nghttpd nghttp2/1.19.0"           # server
+     [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
+     [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
+     [0x0f 0x0d] [0x03] "147"                              # content-length
 
 # window frame
 write [0x40 0x00 0x00 0x02]
