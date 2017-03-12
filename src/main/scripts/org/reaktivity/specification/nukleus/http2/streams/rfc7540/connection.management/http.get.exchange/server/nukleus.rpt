@@ -27,7 +27,6 @@ property sourceOutputEst ${nuklei.streams("source", "http2#target")}
 property newTargetInputId ${nuklei:newStreamId()}
 property newSourceOutputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
-property newSourceHandshakeId ${nuklei:newStreamId()}
 
 #
 #
@@ -139,19 +138,19 @@ connected
 
 # begin frame
 write [0x00 0x00 0x00 0x01]
-write ${newSourceHandshakeId}
+write ${newSourceOutputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${sourceCorrelationId}
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceHandshakeId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 # data frame (server connection preface - SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceHandshakeId}
+write ${newSourceOutputEstId}
 write [0x00 0x0F]
 write [0x00 0x00 0x06]                   # length = 6
       [0x04]                             # HTTP2 SETTINGS frame
@@ -162,12 +161,12 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceHandshakeId}
+read ${newSourceOutputEstId}
 read [0..4]
 
 # data frame (http2 SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceHandshakeId}
+write ${newSourceOutputEstId}
 write [0x00 0x09]
 write [0x00 0x00 0x00]           # length = 0
       [0x04]                     # HTTP2 SETTINGS frame
@@ -177,7 +176,7 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceHandshakeId}
+read ${newSourceOutputEstId}
 read [0x17 0x00 0x00 0x00]
 
 close
@@ -281,18 +280,7 @@ connect await HTTP_RESPONSE_HEADERS_RECEIVED
         option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
-# begin frame
-write [0x00 0x00 0x00 0x01]
-write ${newSourceOutputEstId}
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
-write flush
-
-# window frame
-read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0x00 0x02 0x00 0x00]
-
+# begin frame is already written (same tcp stream)
 # nuklei data frame (contains http2 headers frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}

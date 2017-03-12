@@ -130,19 +130,19 @@ connected
 
 # begin frame
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceHandshakeId)
+read ([0..8]:sourceOutputEstId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newSourceCorrelationId}
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${sourceHandshakeId}
+write ${sourceOutputEstId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (server connection preface - SETTINGS frame)
 read [0x00 0x00 0x00 0x02]
-read ${sourceHandshakeId}
+read ${sourceOutputEstId}
 read [0x00 0x0F]
 read [0x00 0x00 0x06]                   # length = 6
      [0x04]                             # HTTP2 SETTINGS frame
@@ -152,13 +152,13 @@ read [0x00 0x00 0x06]                   # length = 6
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${sourceHandshakeId}
+write ${sourceOutputEstId}
 write [0x13 0x00 0x00 0x00]
 write flush
 
 # data frame (http2 SETTINGS frame)
 read [0x00 0x00 0x00 0x02]
-read ${sourceHandshakeId}
+read ${sourceOutputEstId}
 read [0x00 0x09]
 read [0x00 0x00 0x00]           # length = 0
      [0x04]                     # HTTP2 SETTINGS frame
@@ -167,7 +167,7 @@ read [0x00 0x00 0x00]           # length = 0
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${sourceHandshakeId}
+write ${sourceOutputEstId}
 write [0x17 0x00 0x00 0x00]
 write flush
 
@@ -186,18 +186,7 @@ connect await ROUTED_OUTPUT
         option writer ${agrona:oneToOneWriter(sourceOutputEst.throttle)}
 connected
 
-# begin frame
-read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceOutputEstId)
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newSourceCorrelationId}
-
-# window frame
-write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
-write [0x00 0x02 0x00 0x00]
-write flush
-
+# begin frame is already there in handshake stream (same tcp stream)
 # nuklei data frame (contains http2 headers frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
