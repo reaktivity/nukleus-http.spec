@@ -2,5 +2,5 @@
 
 [![Build Status][build-status-image]][build-status]
 
-[build-status-image]: https://travis-ci.org/reaktivity/nukleus-http2.java.svg?branch=develop
-[build-status]: https://travis-ci.org/reaktivity/nukleus-http2.java
+[build-status-image]: https://travis-ci.org/reaktivity/nukleus-http2.spec.svg?branch=develop
+[build-status]: https://travis-ci.org/reaktivity/nukleus-http2.spec
