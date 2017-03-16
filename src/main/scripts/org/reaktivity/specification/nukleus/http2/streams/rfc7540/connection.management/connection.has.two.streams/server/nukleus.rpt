@@ -174,9 +174,6 @@ write flush
 
 write notify HTTP_REQUEST_DECODED
 
-close
-closed
-
 
 #
 #
@@ -231,9 +228,6 @@ write flush
 read [0x40 0x00 0x00 0x02]
 read ${newSourceOutputEstId}
 read [0x17 0x00 0x00 0x00]
-
-close
-closed
 
 
 #
@@ -372,10 +366,6 @@ write flush
 write notify HTTP_RESPONSE_RECEIVED
 
 
-close
-closed
-
-
 #
 #
 # writing to target-->nukleus-->source (source/http2#target)
@@ -463,8 +453,6 @@ read [0x40 0x00 0x00 0x02]
 read ${newSourceOutputEstId}
 read [0x13 0x00 0x00 0x00]
 
-close
-closed
 
 
 
