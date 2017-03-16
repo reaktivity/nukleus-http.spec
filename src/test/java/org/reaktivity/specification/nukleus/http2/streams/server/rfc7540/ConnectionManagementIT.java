@@ -82,4 +82,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${streams}/connection.has.two.streams/server/source",
+            "${streams}/connection.has.two.streams/server/nukleus",
+            "${streams}/connection.has.two.streams/server/target" })
+    public void connectionHasTwoStreams() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
 }
