@@ -14,8 +14,7 @@
 # under the License.
 #
 
-property newTargetInputRef1 ${nuklei:newReferenceId()} # external scope
-property newTargetInputRef2 ${nuklei:newReferenceId()} # external scope
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
@@ -59,9 +58,9 @@ read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
 read [0x00 0x18]
 read "PRI * HTTP/2.0\r\n"
-      "\r\n"
-      "SM\r\n"
-      "\r\n"
+     "\r\n"
+     "SM\r\n"
+     "\r\n"
 
 read notify CONNECTION_ESTABLISHED
 
@@ -143,12 +142,12 @@ write flush
 # data frame - HTTP2 DATA frame stream_id=1
 read [0x00 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0x00 0x10]
-read [0x00 0x00 0x07]                                                 # length = 7
+read [0x00 0x15]
+read [0x00 0x00 0x0c]                                                 # length = 12
      [0x00]                                                           # HTTP2 DATA frame
      [0x01]                                                           # END_STREAM
      [0x00 0x00 0x00 0x01]                                            # stream_id = 1
-     "foo1bar"
+     "Hello, world"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -159,12 +158,12 @@ write flush
 # data frame - HTTP2 DATA frame stream_id=3
 read [0x00 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0x00 0x10]
-read [0x00 0x00 0x07]                                                 # length = 7
+read [0x00 0x1b]
+read [0x00 0x00 0x12]                                                 # length = 18
      [0x00]                                                           # HTTP2 DATA frame
      [0x01]                                                           # END_STREAM
      [0x00 0x00 0x00 0x03]                                            # stream_id = 3
-     "foo2bar"
+     "Hello again, world"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -243,7 +242,7 @@ connected
 
 write [0x00 0x00 0x00 0x01]
 write ${newTargetInputId1}
-write ${newTargetInputRef1}
+write ${newTargetInputRef}
 write ${newTargetCorrelationId1}
 write [0x00] [0x07] ":method" [0x04] "POST"
 write [0x00] [0x07] ":scheme" [0x04] "http"
@@ -258,7 +257,7 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x01]
 write ${newTargetInputId2}
-write ${newTargetInputRef2}
+write ${newTargetInputRef}
 write ${newTargetCorrelationId2}
 write [0x00] [0x07] ":method" [0x04] "POST"
 write [0x00] [0x07] ":scheme" [0x04] "http"
@@ -273,8 +272,8 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputId1}
-write [0x00 0x07]
-write "foo1bar"
+write [0x00 0x0c]
+write "Hello, world"
 write flush
 
 # window frame
@@ -284,8 +283,8 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputId2}
-write [0x00 0x07]
-write "foo2bar"
+write [0x00 0x12]
+write "Hello again, world"
 write flush
 
 # window frame

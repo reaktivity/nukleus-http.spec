@@ -56,9 +56,9 @@ read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
 read [0x00 0x18]
 read "PRI * HTTP/2.0\r\n"
-      "\r\n"
-      "SM\r\n"
-      "\r\n"
+     "\r\n"
+     "SM\r\n"
+     "\r\n"
 
 read notify CONNECTION_ESTABLISHED
 

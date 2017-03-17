@@ -69,8 +69,8 @@ write flush
 # data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
 read [0x00 0x00 0x00 0x02]
 read ${targetInputId1}
-read [0x00 0x07]
-read "foo1bar"
+read [0x00 0x0c]
+read "Hello, world"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -81,8 +81,8 @@ write flush
 # data frame (with http request payload) -- corresponds to HTTP2 stream_id=3
 read [0x00 0x00 0x00 0x02]
 read ${targetInputId2}
-read [0x00 0x07]
-read "foo2bar"
+read [0x00 0x12]
+read "Hello again, world"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
