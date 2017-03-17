@@ -90,10 +90,10 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
 read [0x00 0x09]
-read [0x00 0x00 0x00]           # length = 0
-     [0x04]                     # HTTP2 SETTINGS frame
-     [0x01]                     # ACK
-     [0x00 0x00 0x00 0x00]      # stream_id = 0
+read [0x00 0x00 0x00]                   # length = 0
+     [0x04]                             # HTTP2 SETTINGS frame
+     [0x01]                             # ACK
+     [0x00 0x00 0x00 0x00]              # stream_id = 0
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -105,14 +105,14 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
 read [0x00 0x1c]
-read [0x00 0x00 0x13]                                                   # length = 19
-     [0x01]                                                             # HEADERS frame
-     [0x05]                                                             # END_STREAM | END_HEADERS
-     [0x00 0x00 0x00 0x01]                                              # stream_id = 1
-     [0x83]                                                             # :method: POST
-     [0x86]                                                             # :scheme: http
-     [0x84]                                                             # :path: /
-     [0x01] [0x0e] "localhost:8080"                                     # :authority: localhost:8080
+read [0x00 0x00 0x13]                   # length = 19
+     [0x01]                             # HEADERS frame
+     [0x05]                             # END_STREAM | END_HEADERS
+     [0x00 0x00 0x00 0x01]              # stream_id = 1
+     [0x83]                             # :method: POST
+     [0x86]                             # :scheme: http
+     [0x84]                             # :path: /
+     [0x01] [0x0e] "localhost:8080"     # :authority: localhost:8080
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -124,14 +124,14 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
 read [0x00 0x1c]
-read [0x00 0x00 0x13]                                                   # length = 19
-     [0x01]                                                             # HEADERS frame
-     [0x05]                                                             # END_STREAM | END_HEADERS
-     [0x00 0x00 0x00 0x03]                                              # stream_id = 3
-     [0x83]                                                             # :method: POST
-     [0x86]                                                             # :scheme: http
-     [0x84]                                                             # :path: /
-     [0x01] [0x0e] "localhost:8080"                                     # :authority: localhost:8080
+read [0x00 0x00 0x13]                   # length = 19
+     [0x01]                             # HEADERS frame
+     [0x05]                             # END_STREAM | END_HEADERS
+     [0x00 0x00 0x00 0x03]              # stream_id = 3
+     [0x83]                             # :method: POST
+     [0x86]                             # :scheme: http
+     [0x84]                             # :path: /
+     [0x01] [0x0e] "localhost:8080"     # :authority: localhost:8080
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -143,10 +143,10 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${newSourceInputId}
 read [0x00 0x15]
-read [0x00 0x00 0x0c]                                                 # length = 12
-     [0x00]                                                           # HTTP2 DATA frame
-     [0x01]                                                           # END_STREAM
-     [0x00 0x00 0x00 0x01]                                            # stream_id = 1
+read [0x00 0x00 0x0c]                   # length = 12
+     [0x00]                             # HTTP2 DATA frame
+     [0x01]                             # END_STREAM
+     [0x00 0x00 0x00 0x01]              # stream_id = 1
      "Hello, world"
 
 # window frame
@@ -159,10 +159,10 @@ write flush
 read [0x00 0x00 0x00 0x02]
 read ${newSourceInputId}
 read [0x00 0x1b]
-read [0x00 0x00 0x12]                                                 # length = 18
-     [0x00]                                                           # HTTP2 DATA frame
-     [0x01]                                                           # END_STREAM
-     [0x00 0x00 0x00 0x03]                                            # stream_id = 3
+read [0x00 0x00 0x12]                   # length = 18
+     [0x00]                             # HTTP2 DATA frame
+     [0x01]                             # END_STREAM
+     [0x00 0x00 0x00 0x03]              # stream_id = 3
      "Hello again, world"
 
 # window frame
@@ -217,10 +217,10 @@ read [0..4]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
 write [0x00 0x09]
-write [0x00 0x00 0x00]           # length = 0
-      [0x04]                     # HTTP2 SETTINGS frame
-      [0x01]                     # ACK
-      [0x00 0x00 0x00 0x00]      # stream_id = 0
+write [0x00 0x00 0x00]                  # length = 0
+      [0x04]                            # HTTP2 SETTINGS frame
+      [0x01]                            # ACK
+      [0x00 0x00 0x00 0x00]             # stream_id = 0
 write flush
 
 # window frame
@@ -424,10 +424,10 @@ read [0x00 0x02 0x00 0x00]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
 write [0x00 0x46]
-write [0x00 0x00 0x3d]                          # length = 61
-      [0x00]                                    # HTTP2 DATA frame
-      [0x01]                                    # END_STREAM
-      [0x00 0x00 0x00 0x01]                     # stream_id=1
+write [0x00 0x00 0x3d]                  # length = 61
+      [0x00]                            # HTTP2 DATA frame
+      [0x01]                            # END_STREAM
+      [0x00 0x00 0x00 0x01]             # stream_id=1
 write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 write flush
 
@@ -440,10 +440,10 @@ read [0x13 0x00 0x00 0x00]
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
 write [0x00 0x46]
-write [0x00 0x00 0x3d]                          # length = 61
-      [0x00]                                    # HTTP2 DATA frame
-      [0x01]                                    # END_STREAM
-      [0x00 0x00 0x00 0x03]                     # stream_id=3
+write [0x00 0x00 0x3d]                  # length = 61
+      [0x00]                            # HTTP2 DATA frame
+      [0x01]                            # END_STREAM
+      [0x00 0x00 0x00 0x03]             # stream_id=3
 write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 write flush
 
