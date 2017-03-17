@@ -97,15 +97,15 @@ read [0..4]
 # data frame - HTTP2 HEADERS stream_id=1
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x18]
-write [0x00 0x00 0x0f]                                                  # length = 15
+write [0x00 0x1c]
+write [0x00 0x00 0x13]                                                  # length = 19
       [0x01]                                                            # HEADERS frame
       [0x05]                                                            # END_STREAM | END_HEADERS
       [0x00 0x00 0x00 0x01]                                             # stream_id = 1
       [0x83]                                                            # :method: POST
       [0x86]                                                            # :scheme: http
       [0x84]                                                            # :path: /
-      [0x41] [0x8a 0xa0 0xe4 0x1d 0x13 0x9d 0x09 0xb8 0xf0 0x1e 0x07]   # :authority: localhost:8080
+      [0x01] [0x0e] "localhost:8080"                                    # :authority: localhost:8080
 write flush
 
 # window frame
@@ -116,15 +116,15 @@ read [0..4]
 # data frame - HTTP2 HEADERS stream_id=3
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x18]
-write [0x00 0x00 0x0f]                                                  # length = 15
+write [0x00 0x1c]
+write [0x00 0x00 0x13]                                                  # length = 19
       [0x01]                                                            # HEADERS frame
       [0x05]                                                            # END_STREAM | END_HEADERS
       [0x00 0x00 0x00 0x03]                                             # stream_id = 3
       [0x83]                                                            # :method: POST
       [0x86]                                                            # :scheme: http
       [0x84]                                                            # :path: /
-      [0x41] [0x8a 0xa0 0xe4 0x1d 0x13 0x9d 0x09 0xb8 0xf0 0x1e 0x07]   # :authority: localhost:8080
+      [0x01] [0x0e] "localhost:8080"                                    # :authority: localhost:8080
 write flush
 
 # window frame
