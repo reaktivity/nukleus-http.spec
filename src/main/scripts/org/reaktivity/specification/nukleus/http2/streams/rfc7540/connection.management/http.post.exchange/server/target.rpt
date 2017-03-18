@@ -1,0 +1,105 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
+
+property targetInput ${nuklei.streams("target", "http2#source")}
+property targetOutputEst ${nuklei.streams("http2", "target")}
+
+property newTargetOutputEstId ${nuklei:newStreamId()}
+
+#
+#
+# reading from nukleus-->target (target/http2#source)
+#
+#
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetInput.buffer)}
+        option writer ${agrona:oneToOneWriter(targetInput.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:targetInputId)
+read ([0..8]:targetInputRef)
+read ([0..8]:targetCorrelationId)
+read [0x00] [0x07] ":method" [0x04] "POST"
+read [0x00] [0x07] ":scheme" [0x04] "http"
+read [0x00] [0x05] ":path" [0x01] "/"
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
+read [0x00 0x00 0x00 0x02]
+read ${targetInputId}
+read [0x00 0x0c]
+read "Hello, world"
+
+read notify HTTP_REQUEST_RECEIVED
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+
+
+
+#
+#
+# writing to target-->nukleus (http2/target)
+#
+#
+connect await HTTP_REQUEST_RECEIVED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
+connected
+
+# begin frame (with http headers)
+write [0x00 0x00 0x00 0x01]
+write ${newTargetOutputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${targetCorrelationId}
+write [0x00] [0x07] ":status" [0x03] "404"
+write [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+write [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+write [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+write [0x00] [0x0e] "content-length" [0x03] "147"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId}
+read [0..4]
+
+# data frame (with http payload)
+write [0x00 0x00 0x00 0x02]
+write ${newTargetOutputEstId}
+write [0x00 0x3d]
+write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId}
+read [0..4]
