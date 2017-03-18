@@ -47,10 +47,11 @@ write ${targetInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
+# data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
 read [0x00 0x00 0x00 0x02]
 read ${targetInputId}
-read [0x00 0x07]
-read "foo=bar"
+read [0x00 0x0c]
+read "Hello, world"
 
 read notify HTTP_REQUEST_RECEIVED
 
