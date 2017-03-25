@@ -39,6 +39,7 @@ public class ConnectionManagementIT
         .streams("http2", "source")
         .streams("source", "http2#source")
         .streams("target", "http2#source")
+        .streams("target", "http2#target")
         .streams("http2", "target")
         .streams("source", "http2#target");
 
@@ -89,6 +90,19 @@ public class ConnectionManagementIT
             "${streams}/connection.has.two.streams/server/nukleus",
             "${streams}/connection.has.two.streams/server/target" })
     public void connectionHasTwoStreams() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/http.push.promise/server/source",
+            "${streams}/http.push.promise/server/nukleus",
+            "${streams}/http.push.promise/server/target" })
+    public void pushResources() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
