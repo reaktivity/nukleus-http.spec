@@ -21,8 +21,8 @@ property targetOutputEst ${nuklei.streams("http2", "target")}
 property newTargetOutputEstId ${nuklei:newStreamId()}
 
 property promiseInput ${nuklei.streams("target", "http2#target")}
-property newPushOutputEstId1 ${nuklei:newStreamId()}
-property newPushOutputEstId2 ${nuklei:newStreamId()}
+property newPromisedOutputEstId1 ${nuklei:newStreamId()}
+property newPromisedOutputEstId2 ${nuklei:newStreamId()}
 
 
 
@@ -127,7 +127,7 @@ connect await HTTP_REQUEST_RECEIVED
         option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
-# begin frame (with http headers)
+# begin frame (with http response headers)
 write [0x00 0x00 0x00 0x01]
 write ${newTargetOutputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
@@ -144,7 +144,7 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputEstId}
 read [0..4]
 
-# data frame (with http payload with push promise ext)
+# data frame (with http payload with push promise request1 headers)
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputEstId}
 write [0x00 0x00]
@@ -159,7 +159,7 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputEstId}
 read [0..4]
 
-# data frame (with http payload with push promise ext)
+# data frame (with http payload with push promise request2 headers)
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputEstId}
 write [0x00 0x00]
@@ -174,7 +174,7 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputEstId}
 read [0..4]
 
-# data frame (with http payload)
+# data frame (with http response payload)
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputEstId}
 write [0x00 0x3d]
@@ -188,9 +188,9 @@ read [0..4]
 
 write await PROMISED_REQUEST1_RECEIVED
 
-# begin frame (with http headers)
+# begin frame (with http promised response 1 headers)
 write [0x00 0x00 0x00 0x01]
-write ${newPushOutputEstId1}
+write ${newPromisedOutputEstId1}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${pushCorrelationId1}
 write [0x00] [0x07] ":status" [0x03] "200"
@@ -202,26 +202,26 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushOutputEstId1}
+read ${newPromisedOutputEstId1}
 read [0..4]
 
-# data frame (with http payload)
+# data frame (with http promised response 1 payload)
 write [0x00 0x00 0x00 0x02]
-write ${newPushOutputEstId1}
+write ${newPromisedOutputEstId1}
 write [0x00 0x3d]
 write "<html><head></head><body><h1>Push Response1</h1></body></html>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushOutputEstId1}
+read ${newPromisedOutputEstId1}
 read [0..4]
 
 write await PROMISED_REQUEST2_RECEIVED
 
-# begin frame (with http headers)
+# begin frame (with http promised response 2 headers)
 write [0x00 0x00 0x00 0x01]
-write ${newPushOutputEstId2}
+write ${newPromisedOutputEstId2}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${pushCorrelationId2}
 write [0x00] [0x07] ":status" [0x03] "200"
@@ -233,17 +233,17 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushOutputEstId2}
+read ${newPromisedOutputEstId2}
 read [0..4]
 
-# data frame (with http payload)
+# data frame (with http promised response 2 headers)
 write [0x00 0x00 0x00 0x02]
-write ${newPushOutputEstId2}
+write ${newPromisedOutputEstId2}
 write [0x00 0x3d]
 write "<html><head></head><body><h1>Push Response2</h1></body></html>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushOutputEstId2}
+read ${newPromisedOutputEstId2}
 read [0..4]

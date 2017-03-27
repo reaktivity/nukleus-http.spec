@@ -28,9 +28,9 @@ property newTargetInputId ${nuklei:newStreamId()}
 property newSourceOutputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
-property promiseInput ${nuklei.streams("target", "http2#target")}
-property newPushInputId1 ${nuklei:newStreamId()}
-property newPushInputId2 ${nuklei:newStreamId()}
+property promisedInput ${nuklei.streams("target", "http2#target")}
+property newPromisedInputId1 ${nuklei:newStreamId()}
+property newPromisedInputId2 ${nuklei:newStreamId()}
 property newPushCorrelationId1 ${nuklei:newCorrelationId()}
 property newPushCorrelationId2 ${nuklei:newCorrelationId()}
 
@@ -561,18 +561,18 @@ closed
 
 #
 #
-# writing from nukleus-->target (target/http2#target)
+# nukleus-->target (target/http2#target) - long polling requests
 #
 #
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(promiseInput.throttle)}
-        option writer ${agrona:oneToOneWriter(promiseInput.buffer)}
+        option reader ${agrona:oneToOneReader(promisedInput.throttle)}
+        option writer ${agrona:oneToOneWriter(promisedInput.buffer)}
 connected
 
 # promised request1
 write [0x00 0x00 0x00 0x01]
-write ${newPushInputId1}
+write ${newPromisedInputId1}
 write ${newTargetInputRef}
 write ${newPushCorrelationId1}
 write [0x00] [0x07] ":method" [0x03] "GET"
@@ -583,13 +583,13 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushInputId1}
+read ${newPromisedInputId1}
 read [0..4]
 
 
 # promised request2
 write [0x00 0x00 0x00 0x01]
-write ${newPushInputId2}
+write ${newPromisedInputId2}
 write ${newTargetInputRef}
 write ${newPushCorrelationId2}
 write [0x00] [0x07] ":method" [0x03] "GET"
@@ -600,5 +600,5 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPushInputId2}
+read ${newPromisedInputId2}
 read [0..4]
