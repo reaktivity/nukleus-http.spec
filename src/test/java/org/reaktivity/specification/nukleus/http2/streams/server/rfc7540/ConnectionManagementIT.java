@@ -39,7 +39,6 @@ public class ConnectionManagementIT
         .streams("http2", "source")
         .streams("source", "http2#source")
         .streams("target", "http2#source")
-        .streams("target", "http2#target")
         .streams("http2", "target")
         .streams("source", "http2#target");
 

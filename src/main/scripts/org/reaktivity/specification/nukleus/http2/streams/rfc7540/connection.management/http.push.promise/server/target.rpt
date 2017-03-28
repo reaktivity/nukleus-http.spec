@@ -18,18 +18,14 @@ property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024
 
 property targetInput ${nuklei.streams("target", "http2#source")}
 property targetOutputEst ${nuklei.streams("http2", "target")}
-property newTargetOutputEstId ${nuklei:newStreamId()}
 
-property promiseInput ${nuklei.streams("target", "http2#target")}
-property newPromisedOutputEstId1 ${nuklei:newStreamId()}
-property newPromisedOutputEstId2 ${nuklei:newStreamId()}
-
+property newTargetOutputEstId1 ${nuklei:newStreamId()}
+property newTargetOutputEstId2 ${nuklei:newStreamId()}
+property newTargetOutputEstId3 ${nuklei:newStreamId()}
 
 
-#
 #
 # reading from nukleus-->target (target/http2#source)
-#
 #
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
@@ -37,10 +33,12 @@ connect await ROUTED_OUTPUT
         option writer ${agrona:oneToOneWriter(targetInput.throttle)}
 connected
 
+
+# ========================== target input stream 1 =====================
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInputId)
+read ([0..8]:targetInputId1)
 read ([0..8]:targetInputRef)
-read ([0..8]:targetCorrelationId)
+read ([0..8]:targetCorrelationId1)
 read [0x00] [0x07] ":method" [0x04] "POST"
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x05] ":path" [0x01] "/"
@@ -48,13 +46,13 @@ read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId}
+write ${targetInputId1}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
 read [0x00 0x00 0x00 0x02]
-read ${targetInputId}
+read ${targetInputId1}
 read [0x00 0x0c]
 read "Hello, world"
 
@@ -62,27 +60,16 @@ read notify HTTP_REQUEST_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId}
+write ${targetInputId1}
 write [0x00 0x02 0x00 0x00]
 write flush
 
-
-#
-#
-# reading from nukleus-->target (target/http2#target)
-#
-#
-connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(promiseInput.buffer)}
-        option writer ${agrona:oneToOneWriter(promiseInput.throttle)}
-connected
-
+# ========================== target input stream 2 =====================
 # promised request1
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:pushInputId1)
+read ([0..8]:targetInputId2)
 read ([0..8]:targetInputRef)
-read ([0..8]:pushCorrelationId1)
+read ([0..8]:targetCorrelationId2)
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x05] ":path" [0x0a] "/resource1"
@@ -90,17 +77,18 @@ read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${pushInputId1}
+write ${targetInputId2}
 write [0x00 0x02 0x00 0x00]
 write flush
 
-write notify PROMISED_REQUEST1_RECEIVED
+write notify PROMISED_REQUEST_1_RECEIVED
 
+# ========================== target input stream 3 =====================
 # promised request2
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:pushInputId2)
+read ([0..8]:targetInputId3)
 read ([0..8]:targetInputRef)
-read ([0..8]:pushCorrelationId2)
+read ([0..8]:targetCorrelationId3)
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x05] ":path" [0x0a] "/resource2"
@@ -108,17 +96,17 @@ read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${pushInputId2}
+write ${targetInputId3}
 write [0x00 0x02 0x00 0x00]
 write flush
 
-write notify PROMISED_REQUEST2_RECEIVED
+write notify PROMISED_REQUEST_2_RECEIVED
 
 
 
 #
 #
-# writing to target-->nukleus (http2/target)
+# target writing to target-->nukleus (http2/target)
 #
 #
 connect await HTTP_REQUEST_RECEIVED
@@ -127,11 +115,14 @@ connect await HTTP_REQUEST_RECEIVED
         option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
+#
+# ========================== target output stream 1 =====================
+#
 # begin frame (with http response headers)
 write [0x00 0x00 0x00 0x01]
-write ${newTargetOutputEstId}
+write ${newTargetOutputEstId1}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${targetCorrelationId}
+write ${targetCorrelationId1}
 write [0x00] [0x07] ":status" [0x03] "404"
 write [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
 write [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
@@ -141,12 +132,12 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
+read ${newTargetOutputEstId1}
 read [0..4]
 
 # data frame (with http payload with push promise request1 headers)
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
+write ${newTargetOutputEstId1}
 write [0x00 0x00]
 write [0x00] [0x07] ":method" [0x03] "GET"
 write [0x00] [0x07] ":scheme" [0x04] "http"
@@ -156,12 +147,12 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
+read ${newTargetOutputEstId1}
 read [0..4]
 
 # data frame (with http payload with push promise request2 headers)
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
+write ${newTargetOutputEstId1}
 write [0x00 0x00]
 write [0x00] [0x07] ":method" [0x03] "GET"
 write [0x00] [0x07] ":scheme" [0x04] "http"
@@ -171,28 +162,29 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
+read ${newTargetOutputEstId1}
 read [0..4]
 
 # data frame (with http response payload)
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
+write ${newTargetOutputEstId1}
 write [0x00 0x3d]
 write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
+read ${newTargetOutputEstId1}
 read [0..4]
 
-write await PROMISED_REQUEST1_RECEIVED
+write await PROMISED_REQUEST_1_RECEIVED
 
+# ========================== target output stream 2 =====================
 # begin frame (with http promised response 1 headers)
 write [0x00 0x00 0x00 0x01]
-write ${newPromisedOutputEstId1}
+write ${newTargetOutputEstId2}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${pushCorrelationId1}
+write ${targetCorrelationId2}
 write [0x00] [0x07] ":status" [0x03] "200"
 write [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
 write [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
@@ -202,28 +194,30 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPromisedOutputEstId1}
+read ${newTargetOutputEstId2}
 read [0..4]
 
 # data frame (with http promised response 1 payload)
 write [0x00 0x00 0x00 0x02]
-write ${newPromisedOutputEstId1}
+write ${newTargetOutputEstId2}
 write [0x00 0x3d]
 write "<html><head></head><body><h1>Push Response1</h1></body></html>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPromisedOutputEstId1}
+read ${newTargetOutputEstId2}
 read [0..4]
 
-write await PROMISED_REQUEST2_RECEIVED
+write await PROMISED_REQUEST_2_RECEIVED
 
+
+# ========================== target output stream 3 =====================
 # begin frame (with http promised response 2 headers)
 write [0x00 0x00 0x00 0x01]
-write ${newPromisedOutputEstId2}
+write ${newTargetOutputEstId3}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${pushCorrelationId2}
+write ${targetCorrelationId3}
 write [0x00] [0x07] ":status" [0x03] "200"
 write [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
 write [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
@@ -233,17 +227,17 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPromisedOutputEstId2}
+read ${newTargetOutputEstId3}
 read [0..4]
 
 # data frame (with http promised response 2 headers)
 write [0x00 0x00 0x00 0x02]
-write ${newPromisedOutputEstId2}
+write ${newTargetOutputEstId3}
 write [0x00 0x3d]
 write "<html><head></head><body><h1>Push Response2</h1></body></html>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newPromisedOutputEstId2}
+read ${newTargetOutputEstId3}
 read [0..4]
