@@ -36,5 +36,12 @@ scope http
         {
             list<http::HttpHeader> headers;
         }
+
+        struct HttpDataEx
+        {
+            uint16 length;
+            octets[length] payload;
+            octets extension;
+        }
     }
 }
