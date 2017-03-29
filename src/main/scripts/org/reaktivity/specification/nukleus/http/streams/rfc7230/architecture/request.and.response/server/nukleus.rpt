@@ -52,11 +52,6 @@ read "\r\n"
 
 read notify HTTP_REQUEST_DECODED
 
-write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
-write [0x28 0x00 0x00 0x00] # TODO: native int
-write flush
-
 close
 closed
 

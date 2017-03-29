@@ -38,7 +38,7 @@ write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0..4]
+read [0x40 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
@@ -47,21 +47,12 @@ write "GET / HTTP/1.1\r\n"
 write "Host: loca"
 write flush
 
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x1a 0x00 0x00 0x00]
-
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x3e]
+write [0x00 0x26]
 write "lhost:8080\r\n"
-write "X-Custom-header-1: header 1"
-write "X-Custom-header-2: head"
+write "X-Custom-header-1: header "
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x3e 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
@@ -69,10 +60,6 @@ write [0x00 0x08]
 write "er 2\r\n"
 write "\r\n"
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x08 0x00 0x00 0x00]
 
 close
 closed
@@ -98,14 +85,8 @@ read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
 read [0x00]
 read (byte:lengthByte)
-read /HTTP\/1.1 400 Bad Request.*\r\n/
+read /HTTP\/1.1 4\d\d .*\r\n/
 read "\r\n"
-
-write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
-write ${lengthByte}
-write [0x00 0x00 0x00]
-write flush
 
 close
 closed

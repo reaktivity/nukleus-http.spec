@@ -50,17 +50,6 @@ write "\r\n"
 write "hello world"
 write flush
 
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x3d 0x00 0x00 0x00]
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x0b 0x00 0x00 0x00]
-
-close
-closed
-
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
