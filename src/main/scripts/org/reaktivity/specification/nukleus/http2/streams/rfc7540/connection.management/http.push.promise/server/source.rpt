@@ -169,7 +169,7 @@ read [0x00 0x00 0x06]                   # length = 6
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (http2 SETTINGS frame)
@@ -213,7 +213,7 @@ read [0x00 0x00 0x58]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x01]                                 # stream_id=1
-     [0x8d]                                                # :status: 404
+     [0x88]                                                # :status: 200
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -228,15 +228,15 @@ write flush
 # nuklei data frame (contains first http2 PUSH_PROMISE frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x2c]
-read [0x00 0x00 0x23]                          # length = 35
+read [0x00 0x2b]
+read [0x00 0x00 0x22]                          # length = 35
      [0x05]                                    # HTTP2 PUSH_PROMISE frame
      [0x04]                                    # END_HEADERS
      [0x00 0x00 0x00 0x01]                     # stream_id=1
      [0x00 0x00 0x00 0x02]                     # promised_stream_id=2
      [0x82]                                    # :method: GET
      [0x86]                                    # :scheme: http
-     [0x44] [0x0a] "/resource1"                # :path: /resource1
+     [0x04] [0x0a] "/resource1"                # :path: /resource1
      [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 
 # window frame
@@ -248,15 +248,15 @@ write flush
 # nuklei data frame (contains second http2 PUSH_PROMISE frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x2c]
-read [0x00 0x00 0x23]                          # length = 35
+read [0x00 0x2b]
+read [0x00 0x00 0x22]                          # length = 35
      [0x05]                                    # HTTP2 PUSH_PROMISE frame
      [0x04]                                    # END_HEADERS
      [0x00 0x00 0x00 0x01]                     # stream_id=1
      [0x00 0x00 0x00 0x04]                     # promised_stream_id=4
      [0x82]                                    # :method: GET
      [0x86]                                    # :scheme: http
-     [0x44] [0x0a] "/resource2"                # :path: /resource2
+     [0x04] [0x0a] "/resource2"                # :path: /resource2
      [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 
 # window frame
@@ -278,7 +278,7 @@ read "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 # ==================== HTTP2 stream-id=2 (first promised stream) =================
@@ -289,7 +289,7 @@ read [0x00 0x00 0x58]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x02]                                 # stream_id=2
-     [0x8d]                                                # :status: 404
+     [0x88]                                                # :status: 200
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -298,23 +298,23 @@ read [0x00 0x00 0x58]                                      # length
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 # nuklei data frame (contains http2 data frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x46]
-read [0x00 0x00 0x3d]                          # length = 61
+read [0x00 0x47]
+read [0x00 0x00 0x3e]                          # length = 62
      [0x00]                                    # HTTP2 DATA frame
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x02]                     # stream_id=2
-read "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+read "<html><head></head><body><h1>Push Response1</h1></body></html>"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 # ==================== HTTP2 stream-id=4 (second promised stream) ==============
@@ -325,7 +325,7 @@ read [0x00 0x00 0x58]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x04]                                 # stream_id=4
-     [0x8d]                                                # :status: 404
+     [0x88]                                                # :status: 200
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -334,23 +334,23 @@ read [0x00 0x00 0x58]                                      # length
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 # nuklei data frame (contains http2 data frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x46]
-read [0x00 0x00 0x3d]                          # length = 61
+read [0x00 0x47]
+read [0x00 0x00 0x3e]                          # length = 62
      [0x00]                                    # HTTP2 DATA frame
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x04]                     # stream_id=4
-read "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+read "<html><head></head><body><h1>Push Response2</h1></body></html>"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x13 0x00 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 close

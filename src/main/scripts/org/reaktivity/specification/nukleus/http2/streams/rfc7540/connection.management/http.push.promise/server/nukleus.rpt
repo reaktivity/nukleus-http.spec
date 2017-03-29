@@ -294,7 +294,7 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetOutputEstId1)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId1}
-read [0x00] [0x07] ":status" [0x03] "404"
+read [0x00] [0x07] ":status" [0x03] "200"
 read [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
 read [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
 read [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
@@ -373,7 +373,7 @@ write flush
 # data frame (with http payload)
 read [0x00 0x00 0x00 0x02]
 read ${targetOutputEstId2}
-read [0x00 0x3d]
+read [0x00 0x3e]
 read "<html><head></head><body><h1>Push Response1</h1></body></html>"
 
 # window frame
@@ -403,7 +403,7 @@ write flush
 # data frame (with http payload)
 read [0x00 0x00 0x00 0x02]
 read ${targetOutputEstId3}
-read [0x00 0x3d]
+read [0x00 0x3e]
 read "<html><head></head><body><h1>Push Response2</h1></body></html>"
 
 # window frame
@@ -438,7 +438,7 @@ write [0x00 0x00 0x58]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
       [0x04]                                                # END_HEADERS
       [0x00 0x00 0x00 0x01]                                 # stream_id=1
-      [0x8d]                                                # :status: 404
+      [0x88]                                                # :status: 200
       [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
       [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -455,15 +455,15 @@ write await HTTP_RESPONSE_PAYLOAD_RECEIVED
 # nuklei data frame (contains first http2 PUSH_PROMISE frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x2c]
-write [0x00 0x00 0x23]                          # length = 35
+write [0x00 0x2b]
+write [0x00 0x00 0x22]                          # length = 34
       [0x05]                                    # HTTP2 PUSH_PROMISE frame
       [0x04]                                    # END_HEADERS
       [0x00 0x00 0x00 0x01]                     # stream_id=1
       [0x00 0x00 0x00 0x02]                     # promised_stream_id=2
       [0x82]                                    # :method: GET
       [0x86]                                    # :scheme: http
-      [0x44] [0x0a] "/resource1"                # :path: /resource1
+      [0x04] [0x0a] "/resource1"                # :path: /resource1
       [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 write flush
 
@@ -475,15 +475,15 @@ read [0..4]
 # nuklei data frame (contains second http2 PUSH_PROMISE frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x2c]
-write [0x00 0x00 0x23]                          # length = 35
+write [0x00 0x2b]
+write [0x00 0x00 0x22]                          # length = 35
       [0x05]                                    # HTTP2 PUSH_PROMISE frame
       [0x04]                                    # END_HEADERS
       [0x00 0x00 0x00 0x01]                     # stream_id=1
       [0x00 0x00 0x00 0x04]                     # promised_stream_id=4
       [0x82]                                    # :method: GET
       [0x86]                                    # :scheme: http
-      [0x44] [0x0a] "/resource2"                # :path: /resource2
+      [0x04] [0x0a] "/resource2"                # :path: /resource2
       [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 write flush
 
@@ -517,7 +517,7 @@ write [0x00 0x00 0x58]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
       [0x04]                                                # END_HEADERS
       [0x00 0x00 0x00 0x02]                                 # stream_id=2
-      [0x8d]                                                # :status: 404
+      [0x88]                                                # :status: 200
       [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
       [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -532,12 +532,12 @@ read [0..4]
 # nuklei data frame (contains http2 data frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x46]
-write [0x00 0x00 0x3d]                          # length = 61
+write [0x00 0x47]
+write [0x00 0x00 0x3e]                          # length = 61
       [0x00]                                    # HTTP2 DATA frame
       [0x01]                                    # END_STREAM
       [0x00 0x00 0x00 0x02]                     # stream_id=2
-write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+write "<html><head></head><body><h1>Push Response1</h1></body></html>"
 write flush
 
 # window frame
@@ -554,7 +554,7 @@ write [0x00 0x00 0x58]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
       [0x04]                                                # END_HEADERS
       [0x00 0x00 0x00 0x04]                                 # stream_id=4
-      [0x8d]                                                # :status: 404
+      [0x88]                                                # :status: 200
       [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
       [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
@@ -569,12 +569,12 @@ read [0..4]
 # nuklei data frame (contains http2 data frame)
 write [0x00 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x00 0x46]
-write [0x00 0x00 0x3d]                          # length = 61
+write [0x00 0x47]
+write [0x00 0x00 0x3e]                          # length = 62
       [0x00]                                    # HTTP2 DATA frame
       [0x01]                                    # END_STREAM
       [0x00 0x00 0x00 0x04]                     # stream_id=4
-write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+write "<html><head></head><body><h1>Push Response2</h1></body></html>"
 write flush
 
 # window frame
