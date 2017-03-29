@@ -116,6 +116,19 @@ public class ArchitectureIT
 
     @Test
     @Specification({
+//      "${http}/request.version.not.invalid/request",
+        "${streams}/request.version.missing/server/source",
+        "${streams}/request.version.missing/server/nukleus" })
+    public void shouldRejectRequestWhenVersionMissing() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
 //      "${http}/request.version.not.http.1.x/request",
         "${streams}/request.version.not.http.1.x/server/source",
         "${streams}/request.version.not.http.1.x/server/nukleus" })

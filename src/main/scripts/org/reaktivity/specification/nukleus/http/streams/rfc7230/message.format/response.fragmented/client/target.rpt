@@ -16,69 +16,81 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceInput ${nuklei.streams("http", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http#target")}
+property targetOutput ${nuklei.streams("target", "http#source")}
+property targetInputEst ${nuklei.streams("http", "target")}
 
-property newSourceOutputEstId ${nuklei:newStreamId()}
+property newTargetInputEstId ${nuklei:newStreamId()}
 
-connect await ROUTED_INPUT
+connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
+        option reader ${agrona:oneToOneReader(targetOutput.buffer)}
+        option writer ${agrona:oneToOneWriter(targetOutput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceInputId)
-read ([0..8]:sourceInputRef)
-read ([0..8]:sourceCorrelationId)
+read ([0..8]:targetInputId)
+read ([0..8]:targetInputRef)
+read ([0..8]:targetCorrelationId)
+
+read notify HTTP_CONNECTION_POOL_OPENED
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
+write ${targetInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceInputId}
-read [0x00 0x1F]
-read "GET /\r\n"
+read ${targetInputId}
+read [0x00 0x28]
+read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
 
-write notify HTTP_REQUEST_DECODED
+read notify HTTP_REQUEST_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
-write [0x27 0x00 0x00 0x00]
+write ${targetInputId}
+write [0x28 0x00 0x00 0x00] # TODO: native int
 write flush
 
 close
 closed
 
-connect await HTTP_REQUEST_DECODED
+
+connect await HTTP_CONNECTION_POOL_OPENED
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
+        option reader ${agrona:oneToOneReader(targetInputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(targetInputEst.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newSourceOutputEstId}
+write ${newTargetInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
+write ${targetCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
+read ${newTargetInputEstId}
 read [0..4]
 
+write await HTTP_REQUEST_DECODED
+
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputEstId}
-write [0x00 0x1a]
-write "HTTP/1.1 400 Bad Request\r\n"
+write ${newTargetInputEstId}
+write [0x00 0x21]
+write "HTTP/1.1 20"
+write flush
+
+write "0 OK\r\n"
+write "som"
+write flush
+
+write "e: header\r\n"
 write "\r\n"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
+read ${newTargetInputEstId}
 read [0..4]
 
 close

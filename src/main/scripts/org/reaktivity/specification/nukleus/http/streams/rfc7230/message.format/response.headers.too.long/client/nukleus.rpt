@@ -103,35 +103,18 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${targetInputEstId}
-read [0x00 0x21]
+read [0x00 0x43]
 read "HTTP/1.1 200 OK\r\n"
 read "some: header\r\n"
+read "another-header: another header value\r\n"
 read "\r\n"
 
 read notify HTTP_RESPONSE_DECODED
 
-write [0x40 0x00 0x00 0x02]
+write [0x40 0x00 0x00 0x01]
 write ${targetInputEstId}
-write [0x21 0x00 0x00 0x00]
 write flush
 
 close
 closed
 
-
-connect await HTTP_RESPONSE_DECODED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceInputEst.buffer)}
-connected
-
-write [0x00 0x00 0x00 0x01]
-write ${sourceInputEstId}
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "200"
-write [0x00] [0x04] "some" [0x06] "header"
-write flush
-
-close
-closed

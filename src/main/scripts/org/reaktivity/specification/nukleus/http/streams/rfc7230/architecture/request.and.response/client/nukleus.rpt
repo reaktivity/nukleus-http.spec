@@ -24,7 +24,7 @@ property targetInputEst ${nuklei.streams("http", "target")}
 property sourceInputEst ${nuklei.streams("source", "http#target")}
 
 property newTargetOutputId ${nuklei:newStreamId()}
-property newSourceInputEstId ${nuklei:newStreamId()}
+property sourceInputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_OUTPUT
@@ -36,13 +36,18 @@ connected
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:sourceOutputId)
 read ([0..8]:sourceOutputRef)
-read ([0..8]:sourceCorrelationId)
+read ([0..8]:newSourceCorrelationId)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x01] "/"
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read notify HTTP_REQUEST_RECEIVED
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputId}
+write [0x00 0x02 0x00 0x00]
+write flush
 
 read [0x00 0x00 0x00 0x03]
 read ${sourceOutputId}
@@ -125,9 +130,9 @@ connect await HTTP_RESPONSE_DECODED
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newSourceInputEstId}
+write ${sourceInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
+write ${newSourceCorrelationId}
 write [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
