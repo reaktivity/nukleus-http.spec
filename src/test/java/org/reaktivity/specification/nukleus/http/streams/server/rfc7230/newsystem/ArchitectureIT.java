@@ -37,11 +37,8 @@ public class ArchitectureIT
 
     private final NukleusRule nukleus = new NukleusRule()
         .directory("target/nukleus-itests")
-        .streams("http", "source")
-        .streams("source", "http#source")
-        .streams("target", "http#source")
-        .streams("http", "target")
-        .streams("source", "http#target");
+        .streams("target", "source")
+        .streams("source", "target");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
