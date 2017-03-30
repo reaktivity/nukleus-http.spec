@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http.streams.server.rfc7230;
+package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
@@ -48,7 +48,7 @@ public class ArchitectureIT
 
     @Test
     @Specification({
-//      "${http}/request.and.response/request",
+//      "${http}/request.and.response/response",
         "${streams}/request.and.response/client/source",
         "${streams}/request.and.response/client/nukleus",
         "${streams}/request.and.response/client/target" })

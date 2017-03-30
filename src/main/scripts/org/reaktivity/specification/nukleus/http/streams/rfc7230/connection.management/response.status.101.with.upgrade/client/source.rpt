@@ -47,7 +47,7 @@ read ${newSourceOutputId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
+write ${newSourceOutputId}
 write [0x00 0x17]
 write "custom protocol payload"
 write flush

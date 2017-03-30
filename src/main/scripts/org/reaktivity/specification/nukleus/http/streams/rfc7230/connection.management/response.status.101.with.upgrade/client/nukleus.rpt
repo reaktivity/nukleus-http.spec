@@ -101,9 +101,10 @@ read ${newTargetOutputId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
+write ${newTargetOutputId}
 write [0x00 0x17]
 write "custom protocol payload"
+write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputId}
@@ -133,7 +134,7 @@ read [0x00 0x00 0x00 0x02]
 read ${targetInputEstId}
 read [0x00 0x37]
 read "HTTP/1.1 101 Switching Protocols\r\n"
-Read "Upgrade: protocol\r\n"
+read "Upgrade: protocol\r\n"
 read "\r\n"
 
 read notify HTTP_RESPONSE_DECODED

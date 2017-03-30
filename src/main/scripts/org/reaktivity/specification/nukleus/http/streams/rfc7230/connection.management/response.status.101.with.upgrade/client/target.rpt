@@ -56,7 +56,7 @@ write [0x50 0x00 0x00 0x00] # TODO: native int
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${newSourceInputId}
+read ${newTargetOutputId}
 read [0x00 0x17]
 read "custom protocol payload"
 
