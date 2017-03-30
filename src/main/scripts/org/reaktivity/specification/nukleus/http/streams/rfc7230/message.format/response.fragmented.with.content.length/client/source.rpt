@@ -24,6 +24,8 @@ property sourceInputEst ${nuklei.streams("source", "http#target")}
 property newSourceOutputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
+property sourceInputInitialWindow [0x00 0x20 0x00 0x00]
+
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceOutput.throttle)}
@@ -59,11 +61,12 @@ read ([0..8]:sourceInputEstId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newSourceCorrelationId}
 read [0x00] [0x07] ":status" [0x03] "200"
+read [0x00] [0x0d] "custom-header" [0x05] "value"
 read [0x00] [0x0e] "content-length" [0x02] "11"
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceInputEstId}
-write [0x00 0x02 0x00 0x00]
+write ${sourceInputInitialWindow}
 write flush
 
 read [0x00 0x00 0x00 0x02]
