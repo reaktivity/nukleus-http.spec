@@ -95,9 +95,11 @@ write "Upgrade: protocol\r\n"
 write "\r\n"
 write flush
 
-read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
-read [0..4]
+write [0x00 0x00 0x00 0x02]
+write ${targetInputEstId}
+write [0x00 0x23]
+write "custom protocol payload from remote"
+write flush
 
 close
 closed
