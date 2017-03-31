@@ -36,5 +36,10 @@ scope http
         {
             list<http::HttpHeader> headers;
         }
+
+        struct HttpDataEx
+        {
+            // TODO: extensions like chunked parameters etc
+        }
     }
 }
