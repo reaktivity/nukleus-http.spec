@@ -72,7 +72,7 @@ read [0x00 0x00 0x00 0x01]
      ([0..8]:targetCorrelationId2)
      [0x00] [0x07] ":method" [0x03] "GET"
      [0x00] [0x07] ":scheme" [0x04] "http"
-     [0x00] [0x05] ":path" [0x0a] "/resource1"
+     [0x00] [0x05] ":path" [0x0a] "/style.css"
      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
@@ -91,7 +91,7 @@ read [0x00 0x00 0x00 0x01]
      ([0..8]:targetCorrelationId3)
      [0x00] [0x07] ":method" [0x03] "GET"
      [0x00] [0x07] ":scheme" [0x04] "http"
-     [0x00] [0x05] ":path" [0x0a] "/resource2"
+     [0x00] [0x05] ":path" [0x0a] "/script.js"
      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
@@ -141,7 +141,7 @@ write [0x00 0x00 0x00 0x02]
       [0x00 0x00]
       [0x00] [0x07] ":method" [0x03] "GET"
       [0x00] [0x07] ":scheme" [0x04] "http"
-      [0x00] [0x05] ":path" [0x0a] "/resource1"
+      [0x00] [0x05] ":path" [0x0a] "/style.css"
       [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
@@ -156,7 +156,7 @@ write [0x00 0x00 0x00 0x02]
       [0x00 0x00]
       [0x00] [0x07] ":method" [0x03] "GET"
       [0x00] [0x07] ":scheme" [0x04] "http"
-      [0x00] [0x05] ":path" [0x0a] "/resource2"
+      [0x00] [0x05] ":path" [0x0a] "/script.js"
       [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
@@ -168,8 +168,11 @@ read [0..4]
 # data frame (with http response payload)
 write [0x00 0x00 0x00 0x02]
       ${newTargetOutputEstId1}
-      [0x00 0x3d]
-      "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+      [0x00 0x71]
+      "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
 write flush
 
 # window frame
@@ -188,7 +191,7 @@ write [0x00 0x00 0x00 0x01]
       [0x00] [0x07] ":status" [0x03] "200"
       [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
       [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-      [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+      [0x00] [0x0c] "content-type" [0x08] "text/css"
       [0x00] [0x0e] "content-length" [0x02] "61"
 write flush
 
@@ -200,8 +203,10 @@ read [0..4]
 # data frame (with http promised response 1 payload)
 write [0x00 0x00 0x00 0x02]
       ${newTargetOutputEstId2}
-      [0x00 0x3e]
-      "<html><head></head><body><h1>Push Response1</h1></body></html>"
+      [0x00 0x15]
+      "h1 {"
+      "    color: blue;"
+      "}"
 write flush
 
 # window frame
@@ -221,7 +226,7 @@ write [0x00 0x00 0x00 0x01]
       [0x00] [0x07] ":status" [0x03] "200"
       [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
       [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-      [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+      [0x00] [0x0c] "content-type" [0x0f] "text/javascript"
       [0x00] [0x0e] "content-length" [0x02] "61"
 write flush
 
@@ -233,8 +238,9 @@ read [0..4]
 # data frame (with http promised response 2 headers)
 write [0x00 0x00 0x00 0x02]
       ${newTargetOutputEstId3}
-      [0x00 0x3e]
-      "<html><head></head><body><h1>Push Response2</h1></body></html>"
+      [0x00 0x0f]
+      "function f() {"
+      "}"
 write flush
 
 # window frame

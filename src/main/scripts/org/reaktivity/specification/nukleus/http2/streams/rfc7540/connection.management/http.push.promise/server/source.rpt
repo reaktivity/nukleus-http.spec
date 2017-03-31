@@ -236,7 +236,7 @@ read [0x00 0x00 0x22]                          # length = 35
      [0x00 0x00 0x00 0x02]                     # promised_stream_id=2
      [0x82]                                    # :method: GET
      [0x86]                                    # :scheme: http
-     [0x04] [0x0a] "/resource1"                # :path: /resource1
+     [0x04] [0x0a] "/style.css"                # :path: /style.css
      [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 
 # window frame
@@ -256,7 +256,7 @@ read [0x00 0x00 0x22]                          # length = 35
      [0x00 0x00 0x00 0x04]                     # promised_stream_id=4
      [0x82]                                    # :method: GET
      [0x86]                                    # :scheme: http
-     [0x04] [0x0a] "/resource2"                # :path: /resource2
+     [0x04] [0x0a] "/script.js"                # :path: /script.js
      [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 
 # window frame
@@ -268,12 +268,15 @@ write flush
 # nuklei data frame (contains http2 data frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x46]
-read [0x00 0x00 0x3d]                          # length = 61
+read [0x00 0x7a]
+read [0x00 0x00 0x71]                          # length = 119
      [0x00]                                    # HTTP2 DATA frame
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x01]                     # stream_id=1
-read "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+     "<html>"
+     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+     "<body><script src=\"script.js\"></script></body>"
+     "</html>"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -284,15 +287,15 @@ write flush
 # ==================== HTTP2 stream-id=2 (first promised stream) =================
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x61]
-read [0x00 0x00 0x58]                                      # length
+read [0x00 0x51]
+read [0x00 0x00 0x48]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x02]                                 # stream_id=2
      [0x88]                                                # :status: 200
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
-     [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
+     [0x0f 0x10] [0x08] "text/css"                         # content-type
      [0x0f 0x0d] [0x02] "61"                               # content-length
 
 # window frame
@@ -304,12 +307,14 @@ write flush
 # nuklei data frame (contains http2 data frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x47]
-read [0x00 0x00 0x3e]                          # length = 62
+read [0x00 0x1e]
+read [0x00 0x00 0x15]                          # length = 21
      [0x00]                                    # HTTP2 DATA frame
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x02]                     # stream_id=2
-read "<html><head></head><body><h1>Push Response1</h1></body></html>"
+     "h1 {"
+     "    color: blue;"
+     "}"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -320,15 +325,15 @@ write flush
 # ==================== HTTP2 stream-id=4 (second promised stream) ==============
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x61]
-read [0x00 0x00 0x58]                                      # length
+read [0x00 0x58]
+read [0x00 0x00 0x4f]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x04]                                 # stream_id=4
      [0x88]                                                # :status: 200
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
-     [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
+     [0x0f 0x10] [0x0f] "text/javascript"                  # content-type
      [0x0f 0x0d] [0x02] "61"                               # content-length
 
 # window frame
@@ -340,12 +345,13 @@ write flush
 # nuklei data frame (contains http2 data frame)
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x47]
-read [0x00 0x00 0x3e]                          # length = 62
+read [0x00 0x18]
+read [0x00 0x00 0x0f]                          # length = 15
      [0x00]                                    # HTTP2 DATA frame
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x04]                     # stream_id=4
-read "<html><head></head><body><h1>Push Response2</h1></body></html>"
+     "function f() {"
+     "}"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
