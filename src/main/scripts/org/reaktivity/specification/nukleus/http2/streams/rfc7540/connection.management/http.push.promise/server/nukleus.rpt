@@ -84,6 +84,8 @@ read [0x00 0x00 0x06]                   # length = 6
      [0x00 0x00 0x00 0x00]              # stream_id = 0
      [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
 
+read notify SETTINGS_RECEIVED
+
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${sourceInputId}
@@ -160,21 +162,21 @@ connected
 
 # begin frame
 write [0x00 0x00 0x00 0x01]
-write ${newSourceOutputEstId}
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
+      ${newSourceOutputEstId}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${sourceCorrelationId}
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0..4]
+     ${newSourceOutputEstId}
+     [0..4]
 
 # data frame (server connection preface - SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputEstId}
-write [0x00 0x0F]
-write [0x00 0x00 0x06]                   # length = 6
+      ${newSourceOutputEstId}
+      [0x00 0x0F]
+      [0x00 0x00 0x06]                   # length = 6
       [0x04]                             # HTTP2 SETTINGS frame
       [0x00]                             # flags = 0x00
       [0x00 0x00 0x00 0x00]              # stream_id = 0
@@ -183,14 +185,16 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0..4]
+     ${newSourceOutputEstId}
+     [0..4]
+
+write await SETTINGS_RECEIVED
 
 # data frame (http2 SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputEstId}
-write [0x00 0x09]
-write [0x00 0x00 0x00]           # length = 0
+      ${newSourceOutputEstId}
+      [0x00 0x09]
+      [0x00 0x00 0x00]           # length = 0
       [0x04]                     # HTTP2 SETTINGS frame
       [0x01]                     # ACK
       [0x00 0x00 0x00 0x00]      # stream_id = 0
@@ -198,8 +202,8 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0x17 0x00 0x00 0x00]
+     ${newSourceOutputEstId}
+     [0x17 0x00 0x00 0x00]
 
 close
 closed
@@ -219,62 +223,66 @@ connected
 
 # ========================== target input stream 1 =====================
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInputId1}
-write ${newTargetInputRef}
-write ${newTargetCorrelationId1}
-write [0x00] [0x07] ":method" [0x04] "POST"
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x05] ":path" [0x01] "/"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+      ${newTargetInputId1}
+      ${newTargetInputRef}
+      ${newTargetCorrelationId1}
+      [0x00] [0x07] ":method" [0x04] "POST"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x01] "/"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId1}
-read [0..4]
+     ${newTargetInputId1}
+     [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInputId1}
-write [0x00 0x0c]
-write "Hello, world"
+      ${newTargetInputId1}
+      [0x00 0x0c]
+      "Hello, world"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId1}
-read [0..4]
+     ${newTargetInputId1}
+     [0..4]
+
+write await PUSH_PROMISE_1_RECEIVED
 
 # ========= target input stream 2 (promised request 1)  =============
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInputId2}
-write ${newTargetInputRef}
-write ${newTargetCorrelationId2}
-write [0x00] [0x07] ":method" [0x03] "GET"
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x05] ":path" [0x0a] "/style.css"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+      ${newTargetInputId2}
+      ${newTargetInputRef}
+      ${newTargetCorrelationId2}
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x0a] "/style.css"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId2}
-read [0..4]
+     ${newTargetInputId2}
+     [0..4]
+
+write await PUSH_PROMISE_2_RECEIVED
 
 # ========= target input stream 2 (promised request 2)  =============
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInputId3}
-write ${newTargetInputRef}
-write ${newTargetCorrelationId3}
-write [0x00] [0x07] ":method" [0x03] "GET"
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x05] ":path" [0x0a] "/script.js"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+      ${newTargetInputId3}
+      ${newTargetInputRef}
+      ${newTargetCorrelationId3}
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x0a] "/script.js"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId3}
-read [0..4]
+     ${newTargetInputId3}
+     [0..4]
 
 
 #
@@ -291,58 +299,62 @@ connected
 # ========================== target output stream 1 =====================
 # begin frame (with http headers)
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetOutputEstId1)
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newTargetCorrelationId1}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-read [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-read [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
-read [0x00] [0x0e] "content-length" [0x02] "61"
+     ([0..8]:targetOutputEstId1)
+     [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+     ${newTargetCorrelationId1}
+     [0x00] [0x07] ":status" [0x03] "200"
+     [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+     [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+     [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+     [0x00] [0x0e] "content-length" [0x02] "61"
 
 read notify HTTP_RESPONSE_HEADERS_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId1}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload with push promise ext)
 read [0x00 0x00 0x00 0x02]
-read ${targetOutputEstId1}
-read [0x00 0x00]
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x05] ":path" [0x0a] "/style.css"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+     ${targetOutputEstId1}
+     [0x00 0x00]
+     [0x00] [0x07] ":method" [0x03] "GET"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x0a] "/style.css"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+read notify PUSH_PROMISE_1_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId1}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload with push promise ext)
 read [0x00 0x00 0x00 0x02]
-read ${targetOutputEstId1}
-read [0x00 0x00]
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x05] ":path" [0x0a] "/script.js"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+     ${targetOutputEstId1}
+     [0x00 0x00]
+     [0x00] [0x07] ":method" [0x03] "GET"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x0a] "/script.js"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+read notify PUSH_PROMISE_2_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId1}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload)
 read [0x00 0x00 0x00 0x02]
-read ${targetOutputEstId1}
-read [0x00 0x71]
-read "<html>"
+     ${targetOutputEstId1}
+     [0x00 0x71]
+     "<html>"
      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
      "<body><script src=\"script.js\"></script></body>"
      "</html>"
@@ -351,26 +363,26 @@ read notify HTTP_RESPONSE_PAYLOAD_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId1}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # ========================== target output stream 2 =====================
 # begin frame (with http headers)
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetOutputEstId2)
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newTargetCorrelationId2}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-read [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-read [0x00] [0x0c] "content-type" [0x08] "text/css"
-read [0x00] [0x0e] "content-length" [0x02] "61"
+     ([0..8]:targetOutputEstId2)
+     [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+     ${newTargetCorrelationId2}
+     [0x00] [0x07] ":status" [0x03] "200"
+     [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+     [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+     [0x00] [0x0c] "content-type" [0x08] "text/css"
+     [0x00] [0x0e] "content-length" [0x02] "61"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId2}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId2}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload)
@@ -383,26 +395,26 @@ read [0x00 0x00 0x00 0x02]
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId2}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId2}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # ========================== target output stream 3 =====================
 # begin frame (with http headers)
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetOutputEstId3)
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newTargetCorrelationId3}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-read [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-read [0x00] [0x0c] "content-type" [0x0f] "text/javascript"
-read [0x00] [0x0e] "content-length" [0x02] "61"
+     ([0..8]:targetOutputEstId3)
+     [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+     ${newTargetCorrelationId3}
+     [0x00] [0x07] ":status" [0x03] "200"
+     [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+     [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+     [0x00] [0x0c] "content-type" [0x0f] "text/javascript"
+     [0x00] [0x0e] "content-length" [0x02] "61"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId3}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId3}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload)
@@ -414,8 +426,8 @@ read [0x00 0x00 0x00 0x02]
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetOutputEstId3}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId3}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 close
