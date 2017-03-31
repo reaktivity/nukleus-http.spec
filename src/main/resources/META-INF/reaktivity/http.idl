@@ -39,9 +39,7 @@ scope http
 
         struct HttpDataEx
         {
-            uint16 length;
-            octets[length] payload;
-            octets extension;
+            // TODO: extensions like chunked parameters etc
         }
     }
 }
