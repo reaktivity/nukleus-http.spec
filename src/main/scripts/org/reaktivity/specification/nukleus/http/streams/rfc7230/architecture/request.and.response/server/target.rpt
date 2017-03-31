@@ -44,6 +44,9 @@ write ${targetInputId}
 write ${targetOutputEstUpdate}
 write flush
 
+read [0x00 0x00 0x00 0x03]
+read ([0..8]:targetInputId)
+
 connect await HTTP_REQUEST_RECEIVED
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}

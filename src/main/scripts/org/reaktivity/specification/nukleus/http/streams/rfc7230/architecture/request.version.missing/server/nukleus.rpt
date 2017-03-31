@@ -72,7 +72,7 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x1a]
+write [0x00 0x1c]
 write "HTTP/1.1 400 Bad Request\r\n"
 write "\r\n"
 write flush

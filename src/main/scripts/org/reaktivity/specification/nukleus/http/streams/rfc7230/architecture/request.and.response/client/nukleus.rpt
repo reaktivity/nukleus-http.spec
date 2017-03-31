@@ -136,5 +136,9 @@ write ${newSourceCorrelationId}
 write [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
+write [0x00 0x00 0x00 0x03]
+write ${sourceInputEstId}
+write flush
+
 close
 closed

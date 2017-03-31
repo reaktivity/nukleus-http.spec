@@ -74,7 +74,7 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x1a]
+read [0x00 0x1c]
 read "HTTP/1.1 400 Bad Request\r\n"
 read "\r\n"
 

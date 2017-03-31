@@ -69,5 +69,8 @@ write ${sourceInputEstId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
+read [0x00 0x00 0x00 0x03]
+read ([0..8]:sourceInputEstId)
+
 close
 closed
