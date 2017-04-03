@@ -77,21 +77,23 @@ write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId}
-write [0x00 0x21]
+write [0x00 0x0b]
 write "HTTP/1.1 20"
 write flush
 
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputEstId}
+write [0x00 0x09]
 write "0 OK\r\n"
 write "som"
 write flush
 
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputEstId}
+write [0x00 0x0d]
 write "e: header\r\n"
 write "\r\n"
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newTargetInputEstId}
-read [0..4]
 
 close
 closed

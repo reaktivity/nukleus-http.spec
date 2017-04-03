@@ -77,16 +77,12 @@ write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
 write ${targetInputEstId}
-write [0x00 0x27]
+write [0x00 0x32]
 write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 11\r\n"
 write "\r\n"
 write "hello world"
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
-read [0..4]
 
 close
 closed

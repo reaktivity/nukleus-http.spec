@@ -48,7 +48,7 @@ close
 closed
 
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_INPUT
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceInputEst.buffer)}
         option writer ${agrona:oneToOneWriter(sourceInputEst.throttle)}
