@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http.streams.server.rfc7230;
+package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
@@ -45,6 +45,20 @@ public class ArchitectureIT
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
+
+    @Test
+    @Specification({
+//      "${http}/request.and.response/response",
+        "${streams}/request.and.response/client/source",
+        "${streams}/request.and.response/client/nukleus",
+        "${streams}/request.and.response/client/target" })
+    public void shouldCorrelateRequestAndResponseClient() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
 
     @Test
     @Specification({
@@ -93,6 +107,19 @@ public class ArchitectureIT
         "${streams}/request.version.invalid/server/source",
         "${streams}/request.version.invalid/server/nukleus" })
     public void shouldRejectRequestWhenVersionInvalid() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+//      "${http}/request.version.not.invalid/request",
+        "${streams}/request.version.missing/server/source",
+        "${streams}/request.version.missing/server/nukleus" })
+    public void shouldRejectRequestWhenVersionMissing() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

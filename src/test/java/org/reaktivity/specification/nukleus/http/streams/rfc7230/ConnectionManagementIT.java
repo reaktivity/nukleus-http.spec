@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http.streams.server.rfc7230;
+package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
@@ -57,6 +57,20 @@ public class ConnectionManagementIT
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+//      "${http}/response.status.101.with.upgrade/request",
+        "${streams}/response.status.101.with.upgrade/client/source",
+        "${streams}/response.status.101.with.upgrade/client/nukleus",
+        "${streams}/response.status.101.with.upgrade/client/target" })
+    public void shouldSwitchProtocolAfterUpgradeClient() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 }

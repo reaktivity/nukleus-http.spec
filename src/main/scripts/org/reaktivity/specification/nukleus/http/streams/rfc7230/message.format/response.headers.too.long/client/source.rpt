@@ -14,35 +14,35 @@
 # under the License.
 #
 
+property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
+
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property targetInitial ${nuklei.streams("target", "http#source")}
-property targetReply ${nuklei.streams("http", "target")}
+property sourceOutput ${nuklei.streams("http", "source")}
+property sourceInputEst ${nuklei.streams("source", "http#target")}
 
-connect await ROUTED
+property newSourceOutputId ${nuklei:newStreamId()}
+property newSourceCorrelationId ${nuklei:newCorrelationId()}
+
+connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInitial.buffer)}
-        option writer ${agrona:oneToOneWriter(targetReply.buffer)}
+        option reader ${agrona:oneToOneReader(sourceOutput.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceOutput.buffer)}
 connected
 
-read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetId)
-read ([0..8]:targetRef)
-read ([0..8]:targetReplyId)
-read ([0..8]:targetReplyRef)
-
 write [0x00 0x00 0x00 0x01]
-write ${targetReplyId}
-write ${targetReplyRef}
-write ${targetId}
-write ${targetRef}
+write ${newSourceOutputId}
+write ${newSourceOutputRef}
+write ${newSourceCorrelationId}
+write [0x00] [0x07] ":scheme" [0x04] "http"
+write [0x00] [0x07] ":method" [0x03] "GET"
+write [0x00] [0x05] ":path" [0x01] "/"
+write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
-write notify CONNECTION_POOL_READY
 
-read await CONNECTION_POOL_READY
-read [0x00 0x00 0x00 0x02]
-read ${targetId}
-read [0x00 0x28]
-read "GET / HTTP/1.1\r\n"
-read "Host: localhost:8080\r\n"
-read "\r\n"
+write [0x00 0x00 0x00 0x03]
+write ${newSourceOutputId}
+write flush
+
+close
+closed
