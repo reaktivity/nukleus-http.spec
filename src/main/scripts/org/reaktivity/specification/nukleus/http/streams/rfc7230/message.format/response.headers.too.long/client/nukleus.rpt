@@ -24,7 +24,7 @@ property targetInputEst ${nuklei.streams("http", "target")}
 property sourceInputEst ${nuklei.streams("source", "http#target")}
 
 property newTargetOutputId ${nuklei:newStreamId()}
-property sourceInputEstId ${nuklei:newStreamId()}
+property newSourceInputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_OUTPUT

@@ -24,7 +24,7 @@ property targetInputEst ${nuklei.streams("http", "target")}
 property sourceInputEst ${nuklei.streams("source", "http#target")}
 
 property newTargetOutputId ${nuklei:newStreamId()}
-property sourceInputEstId ${nuklei:newStreamId()}
+property newSourceInputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_OUTPUT
@@ -122,7 +122,7 @@ connect await HTTP_RESPONSE_DECODED
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${sourceInputEstId}
+write ${newSourceInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${sourceCorrelationId}
 write [0x00] [0x07] ":status" [0x03] "200"
@@ -130,21 +130,21 @@ write [0x00] [0x0e] "content-length" [0x02] "11"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${sourceInputEstId}
+read ${newSourceInputEstId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${sourceInputEstId}
+write ${newSourceInputEstId}
 write [0x00 0x0b]
 write "hello world"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${sourceInputEstId}
+read ${newSourceInputEstId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x03]
-write ${sourceInputEstId}
+write ${newSourceInputEstId}
 write flush
 
 close

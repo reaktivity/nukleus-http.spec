@@ -19,7 +19,7 @@ property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024
 property targetOutput ${nuklei.streams("target", "http#source")}
 property targetInputEst ${nuklei.streams("http", "target")}
 
-property targetInputEstId ${nuklei:newStreamId()}
+property newTargetInputEstId ${nuklei:newStreamId()}
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
@@ -64,19 +64,19 @@ connect await HTTP_CONNECTION_POOL_OPENED
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${targetInputEstId}
+write ${newTargetInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
+read ${newTargetInputEstId}
 read [0..4]
 
 write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
-write ${targetInputEstId}
+write ${newTargetInputEstId}
 write [0x00 0x36]
 write "HTTP/1.1 200 OK\r\n"
 write "Custom-header: value\r\n"
@@ -84,7 +84,7 @@ write "Content-Length:"
 write flush
 
 write [0x00 0x00 0x00 0x02]
-write ${targetInputEstId}
+write ${newTargetInputEstId}
 write [0x00 0x0a]
 write " 11\r\n"
 write "\r\n"
@@ -92,21 +92,21 @@ write "hel"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
+read ${newTargetInputEstId}
 read [0x3d 0x00 0x00 0x00]
 
 read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
+read ${newTargetInputEstId}
 read [0x03 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
-write ${targetInputEstId}
+write ${newTargetInputEstId}
 write [0x00 0x08]
 write "lo world"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${targetInputEstId}
+read ${newTargetInputEstId}
 read [0x08 0x00 0x00 0x00]
 
 close
