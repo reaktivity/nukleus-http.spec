@@ -20,7 +20,7 @@
 property target "http"
 property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 
-connect nukleus://streams/${target}
+connect "nukleus://streams/${target}"
     nukleus:option source "source"
     nukleus:option route ${newSourceInputRef}
     nukleus:option window 8192

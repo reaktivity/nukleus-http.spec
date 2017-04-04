@@ -20,7 +20,7 @@
 property source "http"
 property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
        
-accept http://localhost:8080/ option http:transport nukleus://streams/target
+accept "http://localhost:8080/" option http:transport "nukleus://streams/target"
        option nukleus:source ${source}
        option nukleus:route ${newTargetOutputRef}
        option nukleus:window 8192
