@@ -14,18 +14,11 @@
 # under the License.
 #
 
-# source (cooked) -> http -> target (this script) -> network
-# Read from target/http, write to http/target
-
-property source "http"
-property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
+property httpServerOptions { }   
        
-accept "http://localhost:8080/" option http:transport "nukleus://streams/target"
-       option nukleus:source ${source}
-       option nukleus:route ${newTargetOutputRef}
-       option nukleus:window 8192
-       option nukleus:transmission "duplex"
+accept "http://localhost:8080/" option ${httpServerOptions}
 accepted
+connected
 
 read http:version "HTTP/1.1"
 read http:method "get"
