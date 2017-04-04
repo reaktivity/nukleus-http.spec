@@ -21,10 +21,10 @@ property target "http"
 property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 
 connect nukleus://streams/${target}
-    option source "source"
-    option route ${newSourceInputRef}
-    option window 8192
-    option transmission "duplex"
+    nukleus:option source "source"
+    nukleus:option route ${newSourceInputRef}
+    nukleus:option window 8192
+    nukleus:option transmission "duplex"
 connected
 
 write "GET / HTTP/1.1\r\n"

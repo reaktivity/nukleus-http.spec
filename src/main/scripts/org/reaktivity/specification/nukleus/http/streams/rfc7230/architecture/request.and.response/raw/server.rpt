@@ -20,16 +20,16 @@
 property source "http"
 property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
        
-accept http://localhost:8080/ option transport nukleus://streams/target
-       transport-option source ${source}
-       transport-option route ${newTargetOutputRef}
-       transport-option window 8192
-       transport-option transmission "duplex"
+accept http://localhost:8080/ option http:transport nukleus://streams/target
+       option nukleus:source ${source}
+       option nukleus:route ${newTargetOutputRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
 accepted
 
-read version "HTTP/1.1"
-read method "get"
+read http:version "HTTP/1.1"
+read http:method "get"
 
-write status "200" "OK"
+write http:status "200" "OK"
 write flush 
 

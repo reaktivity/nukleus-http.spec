@@ -21,19 +21,18 @@ property source "http"
 property newSourceInputRef ${nuklei:newReferenceId()} # external scope
        
 accept nukleus://streams/target
-       option source ${source}
-       option route ${newSourceInputRef}
-       option window 8192
-       option transmission "duplex"
+       nukleus:option source ${source}
+       nukleus:option route ${newSourceInputRef}
+       nukleus:option window 8192
+       nukleus:option transmission "duplex"
 accepted
 
-read extension [0x00] [0x07] ":scheme" [0x04] "http"
-read extension  [0x00] [0x07] ":method" [0x03] "GET"
-read extension  [0x00] [0x05] ":path" [0x01] "/"
-read extension  [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-read flush
+read nukleus:extension [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:extension [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:extension [0x00] [0x05] ":path" [0x01] "/"
+read nukleus:extension [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
-write extension [0x00] [0x07] ":status" [0x03] "200"
+write nukleus:extension [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
 
