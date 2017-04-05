@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http.streams.server.rfc7230;
+package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
@@ -113,15 +113,65 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-//      "${http}/response.with.headers/request",
+        "${streams}/response.fragmented/client/source",
+        "${streams}/response.fragmented/client/nukleus",
+        "${streams}/response.fragmented/client/target" })
+    public void shouldAcceptFragmentedResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+    @Test
+    @Specification({
+        "${streams}/response.fragmented.with.content.length/client/source",
+        "${streams}/response.fragmented.with.content.length/client/nukleus",
+        "${streams}/response.fragmented.with.content.length/client/target" })
+    public void shouldAcceptFragmentedResponseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.headers.too.long/client/source",
+        "${streams}/response.headers.too.long/client/nukleus",
+        "${streams}/response.headers.too.long/client/target"})
+    public void shouldRejectResponseExceedingMaximumHeadersSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.with.content.length/client/source",
+        "${streams}/response.with.content.length/client/nukleus",
+        "${streams}/response.with.content.length/client/target" })
+    public void shouldAcceptResponseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/response.with.headers/client/source",
         "${streams}/response.with.headers/client/nukleus",
         "${streams}/response.with.headers/client/target" })
     public void shouldAcceptResponseWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 }
