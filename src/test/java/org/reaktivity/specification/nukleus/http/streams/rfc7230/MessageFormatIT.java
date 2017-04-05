@@ -61,6 +61,18 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+        "${streams}/request.with.content.length.no.target.window/server/source",
+        "${streams}/request.with.content.length.no.target.window/server/nukleus",
+        "${streams}/request.with.content.length.no.target.window/server/target" })
+    public void shouldNotWriteDataToTargetWithoutWindow() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/request.with.headers/server/source",
         "${streams}/request.with.headers/server/nukleus",
         "${streams}/request.with.headers/server/target" })
