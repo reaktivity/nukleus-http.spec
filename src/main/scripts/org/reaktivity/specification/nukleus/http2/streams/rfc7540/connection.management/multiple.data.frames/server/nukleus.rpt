@@ -25,8 +25,11 @@ property targetOutputEst ${nuklei.streams("http2", "target")}
 property sourceOutputEst ${nuklei.streams("source", "http2#target")}
 
 property newTargetInputId ${nuklei:newStreamId()}
-property newSourceOutputEstId ${nuklei:newStreamId()}
+
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
+
+
+property newSourceOutputEstId ${nuklei:newStreamId()}
 
 #
 #
@@ -77,6 +80,8 @@ read [0x00 0x00 0x06]                   # length = 6
      [0x00]                             # flags = 0x00
      [0x00 0x00 0x00 0x00]              # stream_id = 0
      [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
+
+read notify SETTINGS_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
@@ -137,6 +142,9 @@ write ${sourceInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
+close
+closed
+
 
 #
 #
@@ -151,21 +159,21 @@ connected
 
 # begin frame
 write [0x00 0x00 0x00 0x01]
-write ${newSourceOutputEstId}
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${sourceCorrelationId}
+      ${newSourceOutputEstId}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${sourceCorrelationId}
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0..4]
+     ${newSourceOutputEstId}
+     [0..4]
 
 # data frame (server connection preface - SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputEstId}
-write [0x00 0x0F]
-write [0x00 0x00 0x06]                   # length = 6
+      ${newSourceOutputEstId}
+      [0x00 0x0F]
+      [0x00 0x00 0x06]                   # length = 6
       [0x04]                             # HTTP2 SETTINGS frame
       [0x00]                             # flags = 0x00
       [0x00 0x00 0x00 0x00]              # stream_id = 0
@@ -174,14 +182,16 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0..4]
+     ${newSourceOutputEstId}
+     [0..4]
+
+write await SETTINGS_RECEIVED
 
 # data frame (http2 SETTINGS frame)
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputEstId}
-write [0x00 0x09]
-write [0x00 0x00 0x00]           # length = 0
+      ${newSourceOutputEstId}
+      [0x00 0x09]
+      [0x00 0x00 0x00]           # length = 0
       [0x04]                     # HTTP2 SETTINGS frame
       [0x01]                     # ACK
       [0x00 0x00 0x00 0x00]      # stream_id = 0
@@ -189,8 +199,11 @@ write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newSourceOutputEstId}
-read [0x17 0x00 0x00 0x00]
+     ${newSourceOutputEstId}
+     [0x17 0x00 0x00 0x00]
+
+close
+closed
 
 
 #
@@ -204,31 +217,33 @@ connect await HTTP_REQUEST_DECODED
         option writer ${agrona:oneToOneWriter(targetInput.buffer)}
 connected
 
+
+# ========================== target input stream 1 =====================
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInputId}
-write ${newTargetInputRef}
-write ${newTargetCorrelationId}
-write [0x00] [0x07] ":method" [0x04] "POST"
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x05] ":path" [0x01] "/"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+      ${newTargetInputId}
+      ${newTargetInputRef}
+      ${newTargetCorrelationId}
+      [0x00] [0x07] ":method" [0x04] "POST"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x01] "/"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId}
-read [0..4]
+     ${newTargetInputId}
+     [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInputId}
-write [0x00 0x0c]
-write "Hello, world"
+      ${newTargetInputId}
+      [0x00 0x0c]
+      "Hello, world"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId}
-read [0..4]
+     ${newTargetInputId}
+     [0..4]
 
 
 #
@@ -244,35 +259,51 @@ connected
 
 # begin frame (with http headers)
 read [0x00 0x00 0x00 0x01]
-read ${newTargetOutputEstId}
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${targetCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "404"
-read [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-read [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-read [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
-read [0x00] [0x0e] "content-length" [0x03] "147"
+     ([0..8]:targetOutputEstId1)
+     [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+     ${newTargetCorrelationId}
+     [0x00] [0x07] ":status" [0x03] "200"
+     [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+     [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+     [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+     [0x00] [0x0e] "content-length" [0x02] "61"
 
 read notify HTTP_RESPONSE_HEADERS_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
-write [0x00 0x02 0x00 0x00]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 # data frame (with http payload)
 read [0x00 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
-read [0x00 0x3d]
-read "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+     ${targetOutputEstId1}
+     [0x00 0x3c]
+     "<html>"
+     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
 
-read notify HTTP_RESPONSE_PAYLOAD_RECEIVED
+read notify HTTP_RESPONSE_PAYLOAD_PART_1_RECEIVED
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
-write [0x00 0x02 0x00 0x00]
+   ${targetOutputEstId1}
+   [0x00 0x02 0x00 0x00]
+write flush
+
+# data frame (with http payload)
+read [0x00 0x00 0x00 0x02]
+     ${targetOutputEstId1}
+     [0x00 0x35]
+     "<body><script src=\"script.js\"></script></body>"
+     "</html>"
+
+read notify HTTP_RESPONSE_PAYLOAD_PART_2_RECEIVED
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+      ${targetOutputEstId1}
+      [0x00 0x02 0x00 0x00]
 write flush
 
 
@@ -288,48 +319,62 @@ connect await HTTP_RESPONSE_HEADERS_RECEIVED
         option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
+# ========================== HTTP2 stream-id=1 =============================
 # begin frame is already written (same tcp stream)
 # nuklei data frame (contains http2 headers frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x62]
-write [0x00 0x00 0x59]                                      # length
+write [0x00 0x61]
+write [0x00 0x00 0x58]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
       [0x04]                                                # END_HEADERS
       [0x00 0x00 0x00 0x01]                                 # stream_id=1
-      [0x8d]                                                # :status: 404
+      [0x88]                                                # :status: 200
       [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
       [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
-      [0x0f 0x0d] [0x03] "147"                              # content-length
-
+      [0x0f 0x0d] [0x02] "61"                               # content-length
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
 read ${newSourceOutputEstId}
-read [0x00 0x02 0x00 0x00]
+read [0..4]
 
-write await HTTP_RESPONSE_PAYLOAD_RECEIVED
+write await HTTP_RESPONSE_PAYLOAD_PART_1_RECEIVED
 
 # nuklei data frame (contains http2 data frame)
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x46]
-write [0x00 0x00 0x3d]                          # length = 61
+write [0x00 0x45]
+write [0x00 0x00 0x3c]                          # length = 113
       [0x00]                                    # HTTP2 DATA frame
       [0x00]                                    # no flags
       [0x00 0x00 0x00 0x01]                     # stream_id=1
-write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+      "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
 write flush
 
 # window frame
 read [0x40 0x00 0x00 0x02]
 read ${newSourceOutputEstId}
-read [0x13 0x00 0x00 0x00]
+read [0..4]
 
+write await HTTP_RESPONSE_PAYLOAD_PART_2_RECEIVED
 
+# nuklei data frame (contains http2 data frame)
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x3e]
+write [0x00 0x00 0x35]                          # length = 113
+      [0x00]                                    # HTTP2 DATA frame
+      [0x00]                                    # no flags
+      [0x00 0x00 0x00 0x01]                     # stream_id=1
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
+write flush
 
-
-
-
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]

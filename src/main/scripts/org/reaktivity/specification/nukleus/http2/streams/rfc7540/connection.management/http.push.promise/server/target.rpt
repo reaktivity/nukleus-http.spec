@@ -56,13 +56,18 @@ read [0x00 0x00 0x00 0x02]
      [0x00 0x0c]
      "Hello, world"
 
-read notify HTTP_REQUEST_RECEIVED
-
 # window frame
 write [0x40 0x00 0x00 0x02]
 write ${targetInputId1}
 write [0x00 0x02 0x00 0x00]
 write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId1}
+
+read notify HTTP_REQUEST_RECEIVED
+
 
 # ========================== target input stream 2 =====================
 # promised request1
@@ -80,6 +85,10 @@ write [0x40 0x00 0x00 0x02]
 write ${targetInputId2}
 write [0x00 0x02 0x00 0x00]
 write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId2}
 
 write notify PROMISED_REQUEST_1_RECEIVED
 
@@ -99,6 +108,10 @@ write [0x40 0x00 0x00 0x02]
 write ${targetInputId3}
 write [0x00 0x02 0x00 0x00]
 write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId3}
 
 write notify PROMISED_REQUEST_2_RECEIVED
 

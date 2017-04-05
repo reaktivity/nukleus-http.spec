@@ -108,4 +108,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${streams}/multiple.data.frames/server/source",
+            "${streams}/multiple.data.frames/server/nukleus",
+            "${streams}/multiple.data.frames/server/target" })
+    public void multipleDataFrames() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
 }
