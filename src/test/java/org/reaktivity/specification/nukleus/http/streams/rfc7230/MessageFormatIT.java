@@ -61,6 +61,19 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+        "${streams}/request.with.content.length.and.end.late.target.window/server/source",
+        "${streams}/request.with.content.length.and.end.late.target.window/server/nukleus",
+        "${streams}/request.with.content.length.and.end.late.target.window/server/target" })
+    public void shouldWaitForTargetWindowBeforeProcessingEnd() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/request.with.content.length.no.target.window/server/source",
         "${streams}/request.with.content.length.no.target.window/server/nukleus",
         "${streams}/request.with.content.length.no.target.window/server/target" })

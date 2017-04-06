@@ -37,8 +37,17 @@ read [0x00] [0x05] ":path" [0x01] "/"
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 read [0x00] [0x0e] "content-length" [0x02] "11"
 
-# No data frame should be received because we gave no window
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId}
+write [0x03 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${targetInputId}
+read [0x00 0x03]
+read "hel"
+
+# No further data frame should be received because window is now exhausted
 
 close
 closed
-
