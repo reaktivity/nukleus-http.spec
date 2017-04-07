@@ -74,6 +74,75 @@ write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write [0x00] [0x0e] "content-length" [0x02] "11"
 write flush
 
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputId}
+read [0x00 0x02 0x00 0x00]
 
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputId}
+write [0x00 0x0b]
+write "hello world"
+write flush
 
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputId}
+read [0x0b 0x00 0x00 0x00]
 
+write [0x00 0x00 0x00 0x03]
+write ${newTargetInputId}
+write flush
+
+close
+closed
+
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:targetOutputEstId)
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+read ${newTargetCorrelationId}
+read [0x00] [0x07] ":status" [0x03] "200"
+
+read notify HTTP_RESPONSE_RECEIVED
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+close
+closed
+
+connect await HTTP_RESPONSE_RECEIVED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newSourceOutputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${sourceCorrelationId}
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x13]
+write "HTTP/1.1 200 OK\r\n"
+write "\r\n"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+close
+closed
