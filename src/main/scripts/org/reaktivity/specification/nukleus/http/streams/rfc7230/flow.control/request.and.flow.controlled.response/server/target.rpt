@@ -60,8 +60,5 @@ write ${targetCorrelationId}
 write [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
-read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId}
-read ([0..4]:targetOutputEstUpdate)
-
-read notify HTTP_REQUEST_WINDOW_UPDATED
+write [0x00 0x00 0x00 0x03]
+write ${newTargetOutputEstId}
