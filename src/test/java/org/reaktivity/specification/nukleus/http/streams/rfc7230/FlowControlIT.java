@@ -50,7 +50,7 @@ public class FlowControlIT
         "${streams}/request.with.content.length.and.end.late.target.window/server/source",
         "${streams}/request.with.content.length.and.end.late.target.window/server/nukleus",
         "${streams}/request.with.content.length.and.end.late.target.window/server/target" })
-    public void shouldWaitForTargetWindowBeforeProcessingEnd() throws Exception
+    public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -98,9 +98,9 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/request.with.content.fragmented.by.target.window/server/source",
-        "${streams}/request.with.content.fragmented.by.target.window/server/nukleus",
-        "${streams}/request.with.content.fragmented.by.target.window/server/target"})
+        "${streams}/request.with.content.flow.controlled/server/source",
+        "${streams}/request.with.content.flow.controlled/server/nukleus",
+        "${streams}/request.with.content.flow.controlled/server/target"})
     public void shouldSplitRequestDataToRespectTargetWindow() throws Exception
     {
         k3po.start();
@@ -111,22 +111,9 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/request.with.content.length.and.end.late.target.window/server/source",
-        "${streams}/request.with.content.length.and.end.late.target.window/server/nukleus",
-        "${streams}/request.with.content.length.and.end.late.target.window/server/target"})
-    public void shouldNotProcessSourceEndBeforeGettingWindowAndWritingData() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/request.with.fragmented.content.flow.controlled.by.target/server/source",
-        "${streams}/request.with.fragmented.content.flow.controlled.by.target/server/nukleus",
-        "${streams}/request.with.fragmented.content.flow.controlled.by.target/server/target" })
+        "${streams}/request.with.fragmented.content.flow.controlled/server/source",
+        "${streams}/request.with.fragmented.content.flow.controlled/server/nukleus",
+        "${streams}/request.with.fragmented.content.flow.controlled/server/target" })
     public void shouldAcceptRequestWithFragmentedContentWithTargetFlowControl() throws Exception
     {
         k3po.start();
