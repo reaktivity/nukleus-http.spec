@@ -113,7 +113,7 @@ read ${sourceInputId}
 read [0x00 0x1c]
 read [0x00 0x00 0x13]                   # length = 19
      [0x01]                             # HEADERS frame
-     [0x05]                             # END_STREAM | END_HEADERS
+     [0x04]                             # END_HEADERS
      [0x00 0x00 0x00 0x01]              # stream_id = 1
      [0x83]                             # :method: POST
      [0x86]                             # :scheme: http
@@ -248,6 +248,11 @@ read [0x40 0x00 0x00 0x02]
      ${newTargetInputId1}
      [0..4]
 
+# end frame
+write [0x00 0x00 0x00 0x03]
+      ${newTargetInputId1}
+write flush
+
 write await PUSH_PROMISE_1_RECEIVED
 
 # ========= target input stream 2 (promised request 1)  =============
@@ -266,6 +271,11 @@ read [0x40 0x00 0x00 0x02]
      ${newTargetInputId2}
      [0..4]
 
+# end frame
+write [0x00 0x00 0x00 0x03]
+      ${newTargetInputId2}
+write flush
+
 write await PUSH_PROMISE_2_RECEIVED
 
 # ========= target input stream 2 (promised request 2)  =============
@@ -283,6 +293,11 @@ write flush
 read [0x40 0x00 0x00 0x02]
      ${newTargetInputId3}
      [0..4]
+
+# end frame
+write [0x00 0x00 0x00 0x03]
+      ${newTargetInputId3}
+write flush
 
 
 #
@@ -516,7 +531,7 @@ write ${newSourceOutputEstId}
 write [0x00 0x7a]
 write [0x00 0x00 0x71]                          # length = 113
       [0x00]                                    # HTTP2 DATA frame
-      [0x01]                                    # END_STREAM
+      [0x00]                                    # no flags
       [0x00 0x00 0x00 0x01]                     # stream_id=1
       "<html>"
       "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
@@ -556,7 +571,7 @@ write [0x00 0x00 0x00 0x02]
       [0x00 0x1e]
       [0x00 0x00 0x15]                          # length = 21
       [0x00]                                    # HTTP2 DATA frame
-      [0x01]                                    # END_STREAM
+      [0x00]                                    # no flags
       [0x00 0x00 0x00 0x02]                     # stream_id=2
       "h1 {"
       "    color: blue;"
@@ -595,7 +610,7 @@ write ${sourceOutputEstId}
 write [0x00 0x18]
 write [0x00 0x00 0x0f]                          # length = 15
       [0x00]                                    # HTTP2 DATA frame
-      [0x01]                                    # END_STREAM
+      [0x00]                                    # no flags
       [0x00 0x00 0x00 0x04]                     # stream_id=4
       "function f() {"
       "}"

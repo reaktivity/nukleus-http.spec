@@ -107,7 +107,7 @@ read ${sourceInputId}
 read [0x00 0x1c]
 read [0x00 0x00 0x13]                   # length = 19
      [0x01]                             # HEADERS frame
-     [0x05]                             # END_STREAM | END_HEADERS
+     [0x04]                             # END_HEADERS
      [0x00 0x00 0x00 0x01]              # stream_id = 1
      [0x83]                             # :method: POST
      [0x86]                             # :scheme: http
@@ -126,7 +126,7 @@ read ${sourceInputId}
 read [0x00 0x1c]
 read [0x00 0x00 0x13]                   # length = 19
      [0x01]                             # HEADERS frame
-     [0x05]                             # END_STREAM | END_HEADERS
+     [0x04]                             # END_HEADERS
      [0x00 0x00 0x00 0x03]              # stream_id = 3
      [0x83]                             # :method: POST
      [0x86]                             # :scheme: http
@@ -276,6 +276,10 @@ write [0x00 0x0c]
 write "Hello, world"
 write flush
 
+write [0x00 0x00 0x00 0x03]
+write ${newTargetInputId1}
+write flush
+
 # window frame
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId1}
@@ -291,6 +295,10 @@ write flush
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId2}
 read [0..4]
+
+write [0x00 0x00 0x00 0x03]
+write ${newTargetInputId2}
+write flush
 
 
 #
@@ -426,7 +434,7 @@ write ${newSourceOutputEstId}
 write [0x00 0x46]
 write [0x00 0x00 0x3d]                  # length = 61
       [0x00]                            # HTTP2 DATA frame
-      [0x01]                            # END_STREAM
+      [0x00]                            # END_STREAM
       [0x00 0x00 0x00 0x01]             # stream_id=1
 write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 write flush
@@ -442,7 +450,7 @@ write ${newSourceOutputEstId}
 write [0x00 0x46]
 write [0x00 0x00 0x3d]                  # length = 61
       [0x00]                            # HTTP2 DATA frame
-      [0x01]                            # END_STREAM
+      [0x00]                            # END_STREAM
       [0x00 0x00 0x00 0x03]             # stream_id=3
 write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
 write flush
