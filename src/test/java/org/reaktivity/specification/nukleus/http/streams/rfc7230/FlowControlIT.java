@@ -124,10 +124,23 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/request.and.flow.controlled.response/server/source",
-        "${streams}/request.and.flow.controlled.response/server/nukleus",
-        "${streams}/request.and.flow.controlled.response/server/target" })
-    public void shouldAcceptRequestAndRespectSourceOutputEstablishedWindow() throws Exception
+        "${streams}/response.flow.controlled/server/source",
+        "${streams}/response.flow.controlled/server/nukleus",
+        "${streams}/response.flow.controlled/server/target" })
+    public void shouldFlowControlResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.with.content.flow.controlled/server/source",
+        "${streams}/response.with.content.flow.controlled/server/nukleus",
+        "${streams}/response.with.content.flow.controlled/server/target" })
+    public void shouldFlowControlResponseWithContent() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
