@@ -272,8 +272,8 @@ read [0x40 0x00 0x00 0x02]
      [0..4]
 
 # end frame
-#write [0x00 0x00 0x00 0x03]
-#      ${newTargetInputId2}
+write [0x00 0x00 0x00 0x03]
+      ${newTargetInputId2}
 write flush
 
 write await PUSH_PROMISE_2_RECEIVED
