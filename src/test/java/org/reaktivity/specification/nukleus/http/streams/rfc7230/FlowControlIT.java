@@ -124,6 +124,45 @@ public class FlowControlIT
 
     @Test
     @Specification({
+        "${streams}/response.flow.controlled/server/source",
+        "${streams}/response.flow.controlled/server/nukleus",
+        "${streams}/response.flow.controlled/server/target" })
+    public void shouldFlowControlResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.with.content.flow.controlled/server/source",
+        "${streams}/response.with.content.flow.controlled/server/nukleus",
+        "${streams}/response.with.content.flow.controlled/server/target" })
+    public void shouldFlowControlResponseWithContent() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/response.headers.too.long/server/source",
+        "${streams}/response.headers.too.long/server/nukleus",
+        "${streams}/response.headers.too.long/server/target" })
+    public void shouldNotWriteResponseExceedingMaximumHeadersSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/response.fragmented/client/source",
         "${streams}/response.fragmented/client/nukleus",
         "${streams}/response.fragmented/client/target" })
