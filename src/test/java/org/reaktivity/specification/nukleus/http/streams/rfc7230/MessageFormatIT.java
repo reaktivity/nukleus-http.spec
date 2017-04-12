@@ -74,6 +74,19 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+        "${streams}/response.with.content.length/server/source",
+        "${streams}/response.with.content.length/server/nukleus",
+        "${streams}/response.with.content.length/server/target" })
+    public void shouldWriteResponseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/response.with.content.length/client/source",
         "${streams}/response.with.content.length/client/nukleus",
         "${streams}/response.with.content.length/client/target" })
