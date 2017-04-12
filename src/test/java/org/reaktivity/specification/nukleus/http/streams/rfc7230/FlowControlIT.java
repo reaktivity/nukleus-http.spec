@@ -237,4 +237,43 @@ public class FlowControlIT
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${streams}/request.flow.controlled/client/source",
+        "${streams}/request.flow.controlled/client/nukleus",
+        "${streams}/request.flow.controlled/client/target" })
+    public void shouldFlowControlRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/request.with.content.flow.controlled/client/source",
+        "${streams}/request.with.content.flow.controlled/client/nukleus",
+        "${streams}/request.with.content.flow.controlled/client/target" })
+    public void shouldFlowControlRequestWithContent() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/request.headers.too.long/client/source",
+        "${streams}/request.headers.too.long/client/nukleus",
+        "${streams}/request.headers.too.long/client/target" })
+    public void shouldNotWriteRequestExceedingMaximumHeadersSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
 }
