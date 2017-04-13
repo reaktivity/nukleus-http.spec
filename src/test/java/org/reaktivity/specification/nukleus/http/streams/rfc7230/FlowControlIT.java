@@ -267,13 +267,11 @@ public class FlowControlIT
     @Test
     @Specification({
         "${streams}/request.headers.too.long/client/source",
-        "${streams}/request.headers.too.long/client/nukleus",
-        "${streams}/request.headers.too.long/client/target" })
+        "${streams}/request.headers.too.long/client/nukleus" })
     public void shouldNotWriteRequestExceedingMaximumHeadersSize() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 }
