@@ -55,7 +55,7 @@ write [0x28 0x00 0x00 0x00] # TODO: native int
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${newSourceOutputId}
+read ${newTargetOutputId}
 read [0x00 0x0b]
 read "hello world"
 

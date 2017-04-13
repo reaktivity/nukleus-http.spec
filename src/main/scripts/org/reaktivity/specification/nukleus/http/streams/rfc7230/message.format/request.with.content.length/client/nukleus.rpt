@@ -99,7 +99,7 @@ read ${newTargetOutputId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceOutputId}
+write ${newTargetOutputId}
 write [0x00 0x0b]
 write "hello world"
 write flush

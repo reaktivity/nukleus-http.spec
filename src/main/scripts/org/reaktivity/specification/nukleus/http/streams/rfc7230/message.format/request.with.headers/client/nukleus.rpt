@@ -77,7 +77,7 @@ write await HTTP_REQUEST_RECEIVED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputId}
-write [0x00 0x28]
+write [0x00 0x3e]
 write "GET / HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
 write "Custom-header: value\r\n"
