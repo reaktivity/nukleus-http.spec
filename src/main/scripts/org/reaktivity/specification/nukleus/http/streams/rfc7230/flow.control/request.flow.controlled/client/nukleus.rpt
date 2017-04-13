@@ -18,7 +18,7 @@ property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property newSourceOutput ${nuklei.streams("http", "source")}
+property sourceOutput ${nuklei.streams("http", "source")}
 property targetOutput ${nuklei.streams("target", "http#source")}
 property targetInputEst ${nuklei.streams("http", "target")}
 property sourceInputEst ${nuklei.streams("source", "http#target")}
@@ -29,45 +29,28 @@ property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(newSourceOutput.buffer)}
-        option writer ${agrona:oneToOneWriter(newSourceOutput.throttle)}
+        option reader ${agrona:oneToOneReader(sourceOutput.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceOutput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:newSourceOutputId)
-read ([0..8]:newSourceOutputRef)
+read ([0..8]:sourceOutputId)
+read ([0..8]:sourceOutputRef)
 read ([0..8]:newSourceCorrelationId)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x01] "/"
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-read [0x00] [0x0a] "connection" [0x07] "Upgrade"
-read [0x00] [0x07] "upgrade" [0x08] "protocol"
 
 read notify HTTP_REQUEST_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${newSourceOutputId}
-write [0x50 0x01 0x00 0x00]
-write flush
-
-write [0x40 0x00 0x00 0x02]
-write ${newSourceOutputId}
-write [0x50 0x00 0x00 0x00]
-write flush
-
-read [0x00 0x00 0x00 0x02]
-read ${newSourceOutputId}
-read [0x00 0x17]
-read "custom protocol payload"
-
-write [0x40 0x00 0x00 0x02]
-write ${newSourceOutputId}
-write [0x17 0x00 0x00 0x00] # TODO: native int
+write ${sourceOutputId}
+write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x03]
-read ${newSourceOutputId}
+read ${sourceOutputId}
 
 close
 closed
@@ -87,18 +70,14 @@ write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputId}
-read [0..4]
+read [0x03 0x00 0x00 0x00]
 
 write await HTTP_REQUEST_RECEIVED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputId}
-write [0x00 0x50]
-write "GET / HTTP/1.1\r\n"
-write "Host: localhost:8080\r\n"
-write "Connection: Upgrade\r\n" 
-write "Upgrade: protocol\r\n"
-write "\r\n"
+write [0x00 0x03]
+write "GET"
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -107,13 +86,11 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetOutputId}
-write [0x00 0x17]
-write "custom protocol payload"
+write [0x00 0x25]
+write " / HTTP/1.1\r\n"
+write "Host: localhost:8080\r\n"
+write "\r\n"
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputId}
-read [0..4]
 
 close
 closed
@@ -137,17 +114,16 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${targetInputEstId}
-read [0x00 0x37]
-read "HTTP/1.1 101 Switching Protocols\r\n"
-read "Upgrade: protocol\r\n"
+read [0x00 0x13]
+read "HTTP/1.1 200 OK\r\n"
 read "\r\n"
 
 read notify HTTP_RESPONSE_DECODED
 
-read [0x00 0x00 0x00 0x02]
-read ${targetInputEstId}
-read [0x00 0x23]
-read "custom protocol payload from remote"
+write [0x40 0x00 0x00 0x02]
+write ${targetInputEstId}
+write [0x21 0x00 0x00 0x00]
+write flush
 
 close
 closed
@@ -163,14 +139,11 @@ write [0x00 0x00 0x00 0x01]
 write ${newSourceInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${newSourceCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "101"
-write [0x00] [0x07] "upgrade" [0x08] "protocol"
+write [0x00] [0x07] ":status" [0x03] "200"
 write flush
 
-write [0x00 0x00 0x00 0x02]
+write [0x00 0x00 0x00 0x03]
 write ${newSourceInputEstId}
-write [0x00 0x23]
-write "custom protocol payload from remote"
 write flush
 
 close
