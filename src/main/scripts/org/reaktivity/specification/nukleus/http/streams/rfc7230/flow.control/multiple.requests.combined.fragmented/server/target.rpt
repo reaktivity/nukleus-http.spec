@@ -34,7 +34,7 @@ read ([0..8]:targetInputRef)
 read ([0..8]:targetCorrelationId)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x08] "/request1"
+read [0x00] [0x05] ":path" [0x09] "/request1"
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read notify HTTP_REQUEST_ONE_RECEIVED
@@ -53,7 +53,7 @@ read ([0..8]:targetInputRef)
 read ([0..8]:targetCorrelationId)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x08] "/request2"
+read [0x00] [0x05] ":path" [0x09] "/request2"
 read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read notify HTTP_REQUEST_TWO_RECEIVED
