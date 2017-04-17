@@ -42,7 +42,7 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x4c]
+write [0x00 0x65]
 write "POST /request1 HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
 write "Content-length: 8\r\n"

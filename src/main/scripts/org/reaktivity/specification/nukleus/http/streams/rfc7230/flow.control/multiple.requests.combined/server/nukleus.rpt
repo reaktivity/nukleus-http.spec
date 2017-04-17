@@ -46,7 +46,7 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
-read [0x00 0x62]
+read [0x00 0x60]
 read "GET /request1 HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
