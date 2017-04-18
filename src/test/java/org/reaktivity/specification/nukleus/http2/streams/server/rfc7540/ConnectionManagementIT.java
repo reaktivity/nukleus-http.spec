@@ -111,6 +111,19 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+            "${streams}/push.promise.on.different.stream/server/source",
+            "${streams}/push.promise.on.different.stream/server/nukleus",
+            "${streams}/push.promise.on.different.stream/server/target" })
+    public void pushPromiseOnDifferentStream() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${streams}/multiple.data.frames/server/source",
             "${streams}/multiple.data.frames/server/nukleus",
             "${streams}/multiple.data.frames/server/target" })
