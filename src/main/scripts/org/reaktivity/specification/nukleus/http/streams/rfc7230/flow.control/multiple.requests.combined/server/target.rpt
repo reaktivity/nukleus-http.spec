@@ -31,7 +31,7 @@ connected
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetInputId1)
 read ([0..8]:targetInputRef)
-read ([0..8]:targetCorrelationId)
+read ([0..8]:targetCorrelationId1)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x09] "/request1"
@@ -50,7 +50,7 @@ read ([0..8]:targetInputId1)
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetInputId2)
 read ([0..8]:targetInputRef)
-read ([0..8]:targetCorrelationId)
+read ([0..8]:targetCorrelationId2)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x03] "GET"
 read [0x00] [0x05] ":path" [0x09] "/request2"
@@ -76,7 +76,7 @@ connected
 write [0x00 0x00 0x00 0x01]
 write ${newTargetOutputEstId1}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${targetCorrelationId}
+write ${targetCorrelationId1}
 write [0x00] [0x07] ":status" [0x03] "200"
 write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush
@@ -104,7 +104,7 @@ write await HTTP_REQUEST_TWO_RECEIVED
 write [0x00 0x00 0x00 0x01]
 write ${newTargetOutputEstId2}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${targetCorrelationId}
+write ${targetCorrelationId2}
 write [0x00] [0x07] ":status" [0x03] "200"
 write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush

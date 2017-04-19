@@ -26,7 +26,8 @@ property sourceOutputEst ${nuklei.streams("source", "http#target")}
 property newTargetInputId1 ${nuklei:newStreamId()}
 property newTargetInputId2 ${nuklei:newStreamId()}
 property newSourceOutputEstId ${nuklei:newStreamId()}
-property newTargetCorrelationId ${nuklei:newCorrelationId()}
+property newTargetCorrelationId1 ${nuklei:newCorrelationId()}
+property newTargetCorrelationId2 ${nuklei:newCorrelationId()}
 
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
@@ -88,16 +89,27 @@ connected
 write [0x00 0x00 0x00 0x01]
 write ${newTargetInputId1}
 write ${newTargetInputRef}
-write ${newTargetCorrelationId}
+write ${newTargetCorrelationId1}
 write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x03] "GET"
+write [0x00] [0x07] ":method" [0x04] "POST"
 write [0x00] [0x05] ":path" [0x09] "/request1"
 write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId1}
 read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${targetInputId1}
+write [0x00 0x08]
+write "request1"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${targetInputId1}
+read [0x08 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x03]
 write ${newTargetInputId1}
@@ -108,16 +120,27 @@ write await HTTP_REQUEST_TWO_DECODED
 write [0x00 0x00 0x00 0x01]
 write ${newTargetInputId2}
 write ${newTargetInputRef}
-write ${newTargetCorrelationId}
+write ${newTargetCorrelationId2}
 write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x03] "GET"
+write [0x00] [0x07] ":method" [0x04] "POST"
 write [0x00] [0x05] ":path" [0x09] "/request2"
 write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId2}
 read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${targetInputId2}
+write [0x00 0x08]
+write "request2"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${targetInputId2}
+read [0x08 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x03]
 write ${newTargetInputId2}
@@ -135,7 +158,7 @@ connected
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetOutputEstId1)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newTargetCorrelationId}
+read ${newTargetCorrelationId1}
 read [0x00] [0x07] ":status" [0x03] "200"
 read [0x00] [0x0e] "content-length" [0x01] "8"
 
@@ -162,7 +185,7 @@ read ${targetOutputEstId1}
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetOutputEstId2)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newTargetCorrelationId}
+read ${newTargetCorrelationId2}
 read [0x00] [0x07] ":status" [0x03] "200"
 read [0x00] [0x0e] "content-length" [0x01] "8"
 
