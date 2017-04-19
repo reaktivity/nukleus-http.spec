@@ -1,0 +1,309 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
+
+property targetInput ${nuklei.streams("target", "http2#source")}
+property targetOutputEst ${nuklei.streams("http2", "target")}
+
+property newTargetOutputEstId1 ${nuklei:newStreamId()}
+property newTargetOutputEstId3 ${nuklei:newStreamId()}
+property newTargetOutputEstId4 ${nuklei:newStreamId()}
+
+
+#
+# reading from nukleus-->target (target/http2#source)
+#
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetInput.buffer)}
+        option writer ${agrona:oneToOneWriter(targetInput.throttle)}
+connected
+
+
+# ========================== target input stream 1 =====================
+read [0x00 0x00 0x00 0x01]
+     ([0..8]:targetInputId1)
+     ([0..8]:targetInputRef)
+     ([0..8]:targetCorrelationId1)
+     [0x00] [0x07] ":method" [0x04] "POST"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x01] "/"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId1}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
+read [0x00 0x00 0x00 0x02]
+     ${targetInputId1}
+     [0x00 0x0c]
+     "Hello, world"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId1}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId1}
+
+read notify HTTP_REQUEST_RECEIVED
+
+# ========================== target input stream 2 =====================
+read [0x00 0x00 0x00 0x01]
+     ([0..8]:targetInputId2)
+     ([0..8]:targetInputRef)
+     ([0..8]:targetCorrelationId2)
+     [0x00] [0x07] ":method" [0x03] "GET"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x05] "/push"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId2}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId2}
+
+
+# ========================== target input stream 3 =====================
+# promised request1
+read [0x00 0x00 0x00 0x01]
+     ([0..8]:targetInputId3)
+     ([0..8]:targetInputRef)
+     ([0..8]:targetCorrelationId3)
+     [0x00] [0x07] ":method" [0x03] "GET"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x0a] "/style.css"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId3}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId3}
+
+write notify PROMISED_REQUEST_1_RECEIVED
+
+# ========================== target input stream 4 =====================
+# promised request2
+read [0x00 0x00 0x00 0x01]
+     ([0..8]:targetInputId4)
+     ([0..8]:targetInputRef)
+     ([0..8]:targetCorrelationId4)
+     [0x00] [0x07] ":method" [0x03] "GET"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x0a] "/script.js"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId4}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# end frame
+read [0x00 0x00 0x00 0x03]
+     ${targetInputId4}
+
+write notify PROMISED_REQUEST_2_RECEIVED
+
+
+
+#
+#
+# target writing to target-->nukleus (http2/target)
+#
+#
+connect await HTTP_REQUEST_RECEIVED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
+connected
+
+#
+# ========================== target output stream 1 =====================
+#
+# begin frame (with http response headers)
+write [0x00 0x00 0x00 0x01]
+      ${newTargetOutputEstId1}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${targetCorrelationId1}
+      [0x00] [0x07] ":status" [0x03] "200"
+      [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+      [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+      [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+      [0x00] [0x0e] "content-length" [0x02] "61"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId1}
+read [0..4]
+
+# data frame (with http payload with push promise request1 headers)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId1}
+      [0x00 0x00]
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x0a] "/style.css"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId1}
+read [0..4]
+
+# data frame (with http payload with push promise request2 headers)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId1}
+      [0x00 0x00]
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x0a] "/script.js"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId1}
+read [0..4]
+
+# data frame (with http response payload)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId1}
+      [0x00 0x71]
+      "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId1}
+read [0..4]
+
+write await PROMISED_REQUEST_1_RECEIVED
+# ========================== target output stream 3 =====================
+# begin frame (with http promised response 1 headers)
+write [0x00 0x00 0x00 0x01]
+      ${newTargetOutputEstId3}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${targetCorrelationId3}
+      [0x00] [0x07] ":status" [0x03] "200"
+      [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+      [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+      [0x00] [0x0c] "content-type" [0x08] "text/css"
+      [0x00] [0x0e] "content-length" [0x02] "61"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId3}
+read [0..4]
+
+# data frame (with http payload with push promise request3 headers)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId3}
+      [0x00 0x00]
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x0b] "/widget.css"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId3}
+read [0..4]
+
+# data frame (with http promised response 1 payload)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId3}
+      [0x00 0x15]
+      "h1 {"
+      "    color: blue;"
+      "}"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId3}
+read [0..4]
+
+write await PROMISED_REQUEST_2_RECEIVED
+# ========================== target output stream 4 =====================
+# begin frame (with http promised response 2 headers)
+write [0x00 0x00 0x00 0x01]
+      ${newTargetOutputEstId4}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${targetCorrelationId4}
+      [0x00] [0x07] ":status" [0x03] "200"
+      [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+      [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+      [0x00] [0x0c] "content-type" [0x0f] "text/javascript"
+      [0x00] [0x0e] "content-length" [0x02] "61"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId4}
+read [0..4]
+
+# data frame (with http payload with push promise request4 headers)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId4}
+      [0x00 0x00]
+      [0x00] [0x07] ":method" [0x03] "GET"
+      [0x00] [0x07] ":scheme" [0x04] "http"
+      [0x00] [0x05] ":path" [0x07] "/api.js"
+      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId4}
+read [0..4]
+
+# data frame (with http promised response 2 headers)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId4}
+      [0x00 0x0f]
+      "function f() {"
+      "}"
+write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId4}
+read [0..4]
