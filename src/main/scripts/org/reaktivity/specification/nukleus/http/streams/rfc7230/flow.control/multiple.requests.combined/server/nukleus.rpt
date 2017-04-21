@@ -58,11 +58,6 @@ read notify HTTP_REQUEST_ONE_DECODED
 
 read notify HTTP_REQUEST_TWO_DECODED
 
-write [0x40 0x00 0x00 0x02]
-write ${sourceInputId}
-write [0x62 0x00 0x00 0x00]
-write flush
-
 close
 closed
 

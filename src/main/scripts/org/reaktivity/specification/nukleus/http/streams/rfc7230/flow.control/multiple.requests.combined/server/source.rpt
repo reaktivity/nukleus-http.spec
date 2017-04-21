@@ -51,10 +51,6 @@ write "Host: localhost:8080\r\n"
 write "\r\n"
 write flush
 
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0..4]
-
 close
 closed
 
