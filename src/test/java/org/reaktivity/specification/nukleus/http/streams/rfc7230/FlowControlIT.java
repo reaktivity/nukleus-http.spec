@@ -202,6 +202,19 @@ public class FlowControlIT
 
     @Test
     @Specification({
+        "${streams}/multiple.requests.with.response.flow.control/server/source",
+        "${streams}/multiple.requests.with.response.flow.control/server/nukleus",
+        "${streams}/multiple.requests.with.response.flow.control/server/target" })
+    public void shouldFlowControlMultipleResponses() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${streams}/request.with.upgrade.and.data/server/source",
         "${streams}/request.with.upgrade.and.data/server/nukleus",
         "${streams}/request.with.upgrade.and.data/server/target" })
