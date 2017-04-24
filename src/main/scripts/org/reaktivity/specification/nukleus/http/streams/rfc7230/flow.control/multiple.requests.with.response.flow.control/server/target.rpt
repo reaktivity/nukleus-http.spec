@@ -125,5 +125,9 @@ write [0x00 0x06]
 write "quest2"
 write flush
 
+write [0x00 0x00 0x00 0x03]
+write ${newTargetOutputEstId2}
+write flush
+
 close
 closed
