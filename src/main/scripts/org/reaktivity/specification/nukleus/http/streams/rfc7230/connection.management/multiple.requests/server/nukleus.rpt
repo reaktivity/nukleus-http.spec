@@ -63,8 +63,12 @@ read "\r\n"
 
 read notify HTTP_REQUEST_TWO_DECODED
 
+read [0x00 0x00 0x00 0x03]
+read ${sourceInputId}
+
 close
 closed
+
 
 connect await HTTP_REQUEST_ONE_DECODED
         agrona://stream/bidirectional
@@ -225,6 +229,10 @@ write [0x00 0x00 0x00 0x02]
 write ${sourceOutputEstId}
 write [0x00 0x08]
 write "request2"
+write flush
+
+write [0x00 0x00 0x00 0x03]
+write ${sourceOutputEstId}
 write flush
 
 close
