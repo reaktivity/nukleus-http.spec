@@ -52,7 +52,7 @@ public class ConnectionManagementIT
         "${streams}/response.status.101.with.upgrade/server/source",
         "${streams}/response.status.101.with.upgrade/server/nukleus",
         "${streams}/response.status.101.with.upgrade/server/target" })
-    public void shouldSwitchProtocolAfterUpgradeServer() throws Exception
+    public void shouldSwitchProtocolAfterUpgrade() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -65,7 +65,7 @@ public class ConnectionManagementIT
         "${streams}/multiple.requests/server/source",
         "${streams}/multiple.requests/server/nukleus",
         "${streams}/multiple.requests/server/target" })
-    public void shouldAcceptMultipleRequestsServer() throws Exception
+    public void shouldAcceptMultipleRequests() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -74,25 +74,51 @@ public class ConnectionManagementIT
     }
 
     @Test
-        @Specification({
-    //      "${http}/response.status.101.with.upgrade/request",
-            "${streams}/response.status.101.with.upgrade/client/source",
-            "${streams}/response.status.101.with.upgrade/client/nukleus",
-            "${streams}/response.status.101.with.upgrade/client/target" })
-        public void shouldSwitchProtocolAfterUpgradeClient() throws Exception
-        {
-            k3po.start();
-            k3po.notifyBarrier("ROUTED_OUTPUT");
-            k3po.notifyBarrier("ROUTED_INPUT");
-            k3po.finish();
-        }
+    @Specification({
+        "${streams}/multiple.requests.same.connection/server/source",
+        "${streams}/multiple.requests.same.connection/server/nukleus",
+        "${streams}/multiple.requests.same.connection/server/target" })
+    public void shouldAcceptMultipleRequestsOnSameConnectoin() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+    // "${http}/response.status.101.with.upgrade/request",
+    "${streams}/response.status.101.with.upgrade/client/source",
+    "${streams}/response.status.101.with.upgrade/client/nukleus",
+    "${streams}/response.status.101.with.upgrade/client/target" })
+    public void shouldSwitchProtocolAfterUpgradeClient() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
 
     @Test
     @Specification({
         "${streams}/multiple.requests/client/source",
         "${streams}/multiple.requests/client/nukleus",
         "${streams}/multiple.requests/client/target" })
-    public void shouldAcceptMultipleRequestsClient() throws Exception
+    public void shouldIssueMultipleRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${streams}/multiple.requests.same.connection/client/source",
+        "${streams}/multiple.requests.same.connection/client/nukleus",
+        "${streams}/multiple.requests.same.connection/client/target" })
+    public void shouldIssueMultipleRequestsUsingConnectionPool() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");

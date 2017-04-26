@@ -21,10 +21,8 @@ property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024
 property sourceInput ${nuklei.streams("http", "source")}
 property sourceOutputEst ${nuklei.streams("source", "http#target")}
 
-property newSourceInputId1 ${nuklei:newStreamId()}
-property newSourceCorrelationId1 ${nuklei:newCorrelationId()}
-property newSourceInputId2 ${nuklei:newStreamId()}
-property newSourceCorrelationId2 ${nuklei:newCorrelationId()}
+property newSourceInputId ${nuklei:newStreamId()}
+property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
@@ -33,40 +31,33 @@ connect await ROUTED_INPUT
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newSourceInputId1}
+write ${newSourceInputId}
 write ${newSourceInputRef}
-write ${newSourceCorrelationId1}
+write ${newSourceCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId1}
+read ${newSourceInputId}
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId1}
+write ${newSourceInputId}
 write [0x00 0x30]
 write "GET /request1 HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
 write "\r\n"
 write flush
 
-
-write [0x00 0x00 0x00 0x01]
-write ${newSourceInputId2}
-write ${newSourceInputRef}
-write ${newSourceCorrelationId2}
-write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId2}
-read [0..4]
-
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId2}
+write ${newSourceInputId}
 write [0x00 0x30]
 write "GET /request2 HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
 write "\r\n"
+write flush
+
+write [0x00 0x00 0x00 0x03]
+write ${newSourceInputId}
 write flush
 
 close
@@ -80,64 +71,56 @@ connect await ROUTED_OUTPUT
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceOutputEstId1)
+read ([0..8]:sourceOutputEstId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newSourceCorrelationId1}
+read ${newSourceCorrelationId}
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId1}
+write ${sourceOutputEstId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId1}
+read ${sourceOutputEstId}
 read [0x00 0x26]
 read "HTTP/1.1 200 OK\r\n"
 read "Content-length: 8\r\n"
 read "\r\n"
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId1}
+write ${sourceOutputEstId}
 write [0x26 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId1}
+read ${sourceOutputEstId}
 read [0x00 0x08]
 read "request1"
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId1}
+write ${sourceOutputEstId}
 write [0x08 0x00 0x00 0x00]
 write flush
 
-
-read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceOutputEstId2)
-read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-read ${newSourceCorrelationId2}
-
-write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId2}
-write [0x00 0x02 0x00 0x00]
-write flush
-
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId2}
+read ${sourceOutputEstId}
 read [0x00 0x26]
 read "HTTP/1.1 200 OK\r\n"
 read "Content-length: 8\r\n"
 read "\r\n"
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId2}
+write ${sourceOutputEstId}
 write [0x26 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId2}
+read ${sourceOutputEstId}
 read [0x00 0x08]
 read "request2"
+
+read [0x00 0x00 0x00 0x03]
+read ${sourceOutputEstId}
 
 close
 closed
