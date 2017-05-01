@@ -54,9 +54,6 @@ write ${newTargetOutputId1}
 write [0x30 0x00 0x00 0x00]
 write flush
 
-read [0x00 0x00 0x00 0x03]
-read ${newTargetOutputId1}
-
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:newTargetOutputId2)
 read ([0..8]:newTargetOutputRef)
@@ -117,10 +114,6 @@ write [0x00 0x08]
 write "request1"
 write flush
 
-write [0x00 0x00 0x00 0x03]
-write ${newTargetInputEstId1}
-write flush
-
 write await HTTP_REQUEST_TWO_DECODED
 
 write [0x00 0x00 0x00 0x01]
@@ -145,10 +138,6 @@ write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId2}
 write [0x00 0x08]
 write "request2"
-write flush
-
-write [0x00 0x00 0x00 0x03]
-write ${newTargetInputEstId2}
 write flush
 
 close
