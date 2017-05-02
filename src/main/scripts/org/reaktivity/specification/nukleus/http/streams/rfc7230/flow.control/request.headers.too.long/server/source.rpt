@@ -54,12 +54,19 @@ write "lhost:8080\r\n"
 write "X-Custom-header-1: header "
 write flush
 
+read [0x40 0x00 0x00 0x01]
+read ${newSourceInputId}
+
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
 write [0x00 0x08]
 write "er 2\r\n"
 write "\r\n"
 write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputId}
+read [0..4]
 
 close
 closed
@@ -86,6 +93,7 @@ read ${sourceOutputEstId}
 read [0x00]
 read (byte:lengthByte)
 read /HTTP\/1.1 4\d\d .*\r\n/
+read "Connection: close\r\n"
 read "\r\n"
 
 close
