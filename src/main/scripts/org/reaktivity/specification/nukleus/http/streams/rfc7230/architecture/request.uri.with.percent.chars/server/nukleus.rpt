@@ -28,9 +28,9 @@ property newSourceOutputEstId ${nuklei:newStreamId()}
 property newTargetCorrelationId ${nuklei:newCorrelationId()}
 
 connect await ROUTED_INPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceInput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceInput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -56,9 +56,9 @@ close
 closed
 
 connect await HTTP_REQUEST_DECODED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInput.throttle)}
-        option writer ${agrona:oneToOneWriter(targetInput.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetInput.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(targetInput.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
@@ -79,9 +79,9 @@ close
 closed
 
 connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
-        option writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -101,9 +101,9 @@ close
 closed
 
 connect await HTTP_RESPONSE_RECEIVED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]

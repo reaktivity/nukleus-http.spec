@@ -18,6 +18,7 @@ package org.reaktivity.specification.nukleus.http.streams.server.rfc7230.newsyst
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
@@ -28,6 +29,7 @@ import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
 
+@Ignore
 public class ArchitectureIT
 {
     private final K3poRule k3po = new K3poRule()
