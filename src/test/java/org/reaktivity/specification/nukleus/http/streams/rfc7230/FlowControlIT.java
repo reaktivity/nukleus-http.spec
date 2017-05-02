@@ -163,9 +163,9 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.combined/server/source",
-        "${streams}/multiple.requests.combined/server/nukleus",
-        "${streams}/multiple.requests.combined/server/target" })
+        "${streams}/multiple.requests.pipelined/server/source",
+        "${streams}/multiple.requests.pipelined/server/nukleus",
+        "${streams}/multiple.requests.pipelined/server/target" })
     public void shouldAcceptMultipleRequestsInSameDataFrame() throws Exception
     {
         k3po.start();
@@ -176,9 +176,9 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.combined.fragmented/server/source",
-        "${streams}/multiple.requests.combined.fragmented/server/nukleus",
-        "${streams}/multiple.requests.combined.fragmented/server/target" })
+        "${streams}/multiple.requests.pipelined.fragmented/server/source",
+        "${streams}/multiple.requests.pipelined.fragmented/server/nukleus",
+        "${streams}/multiple.requests.pipelined.fragmented/server/target" })
     public void shouldAcceptMultipleRequestsInSameDataFrameFragmented() throws Exception
     {
         k3po.start();
@@ -189,10 +189,10 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.with.content.length.combined.fragmented/server/source",
-        "${streams}/multiple.requests.with.content.length.combined.fragmented/server/nukleus",
-        "${streams}/multiple.requests.with.content.length.combined.fragmented/server/target" })
-    public void shouldAcceptMultipleRequestsWithContentLengthCombinedFragmented() throws Exception
+        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/source",
+        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/nukleus",
+        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/target" })
+    public void shouldAcceptMultipleRequestsWithContentLengthPipelinedFragmented() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
