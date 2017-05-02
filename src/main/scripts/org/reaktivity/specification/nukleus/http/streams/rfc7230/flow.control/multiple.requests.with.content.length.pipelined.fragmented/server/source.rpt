@@ -38,36 +38,31 @@ write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newSourceInputId}
-read [0..4]
+read [0x00 0x20 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x35]
-write "POST / HTTP/1.1\r\n"
+write [0x00 0x65]
+write "POST /request1 HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
-write "Content-Length"
-write flush
-
-write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
-write [0x00 0x0b]
-write ": 11\r\n"
+write "Content-length: 8\r\n"
 write "\r\n"
-write "hel"
+write "request1"
+write "POST /request2 HTTP/1.1\r\n"
 write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x3d 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x08]
-write "lo world"
+write [0x00 0x33]
+write "Host: localhost:8080\r\n"
+write "Content-length: 8\r\n"
+write "\r\n"
+write "request2"
 write flush
 
 close
 closed
+
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
@@ -87,9 +82,42 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x13]
+read [0x00 0x26]
 read "HTTP/1.1 200 OK\r\n"
+read "Content-length: 8\r\n"
 read "\r\n"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x26 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x08]
+read "request1"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x08 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x26]
+read "HTTP/1.1 200 OK\r\n"
+read "Content-length: 8\r\n"
+read "\r\n"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x26 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x08]
+read "request2"
 
 close
 closed
