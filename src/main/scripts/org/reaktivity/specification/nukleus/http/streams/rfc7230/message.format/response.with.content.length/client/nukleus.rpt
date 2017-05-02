@@ -1,0 +1,151 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property newTargetOutputRef ${nuklei:newReferenceId()} # external scope
+
+property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
+
+property sourceOutput ${nuklei.streams("http", "source")}
+property targetOutput ${nuklei.streams("target", "http#source")}
+property targetInputEst ${nuklei.streams("http", "target")}
+property sourceInputEst ${nuklei.streams("source", "http#target")}
+
+property newTargetOutputId ${nuklei:newStreamId()}
+property newSourceInputEstId ${nuklei:newStreamId()}
+property newTargetCorrelationId ${nuklei:newCorrelationId()}
+
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(sourceOutput.buffer)}
+        option writer ${agrona:oneToOneWriter(sourceOutput.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:sourceOutputId)
+read ([0..8]:sourceOutputRef)
+read ([0..8]:sourceCorrelationId)
+read [0x00] [0x07] ":scheme" [0x04] "http"
+read [0x00] [0x07] ":method" [0x03] "GET"
+read [0x00] [0x05] ":path" [0x01] "/"
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+read notify HTTP_REQUEST_RECEIVED
+
+read [0x00 0x00 0x00 0x03]
+read ${sourceOutputId}
+
+close
+closed
+
+
+connect await ROUTED_OUTPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetOutput.throttle)}
+        option writer ${agrona:oneToOneWriter(targetOutput.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newTargetOutputId}
+write ${newTargetOutputRef}
+write ${newTargetCorrelationId}
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputId}
+read [0..4]
+
+write await HTTP_REQUEST_RECEIVED
+
+write [0x00 0x00 0x00 0x02]
+write ${newTargetOutputId}
+write [0x00 0x28]
+write "GET / HTTP/1.1\r\n"
+write "Host: localhost:8080\r\n"
+write "\r\n"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputId}
+read [0..4]
+
+close
+closed
+
+
+connect await ROUTED_INPUT
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(targetInputEst.buffer)}
+        option writer ${agrona:oneToOneWriter(targetInputEst.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:targetInputEstId)
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+read ${newTargetCorrelationId}
+
+write [0x40 0x00 0x00 0x02]
+write ${targetInputEstId}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${targetInputEstId}
+read [0x00 0x32]
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 11\r\n"
+read "\r\n"
+read "hello world"
+
+read notify HTTP_RESPONSE_DECODED
+
+close
+closed
+
+
+connect await HTTP_RESPONSE_DECODED
+        agrona://stream/bidirectional
+        option reader ${agrona:oneToOneReader(sourceInputEst.throttle)}
+        option writer ${agrona:oneToOneWriter(sourceInputEst.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newSourceInputEstId}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${sourceCorrelationId}
+write [0x00] [0x07] ":status" [0x03] "200"
+write [0x00] [0x0e] "content-length" [0x02] "11"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceInputEstId}
+write [0x00 0x0b]
+write "hello world"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceInputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x03]
+write ${newSourceInputEstId}
+write flush
+
+close
+closed

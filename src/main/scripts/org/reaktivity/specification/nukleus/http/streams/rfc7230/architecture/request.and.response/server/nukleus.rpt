@@ -75,6 +75,10 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId}
 read [0..4]
 
+write [0x00 0x00 0x00 0x03]
+write ${newTargetInputId}
+write flush
+
 close
 closed
 

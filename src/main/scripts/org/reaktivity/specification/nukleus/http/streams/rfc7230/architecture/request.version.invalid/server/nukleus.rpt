@@ -46,9 +46,8 @@ read "\r\n"
 
 write notify HTTP_REQUEST_DECODED
 
-write [0x40 0x00 0x00 0x02]
+write [0x40 0x00 0x00 0x01]
 write ${sourceInputId}
-write [0x12 0x00 0x00 0x00]
 write flush
 
 close
@@ -72,8 +71,9 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x2b]
+write [0x00 0x3e]
 write "HTTP/1.1 505 HTTP Version Not Supported\r\n"
+write "Connection: close\r\n"
 write "\r\n"
 write flush
 
