@@ -40,39 +40,24 @@ read ([0..8]:sourceCorrelationId)
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceInputId}
-write [0x00 0x20 0x00 0x00]
+write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceInputId}
-read [0x00 0x35]
-read "POST / HTTP/1.1\r\n"
+read [0x00 0x50]
+read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
-read "Content-Length"
-
-read [0x00 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x00 0x0b]
-read ": 11\r\n"
+read "Connection: Upgrade\r\n"
+read "Upgrade: protocol\r\n"
 read "\r\n"
-read "hel"
 
-write [0x40 0x00 0x00 0x02]
-write ${newSourceInputId}
-write [0x3d 0x00 0x00 0x00]
-write flush
-
-read [0x00 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x00 0x08]
-read "lo world"
-
-write notify HTTP_REQUEST_DECODED
+write notify HTTP_REQUEST_HEADERS_DECODED
 
 close
 closed
 
-connect await HTTP_REQUEST_DECODED
+connect await HTTP_REQUEST_HEADERS_DECODED
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(targetInput.throttle)}
         option writer ${agrona:oneToOneWriter(targetInput.buffer)}
@@ -83,35 +68,16 @@ write ${newTargetInputId}
 write ${newTargetInputRef}
 write ${newTargetCorrelationId}
 write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x04] "POST"
+write [0x00] [0x07] ":method" [0x03] "GET"
 write [0x00] [0x05] ":path" [0x01] "/"
 write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-write [0x00] [0x0e] "content-length" [0x02] "11"
+write [0x00] [0x0a] "connection" [0x07] "Upgrade"
+write [0x00] [0x07] "upgrade" [0x08] "protocol"
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputId}
-read [0x00 0x20 0x00 0x00]
-
-write [0x00 0x00 0x00 0x02]
-write ${newTargetInputId}
-write [0x00 0x03]
-write "hel"
-write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newTargetInputId}
-read [0x03 0x00 0x00 0x00]
-
-write [0x00 0x00 0x00 0x02]
-write ${newTargetInputId}
-write [0x00 0x08]
-write "lo world"
-write flush
-
-write [0x00 0x00 0x00 0x03]
-write ${newTargetInputId}
-write flush
+read [0..4]
 
 close
 closed
@@ -126,19 +92,63 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:targetOutputEstId)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "200"
+read [0x00] [0x07] ":status" [0x03] "101"
+read [0x00] [0x07] "upgrade" [0x08] "protocol"
 
-read notify HTTP_RESPONSE_RECEIVED
+read notify HTTP_RESPONSE_HEADERS_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
 write ${targetOutputEstId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
+read [0x00 0x00 0x00 0x02]
+read ${targetOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 1"
+
+read notify HTTP_RESPONSE_PAYLOAD_RECEIVED
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${targetOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 2"
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${targetOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 3"
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${targetOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 4"
+
+write [0x40 0x00 0x00 0x02]
+write ${targetOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+
 close
 closed
 
-connect await HTTP_RESPONSE_RECEIVED
+connect await HTTP_RESPONSE_HEADERS_RECEIVED
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
         option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
@@ -156,10 +166,57 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
-write [0x00 0x13]
-write "HTTP/1.1 200 OK\r\n"
+write [0x00 0x37]
+write "HTTP/1.1 101 Switching Protocols\r\n"
+write"Upgrade: protocol\r\n"
 write "\r\n"
 write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+write await HTTP_RESPONSE_PAYLOAD_RECEIVED
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x22]
+write "custom protocol payload 34 bytes 1"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x22]
+write "custom protocol payload 34 bytes 2"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x22]
+write "custom protocol payload 34 bytes 3"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newSourceOutputEstId}
+write [0x00 0x22]
+write "custom protocol payload 34 bytes 4"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newSourceOutputEstId}
+read [0..4]
 
 close
 closed

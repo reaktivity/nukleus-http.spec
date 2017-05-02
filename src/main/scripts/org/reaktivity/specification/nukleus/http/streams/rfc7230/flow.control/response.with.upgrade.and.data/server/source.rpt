@@ -24,6 +24,8 @@ property sourceOutputEst ${nuklei.streams("source", "http#target")}
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
+property sourceOutputInitialWindow [0x00 0x20 0x00 0x00]
+
 connect await ROUTED_INPUT
         agrona://stream/bidirectional
         option reader ${agrona:oneToOneReader(sourceInput.throttle)}
@@ -42,32 +44,17 @@ read [0..4]
 
 write [0x00 0x00 0x00 0x02]
 write ${newSourceInputId}
-write [0x00 0x35]
-write "POST / HTTP/1.1\r\n"
+write [0x00 0x50]
+write "GET / HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
-write "Content-Length"
-write flush
-
-write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
-write [0x00 0x0b]
-write ": 11\r\n"
+write "Connection: Upgrade\r\n"
+write "Upgrade: protocol\r\n"
 write "\r\n"
-write "hel"
-write flush
-
-read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
-read [0x3d 0x00 0x00 0x00]
-
-write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
-write [0x00 0x08]
-write "lo world"
 write flush
 
 close
 closed
+
 
 connect await ROUTED_OUTPUT
         agrona://stream/bidirectional
@@ -82,14 +69,60 @@ read ${newSourceCorrelationId}
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
-write [0x00 0x02 0x00 0x00]
+write ${sourceOutputInitialWindow}
 write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x13]
-read "HTTP/1.1 200 OK\r\n"
+read [0x00 0x37]
+read "HTTP/1.1 101 Switching Protocols\r\n"
+read "Upgrade: protocol\r\n"
 read "\r\n"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x31 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 1"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 2"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 3"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${sourceOutputEstId}
+read [0x00 0x22]
+read "custom protocol payload 34 bytes 4"
+
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x22 0x00 0x00 0x00]
+write flush
 
 close
 closed
