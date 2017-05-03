@@ -57,28 +57,19 @@
       <version>${nukleus.spec.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.reaktivity</groupId>
-      <artifactId>k3po-nukleus-ext</artifactId>
-      <version>${k3po.nukleus.ext.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.kaazing</groupId>
       <artifactId>k3po.junit</artifactId>
       <version>${k3po.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.kaazing</groupId>
       <artifactId>k3po.lang</artifactId>
       <version>${k3po.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -164,6 +155,13 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.reaktivity</groupId>
+            <artifactId>k3po-nukleus-ext</artifactId>
+            <version>${k3po.nukleus.ext.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
