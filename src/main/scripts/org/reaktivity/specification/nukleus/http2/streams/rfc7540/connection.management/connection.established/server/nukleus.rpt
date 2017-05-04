@@ -52,9 +52,6 @@ write ${sourceInputId}
 write [0x50 0x00 0x00 0x00]
 write flush
 
-close
-closed
-
 
 
 connect await CLIENT_PREFACE_RECEIVED
@@ -87,5 +84,3 @@ read [0x40 0x00 0x00 0x02]
 read ${newSourceHandshakeId}
 read [0..4]
 
-close
-closed
