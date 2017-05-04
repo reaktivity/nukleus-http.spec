@@ -47,9 +47,8 @@ write "GET http://username:password@localhost:8000/ HTTP/1.1\r\n"
 write "\r\n"
 write flush
 
-read [0x40 0x00 0x00 0x02]
+read [0x40 0x00 0x00 0x01]
 read ${newSourceInputId}
-read [0..4]
 
 close
 closed
@@ -73,14 +72,10 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x1c]
+read [0x00 0x2f]
 read "HTTP/1.1 400 Bad Request\r\n"
+read "Connection: close\r\n"
 read "\r\n"
-
-write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
-write [0x1a 0x00 0x00 0x00] # TODO: native int
-write flush
 
 close
 closed

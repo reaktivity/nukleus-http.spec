@@ -48,9 +48,8 @@ write "Host: localhost:8080\r\n"
 write "\r\n"
 write flush
 
-read [0x40 0x00 0x00 0x02]
+read [0x40 0x00 0x00 0x01]
 read ${newSourceInputId}
-read [0..4]
 
 close
 closed
@@ -74,8 +73,9 @@ write flush
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
-read [0x00 0x2b]
+read [0x00 0x3e]
 read "HTTP/1.1 505 HTTP Version Not Supported\r\n"
+read "Connection: close\r\n"
 read "\r\n"
 
 write [0x40 0x00 0x00 0x02]
