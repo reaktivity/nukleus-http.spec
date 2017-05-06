@@ -1,0 +1,40 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property routeRef 1234L # external
+
+accept "nukleus://target/streams/http2"
+        option nukleus:route ${routeRef}
+        option nukleus:window 8192
+        option nukleus:throttle "off"
+        option nukleus:transmission "duplex"
+accepted
+
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "404"
+write nukleus:begin.ext [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+write nukleus:begin.ext [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x03] "147"
+
+connected
+
+write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+write flush
