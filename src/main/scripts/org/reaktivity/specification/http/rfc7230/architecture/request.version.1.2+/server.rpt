@@ -14,7 +14,14 @@
 # limitations under the License.
 #
 
+property routeRef 1234L # external
+property serverTransport "nukleus://target/streams/http"
+
 accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${routeRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 accepted
 connected
 

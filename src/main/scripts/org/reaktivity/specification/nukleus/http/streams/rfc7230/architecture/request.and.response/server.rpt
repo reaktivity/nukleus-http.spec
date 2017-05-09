@@ -16,25 +16,29 @@
 
 # network -> http -> target (server)
 # Read from target/http, write to http/target
+property serverHttp "nukleus://target/streams/http"
 
 property source "http"
-property newSourceInputRef ${nuklei:newReferenceId()} # external scope
+property routeRef 1234L # external
        
-accept "nukleus://streams/target"
-       option nukleus:source ${source}
-       option nukleus:route ${newSourceInputRef}
+accept ${serverHttp}
+       option nukleus:route ${routeRef}
        option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+
 connected
 
-read nukleus:extension [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:extension [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:extension [0x00] [0x05] ":path" [0x01] "/"
-read nukleus:extension [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read closed
+write close
 
-write nukleus:extension [0x00] [0x07] ":status" [0x03] "200"
-write flush
 
 
 

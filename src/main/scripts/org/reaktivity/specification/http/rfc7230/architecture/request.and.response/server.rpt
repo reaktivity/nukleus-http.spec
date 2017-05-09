@@ -15,14 +15,16 @@
 #
 
 property routeRef 1234L # external
+property serverTransport "nukleus://target/streams/http"
 
 accept "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/client"
+  option http:transport ${serverTransport}
   option nukleus:route  ${routeRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
+
 read http:version "HTTP/1.1"
 
 write http:status "200" "OK"

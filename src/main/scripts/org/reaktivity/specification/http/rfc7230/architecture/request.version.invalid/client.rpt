@@ -14,9 +14,15 @@
 # limitations under the License.
 #
 
-connect "tcp://localhost:8080"
+property routeRef 1234L # external
+
+connect "nukleus://http/streams/source"
+  option nukleus:route ${routeRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 connected
-write "GET / " ${http:randomInvalidVersion()} "\r\n"
+
+write "GET / HTTP/1.1/b/c" "\r\n"
 write "Host: localhost:8080\r\n"
 write "\r\n"
 
