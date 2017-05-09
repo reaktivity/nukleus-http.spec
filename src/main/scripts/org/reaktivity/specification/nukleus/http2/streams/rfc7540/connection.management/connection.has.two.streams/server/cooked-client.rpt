@@ -29,9 +29,9 @@ property newTargetOutputEstId2 ${nuklei:newStreamId()}
 #
 #
 connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInput.buffer)}
-        option writer ${agrona:oneToOneWriter(targetInput.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetInput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetInput.throttle)}
 connected
 
 # begin frame (with http request headers) -- corresponds to HTTP2 stream_id=1
@@ -107,9 +107,9 @@ read notify HTTP_REQUEST_RECEIVED
 #
 #
 connect await HTTP_REQUEST_RECEIVED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
 # begin frame (with http response headers) -- corresponds to HTTP2 stream_id=1

@@ -22,7 +22,6 @@ import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
-import org.reaktivity.specification.nukleus.NukleusRule;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
@@ -34,10 +33,8 @@ public class ConnectionManagement1IT
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
-    private final NukleusRule nukleus = new NukleusRule();
-
     @Rule
-    public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
+    public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
     @Specification({
@@ -50,13 +47,15 @@ public class ConnectionManagement1IT
 
     @Test
     @Specification({
-            //"${streams}/http.get.exchange/server/rfc-client",
-            //"${streams}/http.get.exchange/server/rfc-server",
+            "${streams}/http.get.exchange/server/rfc-client",
+            "${streams}/http.get.exchange/server/rfc-server",
             "${streams}/http.get.exchange/server/cooked-client",
             "${streams}/http.get.exchange/server/cooked-server"
     })
     public void httpGetExchange() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 

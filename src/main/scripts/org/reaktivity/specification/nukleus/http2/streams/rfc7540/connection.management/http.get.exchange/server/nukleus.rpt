@@ -34,9 +34,9 @@ property newTargetCorrelationId ${nuklei:newCorrelationId()}
 #
 #
 connect await ROUTED_INPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInput.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceInput.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceInput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceInput.throttle)}
 connected
 
 # begin frame
@@ -128,9 +128,9 @@ write flush
 #
 #
 connect await CONNECTION_ESTABLISHED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceHandshakeEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceHandshakeEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceHandshakeEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceHandshakeEst.buffer)}
 connected
 
 # begin frame
@@ -183,9 +183,9 @@ read [0x17 0x00 0x00 0x00]
 #
 #
 connect await HTTP_REQUEST_HEADERS_DECODED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInput.throttle)}
-        option writer ${agrona:oneToOneWriter(targetInput.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetInput.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(targetInput.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
@@ -210,9 +210,9 @@ read [0..4]
 #
 #
 connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
-        option writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetOutputEst.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.throttle)}
 connected
 
 # begin frame (with http headers)
@@ -263,9 +263,9 @@ read notify HTTP_RESPONSE_PAYLOAD_DONE
 #
 
 connect await HTTP_RESPONSE_HEADERS_RECEIVED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst.buffer)}
 connected
 
 # begin frame is already written (same tcp stream)

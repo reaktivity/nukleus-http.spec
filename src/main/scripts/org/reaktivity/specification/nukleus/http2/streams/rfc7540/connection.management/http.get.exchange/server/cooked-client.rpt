@@ -14,25 +14,26 @@
 # under the License.
 #
 
-property routeRef 1234L # external
+property cookedRouteRef 2345L # external
 
-connect "nukleus://target/streams/http2"
-        option nukleus:route ${routeRef}
+connect await ROUTED_INPUT
+        "nukleus://target/streams/http2"
+        option nukleus:route ${cookedRouteRef}
         option nukleus:window 8192
-        option nukleus:throttle "off"
+        option nukleus:throttle "on"
         option nukleus:transmission "duplex"
 
 
 write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+                        [0x00] [0x07] ":scheme" [0x04] "http"
+                        [0x00] [0x05] ":path" [0x01] "/"
+                        [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "404"
-read nukleus:begin.ext [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-read nukleus:begin.ext [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-read nukleus:begin.ext [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x03] "147"
+                       [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+                       [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+                       [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+                       [0x00] [0x0e] "content-length" [0x03] "147"
 
 connected
 
