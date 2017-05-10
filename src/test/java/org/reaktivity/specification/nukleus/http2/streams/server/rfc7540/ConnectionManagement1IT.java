@@ -38,15 +38,6 @@ public class ConnectionManagement1IT
 
     @Test
     @Specification({
-        "${streams}/connection.established/server/rfc-client",
-        "${streams}/connection.established/server/rfc-server" })
-    public void connectionEstablished() throws Exception
-    {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
             "${streams}/http.get.exchange/server/rfc-client",
             "${streams}/http.get.exchange/server/rfc-server",
             "${streams}/http.get.exchange/server/cooked-client",

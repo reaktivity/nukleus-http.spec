@@ -14,28 +14,30 @@
 # under the License.
 #
 
-property cookedRouteRef 2345L # external
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 accept await ROUTED_INPUT
         "nukleus://target/streams/http2"
-        option nukleus:route ${cookedRouteRef}
+        option nukleus:route ${newTargetInputRef}
         option nukleus:window 8192
-        option nukleus:throttle "on"
         option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
                        [0x00] [0x07] ":scheme" [0x04] "http"
                        [0x00] [0x05] ":path" [0x01] "/"
                        [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "404"
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
                         [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
                         [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
                         [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
-                        [0x00] [0x0e] "content-length" [0x03] "147"
+                        [0x00] [0x0e] "content-length" [0x03] "113"
 
 connected
 
-write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+write "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
 write flush
