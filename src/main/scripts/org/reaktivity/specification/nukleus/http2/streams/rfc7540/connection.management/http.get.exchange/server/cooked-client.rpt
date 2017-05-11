@@ -36,6 +36,9 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
+write "Hello, world"
+write flush
+
 read "<html>"
      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
      "<body><script src=\"script.js\"></script></body>"
