@@ -72,4 +72,16 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/multiple.data.frames/client",
+            "${streams}/multiple.data.frames/server",
+    })
+    public void multipleDataFrames() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }
