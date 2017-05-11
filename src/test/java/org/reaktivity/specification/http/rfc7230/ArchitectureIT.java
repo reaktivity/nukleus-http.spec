@@ -48,6 +48,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void requestAndResponse() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -58,6 +60,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -68,6 +72,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -78,6 +84,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRejectRequestWhenHostHeaderMissing() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -88,6 +96,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRejectRequestWithUserInfo() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -98,6 +108,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRejectRequestWhenVersionInvalid() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -108,6 +120,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRejectRequestWhenVersionMissing() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
@@ -118,6 +132,8 @@ public class ArchitectureIT
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldRejectRequestWhenVersionNotHttp1x() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 }

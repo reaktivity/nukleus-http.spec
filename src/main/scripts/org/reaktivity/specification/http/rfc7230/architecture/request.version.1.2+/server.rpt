@@ -14,12 +14,12 @@
 # limitations under the License.
 #
 
-property routeRef 1234L # external
-property serverTransport "nukleus://target/streams/http"
+property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
 
 accept "http://localhost:8080/"
   option http:transport ${serverTransport}
-  option nukleus:route  ${routeRef}
+  option nukleus:route  ${newSourceInputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted

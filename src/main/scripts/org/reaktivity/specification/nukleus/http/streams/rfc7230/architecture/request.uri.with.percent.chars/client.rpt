@@ -14,24 +14,18 @@
 # under the License.
 #
 
-# source (client) -> http -> network (transport)
-# Write high-level requests to http/source, read high-level responses from source/http
-
-property routeRef 1234L # external
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 connect "nukleus://http/streams/source"
-    option nukleus:route ${routeRef}
+    option nukleus:route ${newTargetInputRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
 write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
 write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x0c] "/Some%20path"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x0c] "/Some / Path"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
-
-write close
-read closed

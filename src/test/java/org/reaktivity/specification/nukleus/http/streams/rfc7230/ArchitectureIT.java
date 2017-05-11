@@ -45,7 +45,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.and.response/client",
         "${scripts}/request.and.response/server"})
-    @ScriptProperty("serverHttp \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void requestAndResponse() throws Exception
     {
         k3po.finish();
@@ -53,9 +53,9 @@ public class ArchitectureIT
 
     @Test
     @Specification({
-        "${streams}/request.uri.with.percent.chars/client",
-        "${streams}/request.uri.with.percent.chars/server"})
-    @ScriptProperty("serverHttp \"nukleus://http/streams/source\"")
+        "${scripts}/request.uri.with.percent.chars/client",
+        "${scripts}/request.uri.with.percent.chars/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
         k3po.finish();
@@ -65,7 +65,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.version.1.2+/client",
         "${scripts}/request.version.1.2+/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
         k3po.finish();
