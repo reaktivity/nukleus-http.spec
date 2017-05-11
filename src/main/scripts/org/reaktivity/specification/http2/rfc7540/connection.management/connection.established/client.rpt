@@ -14,12 +14,13 @@
 # under the License.
 #
 
-property routeRef 1234L # external
+property newSourceInputRef 1234L # external
 
-connect "nukleus://http2/streams/source"
-        option nukleus:route ${routeRef}
+connect await ROUTED_INPUT
+        "nukleus://http2/streams/source"
+        option nukleus:route ${newSourceInputRef}
         option nukleus:window 8192
-        option nukleus:throttle "off"
+        option nukleus:throttle "on"
         option nukleus:transmission "duplex"
 connected
 
@@ -36,3 +37,21 @@ read [0x00 0x00 0x06]                   # length = 6
      [0x00]                             # flags = 0x00
      [0x00 0x00 0x00 0x00]              # stream_id = 0
      [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
+
+write [0x00 0x00 0x06]                   # length = 6
+      [0x04]                             # HTTP2 SETTINGS frame
+      [0x00]                             # flags = 0x00
+      [0x00 0x00 0x00 0x00]              # stream_id = 0
+      [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
+write flush
+
+read [0x00 0x00 0x00]                   # length = 0
+     [0x04]                             # HTTP2 SETTINGS frame
+     [0x01]                             # ACK
+     [0x00 0x00 0x00 0x00]              # stream_id = 0
+
+write [0x00 0x00 0x00]                  # length = 0
+      [0x04]                            # HTTP2 SETTINGS frame
+      [0x01]                            # ACK
+      [0x00 0x00 0x00 0x00]             # stream_id = 0
+write flush

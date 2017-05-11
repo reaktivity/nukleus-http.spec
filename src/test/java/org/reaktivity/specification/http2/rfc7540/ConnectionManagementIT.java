@@ -38,6 +38,18 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+            "${streams}/connection.established/client",
+            "${streams}/connection.established/server",
+    })
+    public void connectionEstablished() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${streams}/http.get.exchange/client",
             "${streams}/http.get.exchange/server",
     })

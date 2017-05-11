@@ -47,18 +47,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${streams}/connection.established/source",
-        "${streams}/connection.established/nukleus" })
-    public void connectionEstablished() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
             "${streams}/connection.has.two.streams/source",
             "${streams}/connection.has.two.streams/nukleus",
             "${streams}/connection.has.two.streams/target" })
