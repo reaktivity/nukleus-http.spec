@@ -21,10 +21,9 @@ property targetOutputEst ${nuklei.streams("http2", "target")}
 
 property newTargetOutputEstId ${nuklei:newStreamId()}
 
-#
+
 #
 # reading from nukleus-->target (target/http2#source)
-#
 #
 connect await ROUTED_OUTPUT
         "agrona://stream/bidirectional"
@@ -33,45 +32,58 @@ connect await ROUTED_OUTPUT
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInputId)
-read ([0..8]:targetInputRef)
-read ([0..8]:targetCorrelationId)
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-
-read notify HTTP_REQUEST_HEADERS_RECEIVED
+     ([0..8]:targetInputId1)
+     ([0..8]:targetInputRef)
+     ([0..8]:targetCorrelationId1)
+     [0x00] [0x07] ":method" [0x04] "POST"
+     [0x00] [0x07] ":scheme" [0x04] "http"
+     [0x00] [0x05] ":path" [0x01] "/"
+     [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 # window frame
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId}
+write ${targetInputId1}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+# data frame (with http request payload) -- corresponds to HTTP2 stream_id=1
+read [0x00 0x00 0x00 0x02]
+     ${targetInputId1}
+     [0x00 0x0c]
+     "Hello, world"
+
+read notify HTTP_REQUEST_RECEIVED
+
+# window frame
+write [0x40 0x00 0x00 0x02]
+write ${targetInputId1}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 
 
+
 #
 #
-# writing to target-->nukleus (http2/target)
+# target writing to target-->nukleus (http2/target)
 #
 #
-connect await HTTP_REQUEST_HEADERS_RECEIVED
+connect await HTTP_REQUEST_RECEIVED
         "agrona://stream/bidirectional"
         option agrona:reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
         option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
-# begin frame (with http headers)
+# begin frame (with http response headers)
 write [0x00 0x00 0x00 0x01]
-write ${newTargetOutputEstId}
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${targetCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "404"
-write [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
-write [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
-write [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
-write [0x00] [0x0e] "content-length" [0x03] "147"
+      ${newTargetOutputEstId}
+      [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+      ${targetCorrelationId1}
+      [0x00] [0x07] ":status" [0x03] "200"
+      [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+      [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+      [0x00] [0x0c] "content-type" [0x18] "text/html; charset=UTF-8"
+      [0x00] [0x0e] "content-length" [0x02] "61"
 write flush
 
 # window frame
@@ -79,11 +91,12 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputEstId}
 read [0..4]
 
-# data frame (with http payload)
+# data frame (with http response payload)
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId}
-write [0x00 0x3d]
-write "<html><head></head><body><h1>404 Not Found</h1></body></html>"
+      ${newTargetOutputEstId}
+      [0x00 0x3c]
+      "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
 write flush
 
 # window frame
@@ -91,7 +104,15 @@ read [0x40 0x00 0x00 0x02]
 read ${newTargetOutputEstId}
 read [0..4]
 
-# end frame
-write [0x00 0x00 0x00 0x03]
-write ${newTargetOutputEstId}
+# data frame (with http response payload)
+write [0x00 0x00 0x00 0x02]
+      ${newTargetOutputEstId}
+      [0x00 0x35]
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
 write flush
+
+# window frame
+read [0x40 0x00 0x00 0x02]
+read ${newTargetOutputEstId}
+read [0..4]

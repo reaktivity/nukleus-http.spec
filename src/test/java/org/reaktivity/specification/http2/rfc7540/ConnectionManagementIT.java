@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http2.streams.server.rfc7540;
+package org.reaktivity.specification.http2.rfc7540;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,22 +26,20 @@ import org.kaazing.k3po.junit.rules.K3poRule;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
-public class ConnectionManagement1IT
+public class ConnectionManagementIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http2/streams/rfc7540/connection.management");
+        .addScriptRoot("streams", "org/reaktivity/specification/http2/rfc7540/connection.management");
 
-    private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
+    private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     @Rule
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
     @Specification({
-            "${streams}/http.get.exchange/server/rfc-client",
-            "${streams}/http.get.exchange/server/rfc-server",
-            "${streams}/http.get.exchange/server/cooked-client",
-            "${streams}/http.get.exchange/server/cooked-server"
+            "${streams}/http.get.exchange/client",
+            "${streams}/http.get.exchange/server",
     })
     public void httpGetExchange() throws Exception
     {

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http2.streams.server.rfc7540;
+package org.reaktivity.specification.nukleus.http2.streams.rfc7540;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,9 +47,9 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-            "${streams}/continuation.frames/server/source",
-            "${streams}/continuation.frames/server/nukleus",
-            "${streams}/continuation.frames/server/target" })
+            "${streams}/continuation.frames/source",
+            "${streams}/continuation.frames/nukleus",
+            "${streams}/continuation.frames/target" })
     public void continuationFrames() throws Exception
     {
         k3po.start();
