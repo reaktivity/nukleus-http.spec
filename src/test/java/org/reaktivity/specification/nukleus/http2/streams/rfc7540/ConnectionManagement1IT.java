@@ -48,4 +48,16 @@ public class ConnectionManagement1IT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/http.post.exchange/client",
+            "${streams}/http.post.exchange/server"
+    })
+    public void httpPostExchange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }
