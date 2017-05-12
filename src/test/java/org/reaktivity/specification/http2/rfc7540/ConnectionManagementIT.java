@@ -29,7 +29,7 @@ import static org.junit.rules.RuleChain.outerRule;
 public class ConnectionManagementIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("streams", "org/reaktivity/specification/http2/rfc7540/connection.management");
+        .addScriptRoot("spec", "org/reaktivity/specification/http2/rfc7540/connection.management");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
@@ -38,8 +38,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/connection.established/client",
-            "${streams}/connection.established/server",
+            "${spec}/connection.established/client",
+            "${spec}/connection.established/server",
     })
     public void connectionEstablished() throws Exception
     {
@@ -50,8 +50,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/http.get.exchange/client",
-            "${streams}/http.get.exchange/server",
+            "${spec}/http.get.exchange/client",
+            "${spec}/http.get.exchange/server",
     })
     public void httpGetExchange() throws Exception
     {
@@ -62,8 +62,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/http.post.exchange/client",
-            "${streams}/http.post.exchange/server",
+            "${spec}/http.post.exchange/client",
+            "${spec}/http.post.exchange/server",
     })
     public void httpPostExchange() throws Exception
     {
@@ -74,8 +74,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/multiple.data.frames/client",
-            "${streams}/multiple.data.frames/server",
+            "${spec}/multiple.data.frames/client",
+            "${spec}/multiple.data.frames/server",
     })
     public void multipleDataFrames() throws Exception
     {
@@ -86,8 +86,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/connection.has.two.streams/client",
-            "${streams}/connection.has.two.streams/server",
+            "${spec}/connection.has.two.streams/client",
+            "${spec}/connection.has.two.streams/server",
     })
     public void connectionHasTwoStreams() throws Exception
     {

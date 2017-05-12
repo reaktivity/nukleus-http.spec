@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http2.streams.rfc7540;
+package org.reaktivity.specification.http2.rfc7540;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.junit.rules.RuleChain.outerRule;
 public class MessageFormatIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("nukleus", "org/reaktivity/specification/nukleus/http2/streams/rfc7540/message.format");
+        .addScriptRoot("spec", "org/reaktivity/specification/http2/rfc7540/message.format");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
@@ -38,8 +38,8 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-            "${nukleus}/continuation.frames/client",
-            "${nukleus}/continuation.frames/server"
+            "${spec}/continuation.frames/client",
+            "${spec}/continuation.frames/server",
     })
     public void continuationFrames() throws Exception
     {
