@@ -47,19 +47,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/connection.has.two.streams/source",
-            "${streams}/connection.has.two.streams/nukleus",
-            "${streams}/connection.has.two.streams/target" })
-    public void connectionHasTwoStreams() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
             "${streams}/http.push.promise/source",
             "${streams}/http.push.promise/nukleus",
             "${streams}/http.push.promise/target" })

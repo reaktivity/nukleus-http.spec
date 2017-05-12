@@ -72,4 +72,16 @@ public class ConnectionManagement1IT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/connection.has.two.streams/client",
+            "${streams}/connection.has.two.streams/server"
+    })
+    public void connectionHasTwoStreams() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }
