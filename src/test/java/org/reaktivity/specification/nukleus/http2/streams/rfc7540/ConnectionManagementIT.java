@@ -47,19 +47,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${streams}/http.push.promise/source",
-            "${streams}/http.push.promise/nukleus",
-            "${streams}/http.push.promise/target" })
-    public void pushResources() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
             "${streams}/push.promise.on.different.stream/source",
             "${streams}/push.promise.on.different.stream/nukleus",
             "${streams}/push.promise.on.different.stream/target" })

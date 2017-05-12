@@ -84,4 +84,16 @@ public class ConnectionManagement1IT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/http.push.promise/client",
+            "${streams}/http.push.promise/server"
+    })
+    public void pushResources() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }

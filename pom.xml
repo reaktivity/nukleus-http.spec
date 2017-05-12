@@ -44,11 +44,11 @@
     <checkstyle.suppressions.location>src/conf/checkstyle/suppressions.xml</checkstyle.suppressions.location>
 
     <junit.version>4.12</junit.version>
-    <k3po.version>3.0.0-alpha-72</k3po.version>
+    <k3po.version>develop-SNAPSHOT</k3po.version>
     <nukleus.spec.version>0.6</nukleus.spec.version>
     <nukleus.http.spec.version>0.9</nukleus.http.spec.version>
     <nukleus.plugin.version>0.7.3</nukleus.plugin.version>
-    <k3po.nukleus.ext.version>0.3</k3po.nukleus.ext.version>
+    <k3po.nukleus.ext.version>develop-SNAPSHOT</k3po.nukleus.ext.version>
   </properties>
 
   <dependencies>
