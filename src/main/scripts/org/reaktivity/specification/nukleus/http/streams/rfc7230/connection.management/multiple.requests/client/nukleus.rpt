@@ -31,9 +31,9 @@ property newTargetCorrelationId1 ${nuklei:newCorrelationId()}
 property newTargetCorrelationId2 ${nuklei:newCorrelationId()}
 
 connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceOutput.buffer)}
-        option writer ${agrona:oneToOneWriter(sourceOutput.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceOutput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceOutput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -79,9 +79,9 @@ closed
 
 
 connect await ROUTED_OUTPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetOutput.throttle)}
-        option writer ${agrona:oneToOneWriter(targetOutput.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetOutput.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutput.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
@@ -137,9 +137,9 @@ closed
 
 
 connect await ROUTED_INPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInputEst.buffer)}
-        option writer ${agrona:oneToOneWriter(targetInputEst.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetInputEst.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetInputEst.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -195,9 +195,9 @@ closed
 
 
 connect await HTTP_RESPONSE_ONE_DECODED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(sourceInputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(sourceInputEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceInputEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceInputEst.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]

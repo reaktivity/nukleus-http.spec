@@ -22,9 +22,9 @@ property targetOutputEst ${nuklei.streams("http", "target")}
 property newTargetOutputEstId ${nuklei:newStreamId()}
 
 connect await ROUTED_INPUT
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetInput.buffer)}
-        option writer ${agrona:oneToOneWriter(targetInput.throttle)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetInput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetInput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -63,9 +63,9 @@ close
 closed
 
 connect await HTTP_REQUEST_RECEIVED
-        agrona://stream/bidirectional
-        option reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
-        option writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
