@@ -16,6 +16,9 @@
 
 property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
+#
+# First client-initiated stream
+#
 connect await ROUTED_INPUT
         "nukleus://target/streams/http2"
         option nukleus:route ${newTargetInputRef}
@@ -60,6 +63,28 @@ read "<html>"
 
 
 #
+# Second client-initiated stream
+#
+connect await ROUTED_INPUT
+        "nukleus://target/streams/http2"
+        option nukleus:route ${newTargetInputRef}
+        option nukleus:window 8192
+        option nukleus:transmission "duplex"
+
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+                        [0x00] [0x07] ":scheme" [0x04] "http"
+                        [0x00] [0x05] ":path" [0x05] "/push"
+                        [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+                       [0x00] [0x06] "server" [0x14] "CERN/3.0 libwww/2.17"
+                       [0x00] [0x04] "date" [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"
+
+connected
+
+
+
+#
 # First promised request
 #
 connect await FIRST_PUSH_PROMISE_RECEIVED
@@ -80,6 +105,11 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
                        [0x00] [0x0e] "content-length" [0x02] "31"
 
 connected
+
+read nukleus:data.ext [0x00] [0x07] ":method" [0x03] "GET"
+                      [0x00] [0x07] ":scheme" [0x04] "http"
+                      [0x00] [0x05] ":path" [0x0b] "/widget.css"
+                      [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read "h1 {"
      "    color: blue;"

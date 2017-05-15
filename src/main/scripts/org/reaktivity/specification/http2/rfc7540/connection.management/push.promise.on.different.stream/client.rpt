@@ -56,7 +56,7 @@ write [0x00 0x00 0x00]                  # length = 0
       [0x00 0x00 0x00 0x00]             # stream_id = 0
 write flush
 
-# ==================== HTTP2 stream-id=1  =================
+# First client-initiated request stream-id=1
 write [0x00 0x00 0x13]                  # length = 19
       [0x01]                            # HEADERS frame
       [0x04]                            # END_HEADERS
@@ -74,6 +74,17 @@ write [0x00 0x00 0x0c]                  # length = 12
       "Hello, world"
 write flush
 
+# Second client-initiated request stream-id=3
+write [0x00 0x00 0x19]                  # length = 25
+      [0x01]                            # HEADERS frame
+      [0x05]                            # END_HEADERS|END_STREAM
+      [0x00 0x00 0x00 0x03]             # stream_id = 3
+      [0x82]                            # :method: GET
+      [0x86]                            # :scheme: http
+      [0x04] [0x05] "/push"             # :path: /push
+      [0x01] [0x0e] "localhost:8080"    # :authority: localhost:8080
+write flush
+
 read [0x00 0x00 0x59]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
@@ -83,6 +94,14 @@ read [0x00 0x00 0x59]                                      # length
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
      [0x0f 0x0d] [0x03] "113"                              # content-length
+
+read [0x00 0x00 0x38]                                      # length
+     [0x01]                                                # HTTP2 HEADERS frame
+     [0x04]                                                # END_HEADERS
+     [0x00 0x00 0x00 0x03]                                 # stream_id=3
+     [0x88]                                                # :status: 200
+     [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
+     [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
 
 # First http2 PUSH_PROMISE frame
 read [0x00 0x00 0x22]                          # length = 35
@@ -137,6 +156,17 @@ read [0x00 0x00 0x4f]                                      # length
      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
      [0x0f 0x10] [0x0f] "text/javascript"                  # content-type
      [0x0f 0x0d] [0x02] "15"                               # content-length
+
+# Third PUSH_PROMISE on stream-id=3
+read [0x00 0x00 0x23]                          # length = 35
+     [0x05]                                    # HTTP2 PUSH_PROMISE frame
+     [0x04]                                    # END_HEADERS
+     [0x00 0x00 0x00 0x03]                     # stream_id=3
+     [0x00 0x00 0x00 0x06]                     # promised_stream_id=6
+     [0x82]                                    # :method: GET
+     [0x86]                                    # :scheme: http
+     [0x04] [0x0b] "/widget.css"               # :path: /widget.css
+     [0x01] [0x0e] "localhost:8080"            # :authority: localhost:8080
 
 # First promised response DATA stream-id=2
 read [0x00 0x00 0x15]                          # length = 21
