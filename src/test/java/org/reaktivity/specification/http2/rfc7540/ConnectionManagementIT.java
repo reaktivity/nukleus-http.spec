@@ -108,4 +108,16 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${spec}/push.promise.on.different.stream/client",
+            "${spec}/push.promise.on.different.stream/server",
+    })
+    public void pushPromiseOnDifferentStream() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }

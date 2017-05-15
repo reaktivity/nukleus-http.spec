@@ -25,36 +25,86 @@ import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
-import org.reaktivity.specification.nukleus.NukleusRule;
 
 public class ConnectionManagementIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http2/streams/rfc7540/connection.management");
+            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http2/streams/rfc7540/connection.management");
 
-    private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
-
-    private final NukleusRule nukleus = new NukleusRule()
-        .directory("target/nukleus-itests")
-        .streams("http2", "source")
-        .streams("source", "http2#source")
-        .streams("target", "http2#source")
-        .streams("http2", "target")
-        .streams("source", "http2#target");
+    private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     @Rule
-    public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
+    public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
     @Specification({
-            "${streams}/push.promise.on.different.stream/source",
-            "${streams}/push.promise.on.different.stream/nukleus",
-            "${streams}/push.promise.on.different.stream/target" })
+            "${streams}/http.get.exchange/client",
+            "${streams}/http.get.exchange/server"
+    })
+    public void httpGetExchange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/http.post.exchange/client",
+            "${streams}/http.post.exchange/server"
+    })
+    public void httpPostExchange() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/multiple.data.frames/client",
+            "${streams}/multiple.data.frames/server"
+    })
+    public void multipleDataFrames() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/connection.has.two.streams/client",
+            "${streams}/connection.has.two.streams/server"
+    })
+    public void connectionHasTwoStreams() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/http.push.promise/client",
+            "${streams}/http.push.promise/server"
+    })
+    public void pushResources() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/push.promise.on.different.stream/client",
+            "${streams}/push.promise.on.different.stream/server"
+    })
     public void pushPromiseOnDifferentStream() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
