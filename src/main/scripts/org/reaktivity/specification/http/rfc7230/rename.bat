@@ -1,3 +1,19 @@
+@REM
+@REM Copyright 2016-2017 The Reaktivity Project
+@REM
+@REM The Reaktivity Project licenses this file to you under the Apache License,
+@REM version 2.0 (the "License"); you may not use this file except in compliance
+@REM with the License. You may obtain a copy of the License at:
+@REM
+@REM   http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM Unless required by applicable law or agreed to in writing, software
+@REM distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+@REM WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+@REM License for the specific language governing permissions and limitations
+@REM under the License.
+@REM
+
 mv architecture/request.uri.with.percent.chars/request.rpt architecture/request.uri.with.percent.chars/client.rpt
 mv architecture/request.uri.with.percent.chars/response.rpt architecture/request.uri.with.percent.chars/server.rpt
 mv architecture/request.uri.with.user.info/request.rpt architecture/request.uri.with.user.info/client.rpt
