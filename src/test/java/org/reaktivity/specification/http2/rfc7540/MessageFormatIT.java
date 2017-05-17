@@ -48,4 +48,16 @@ public class MessageFormatIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${spec}/dynamic.table.requests/client",
+            "${spec}/dynamic.table.requests/server",
+    })
+    public void dynamicTableRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }
