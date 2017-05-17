@@ -163,8 +163,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "client.must.not.reuse.tcp.connection.when.receives.connection.close/request",
-        "client.must.not.reuse.tcp.connection.when.receives.connection.close/response" })
+        "${scripts}/first.pipelined.response.has.connection.close/client",
+        "${scripts}/first.pipelined.response.has.connection.close/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void clientMustNotReuseTcpConnectionWhenReceivesConnectionClose() throws Exception
     {
         k3po.start();
@@ -184,8 +185,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/request",
-        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/response" })
+        "${scripts}/server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/request",
+        "${scripts}/server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/response" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void serverMustCloseItsHalfOfConnectionAfterSendingResponseIfItReceivesAClose() throws Exception
     {
         k3po.start();

@@ -19,21 +19,21 @@ TODO: response.version.not.http.1.x
 
 ### connection.management
 
-nukleus-http.spec                        | k3po
----------------------------------        | ----
-request.with.connection.close            | client.must.close.connection.after.request.with.connection.close
-response.with.connection.close           | server.must.close.connection.after.response.with.connection.close
-response.status.101.with.upgrade         | server.that.is.upgrading.must.send.a.101.response
-multiple.requests.same.connection        | connections.should.persist.by.default
-multiple.requests.pipelined              | server.should.accept.http.pipelining
-multiple.requests.pipelined.with.retry   | client.with.pipelining.must.not.retry.pipelining.immediately.after.failure
-TBD                                      | client.must.not.reuse.tcp.connection.when.receives.connection.close
-TBD                                      | server.getting.upgrade.request.must.respond.with.upgrade.header
-TBD                                      | server.that.sends.upgrade.required.must.include.upgrade.header
-request.with.connection.header.forwarded | intermediary.must.remove.connection.header.on.forward.request
-TBD                                      | proxy.must.not.retry.non.idempotent.requests
-TBD                                      | reverse.proxy.connection.established
-TBD                                      | server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close
+nukleus-http.spec                             | k3po
+---------------------------------             | ----
+request.with.connection.close                 | client.must.close.connection.after.request.with.connection.close
+response.with.connection.close                | server.must.close.connection.after.response.with.connection.close
+response.status.101.with.upgrade              | server.that.is.upgrading.must.send.a.101.response
+multiple.requests.same.connection             | connections.should.persist.by.default
+multiple.requests.pipelined                   | server.should.accept.http.pipelining
+multiple.requests.pipelined.with.retry        | client.with.pipelining.must.not.retry.pipelining.immediately.after.failure
+first.pipelined.response.has.connection.close | client.must.not.reuse.tcp.connection.when.receives.connection.close
+TBD                                           | server.getting.upgrade.request.must.respond.with.upgrade.header
+TBD                                           | server.that.sends.upgrade.required.must.include.upgrade.header
+request.with.connection.header.forwarded      | intermediary.must.remove.connection.header.on.forward.request
+TBD                                           | proxy.must.not.retry.non.idempotent.requests
+TBD                                           | reverse.proxy.connection.established
+TBD                                           | server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close
                                  
 ### message.format
 
