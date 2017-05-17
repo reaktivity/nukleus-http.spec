@@ -14,9 +14,16 @@
 # under the License.
 #
 
-accept "tcp://localhost:8080"
+property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
+
+accept ${serverTransport}
+  option nukleus:route  ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 accepted
 connected
+
 read "GET / HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "Connection: close" "\r\n"
@@ -26,5 +33,5 @@ write "HTTP/1.1 200 OK" "\r\n"
 write "Content-Length: " "0" "\r\n"
 write "\r\n"
 
-closed
+read closed
 

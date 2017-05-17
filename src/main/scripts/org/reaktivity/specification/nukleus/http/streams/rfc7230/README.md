@@ -21,17 +21,17 @@ TODO: response.version.not.http.1.x
 
 nukleus-http.spec                | k3po
 -------------------------------- | ----
+request.with.connection.close    | client.must.close.connection.after.request.with.connection.close
+response.with.connection.close   | server.must.close.connection.after.response.with.connection.close
 response.status.101.with.upgrade | server.that.is.upgrading.must.send.a.101.response
 TBD                              | server.getting.upgrade.request.must.respond.with.upgrade.header
 TBD                              | server.that.sends.upgrade.required.must.include.upgrade.header
-TBD                              | client.must.close.connection.after.request.with.connection.close
 TBD                              | client.must.not.reuse.tcp.connection.when.receives.connection.close
 TBD                              | client.with.pipelining.must.not.retry.pipelining.immediately.after.failure
 TBD                              | connections.should.persist.by.default
 TBD                              | intermediary.must.remove.connection.header.on.forward.request
 TBD                              | proxy.must.not.retry.non.idempotent.requests
 TBD                              | reverse.proxy.connection.established
-TBD                              | server.must.close.connection.after.response.with.connection.close
 TBD                              | server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close
 TBD                              | server.should.accept.http.pipelining
                                  
