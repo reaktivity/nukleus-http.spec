@@ -31,11 +31,7 @@ write "GET /request2 HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
-read "\r\n"
-read "request1"
-read closed
+aborted
 read notify REPLAY_REQUEST_2
 
 connect await REPLAY_REQUEST_2
@@ -44,6 +40,16 @@ connect await REPLAY_REQUEST_2
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
+
+# First request must now not be pipelined
+write "GET /request1 HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 8\r\n"
+read "\r\n"
+read "request1"
 
 write "GET /request2 HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
