@@ -52,6 +52,12 @@ public class ConnectionManagementIT
      * in either the request or the response header fields indicates that the sender is going to close the connection
      * after the current request/response is complete (Section 6.6).
      *
+     * See also <a href="https://tools.ietf.org/html/rfc7230#section-6.6">RFC 7230 section 6.6: Tear-down</a>. <blockquote> A
+     * server that receives a "close" connection option MUST initiate a close of the connection (see below) after it
+     * sends the final response to the request that contained "close". The server SHOULD send a "close" connection
+     * option in its final response on that connection. The server MUST NOT process any further requests received on
+     * that connection. </blockquote>
+     *
      * @throws Exception when K3PO is not started
      */
     @Test
@@ -59,7 +65,7 @@ public class ConnectionManagementIT
         "${scripts}/request.with.connection.close/client",
         "${scripts}/request.with.connection.close/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void clientMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
+    public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -166,34 +172,13 @@ public class ConnectionManagementIT
         "${scripts}/first.pipelined.response.has.connection.close/client",
         "${scripts}/first.pipelined.response.has.connection.close/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void clientMustNotReuseTcpConnectionWhenReceivesConnectionClose() throws Exception
+    public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
-
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.6">RFC 7230 section 6.6: Tear-down</a>. <blockquote> A
-     * server that receives a "close" connection option MUST initiate a close of the connection (see below) after it
-     * sends the final response to the request that contained "close". The server SHOULD send a "close" connection
-     * option in its final response on that connection. The server MUST NOT process any further requests received on
-     * that connection. </blockquote>
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "${scripts}/server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/request",
-        "${scripts}/server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/response" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverMustCloseItsHalfOfConnectionAfterSendingResponseIfItReceivesAClose() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.7">RFC 7230 section 6.7: Upgrade</a>. <blockquote> A
@@ -205,8 +190,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "server.getting.upgrade.request.must.respond.with.upgrade.header/request",
-        "server.getting.upgrade.request.must.respond.with.upgrade.header/response" })
+        "${scripts}/upgrade.request.and.response/client",
+        "${scripts}/upgrade.request.and.response/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
     {
         k3po.start();
@@ -223,8 +209,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "server.that.sends.upgrade.required.must.include.upgrade.header/request",
-        "server.that.sends.upgrade.required.must.include.upgrade.header/response" })
+        "${scripts}/request.and.upgrade.required.response/client",
+        "${scripts}/request.and.upgrade.required.response/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
     {
         k3po.start();
@@ -243,9 +230,10 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "server.that.is.upgrading.must.send.a.101.response/request",
-        "server.that.is.upgrading.must.send.a.101.response/response" })
-    public void serverThatIsUpgradingMustSendA100Response() throws Exception
+        "${scripts}/upgrade.request.and.response.with.data/client",
+        "${scripts}/upgrade.request.and.response.with.data/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

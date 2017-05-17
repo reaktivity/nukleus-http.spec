@@ -14,12 +14,22 @@
 # under the License.
 #
 
-connect "http://localhost:8080/"
+property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
+
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+accepted
 connected
-write http:method "GET"
-write http:header "Upgrade" "WebSocket"
-write http:header "Connection" "upgrade"
-write http:header "Host" "localhost:8080"
-read http:status "101" /.*/
-read http:header "Upgrade" "WebSocket"
+
+read http:method "GET"
+read http:header "Upgrade" /(?<upgradeHeader>.*)/
+read http:header "Connection" "upgrade" 
+
+write http:status "101" "Some Upgrade Protocol"
+write http:header "Upgrade" ${upgradeHeader}
+write flush
 
