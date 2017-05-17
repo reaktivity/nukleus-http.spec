@@ -14,9 +14,22 @@
 # under the License.
 #
 
-accept "http://localhost:8080/"
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+
+property serverConnect "nukleus://target/streams/http#source"
+property source "http"
+       
+accept ${serverConnect}
+       option nukleus:route ${newTargetInputRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
 connected
-read http:method "GET"
-read "hello world"
-read closed
+
+abort

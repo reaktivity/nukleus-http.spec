@@ -136,4 +136,17 @@ public class ArchitectureIT
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/response.version.missing/client",
+        "${scripts}/response.version.missing/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void responseVersionMissing() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }

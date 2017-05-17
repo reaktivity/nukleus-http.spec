@@ -8,13 +8,13 @@ nukleus-http.spec              | k3po
 request.and.response           | client.must.send.host.identifier
 request.header.host.missing    | inbound.must.reject.requests.missing.host.identifier 
 request.uri.with.user.info     | inbound.must.reject.requests.with.user.info.on.uri 
-request.version.http.1.2+      | inbound.must.reply.with.version.one.dot.one.when.received.higher.minor.version 
+request.version.1.2+           | inbound.must.reply.with.version.one.dot.one.when.received.higher.minor.version 
 request.version.missing        | inbound.must.send.version
 request.uri.with.percent.chars | inbound.should.allow.requests.with.percent.chars.in.uri
-request.version.not.http.1.x   | origin.server.should.send.505.on.major.version.not.equal.to.one
+request.version.not.1.x        | origin.server.should.send.505.on.major.version.not.equal.to.one
 request.version.invalid        | response.must.be.400.on.invalid.version
 TODO: response.version.invalid |
-TODO: response.version.missing | outbound.must.send.version
+response.version.missing       | outbound.must.send.version
 TODO: response.version.not.http.1.x
 
 ### connection.management
