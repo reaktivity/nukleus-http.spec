@@ -19,34 +19,29 @@ TODO: response.version.not.http.1.x
 
 ### connection.management
 
-nukleus-http.spec                | k3po
--------------------------------- | ----
-request.with.connection.close    | client.must.close.connection.after.request.with.connection.close
-response.with.connection.close   | server.must.close.connection.after.response.with.connection.close
-response.status.101.with.upgrade | server.that.is.upgrading.must.send.a.101.response
-TBD                              | server.getting.upgrade.request.must.respond.with.upgrade.header
-TBD                              | server.that.sends.upgrade.required.must.include.upgrade.header
-TBD                              | client.must.not.reuse.tcp.connection.when.receives.connection.close
-TBD                              | client.with.pipelining.must.not.retry.pipelining.immediately.after.failure
-TBD                              | connections.should.persist.by.default
-TBD                              | intermediary.must.remove.connection.header.on.forward.request
-TBD                              | proxy.must.not.retry.non.idempotent.requests
-TBD                              | reverse.proxy.connection.established
-TBD                              | server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close
-TBD                              | server.should.accept.http.pipelining
+nukleus-http.spec                        | k3po
+---------------------------------        | ----
+request.with.connection.close            | client.must.close.connection.after.request.with.connection.close
+response.with.connection.close           | server.must.close.connection.after.response.with.connection.close
+response.status.101.with.upgrade         | server.that.is.upgrading.must.send.a.101.response
+multiple.requests.same.connection        | connections.should.persist.by.default
+multiple.requests.pipelined              | server.should.accept.http.pipelining
+multiple.requests.pipelined.with.retry   | client.with.pipelining.must.not.retry.pipelining.immediately.after.failure
+TBD                                      | client.must.not.reuse.tcp.connection.when.receives.connection.close
+TBD                                      | server.getting.upgrade.request.must.respond.with.upgrade.header
+TBD                                      | server.that.sends.upgrade.required.must.include.upgrade.header
+request.with.connection.header.forwarded | intermediary.must.remove.connection.header.on.forward.request
+TBD                                      | proxy.must.not.retry.non.idempotent.requests
+TBD                                      | reverse.proxy.connection.established
+TBD                                      | server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close
                                  
 ### message.format
 
 nukleus-http.spec                       | k3po
 --------------------------------------- | ----
-request.fragmented                      | 
-request.fragmented.with.content.length  | 
-request.headers.too.long                | server.should.send.414.to.request.with.too.long.a.request[URI]
+(moved to flow.control)                 | server.should.send.414.to.request.with.too.long.a.request[URI]
 request.with.content.length             | inbound.should.process.request.with.content.length
 request.with.headers                    | inbound.should.accept.headers
-response.fragmented                     | 
-response.fragmented.with.content.length |
-response.headers.too.long               | 
 response.with.content.length            | outbound.should.process.response.with.content.length
 response.with.headers                   | outbound.should.accept.headers
 architecture/request.and.response       | outbound.should.accept.no.headers
@@ -58,9 +53,6 @@ TBD                                     | inbound.on.receiving.field.with.length
 TBD                                     | inbound.should.reject.invalid.request.line
 TBD                                     | inbound.should.reject.request.with.whitespace.between.start.line.and.first.header
 TBD                                     | non.http.request.to.http.server.should.be.responded.to.with.400
-TBD                                     | on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon
-TBD                                     | proxy.or.gateway.must.reject.obs.in.header.value
-TBD                                     | proxy.should.preserve.unrecongnized.headers
 TBD                                     | request.must.start.with.request.line
 TBD                                     | robust.server.should.allow.extra.CRLF.after.request.line
 TBD                                     | server.must.reject.header.with.space.between.header.name.and.colon
@@ -69,3 +61,18 @@ TBD                                     | server.should.reject.obs.in.header.val
 TBD                                     | server.should.send.501.to.unimplemented.methods
 TBD                                     | server.should.send.501.to.unknown.transfer.encoding
 TBD                                     | server.should.send.status.line.in.start.line
+TBD                                     | on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon
+TBD                                     | proxy.or.gateway.must.reject.obs.in.header.value
+TBD                                     | proxy.should.preserve.unrecongnized.headers
+
+### flow.control
+
+nukleus-http.spec                       | k3po
+--------------------------------------- | ----
+request.fragmented                      | 
+request.fragmented.with.content.length  | 
+request.headers.too.long                | server.should.send.414.to.request.with.too.long.a.request[URI]
+response.fragmented                     | 
+response.fragmented.with.content.length |
+response.headers.too.long               | 
+

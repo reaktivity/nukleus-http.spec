@@ -14,36 +14,38 @@
 # under the License.
 #
 
-# ideally this would be http based so the reads would be consistent
-connect "tcp://localhost:8080"
-connected
-write "GET /request1 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
+property newSourceInputRef  ${nuklei:newReferenceId()} # external
 
-write "GET /request2 HTTP/1.1" "\r\n"
+connect await ROUTED_INPUT 
+        "nukleus://http/streams/source"
+  option nukleus:route ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+connected
+
+# Request 1
+write "GET / HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 0" "\r\n"
 read "\r\n"
-read "request1"
-closed
-read notify REPLAY_REQUEST_2
 
-connect await REPLAY_REQUEST_2
-        "tcp://localhost:8080"
-connected
-
-write "GET /request2 HTTP/1.1" "\r\n"
+# Request 2
+write "GET / HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
-write "Connection: close" "\r\n"
 write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 0" "\r\n"
 read "\r\n"
-read "request2"
 
+# Request 3
+write "GET / HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 0" "\r\n"
 

@@ -14,9 +14,17 @@
 # under the License.
 #
 
+property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
+
 accept "http://localhost:8080/request1"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 accepted
 connected
+
 read http:method "GET"
 read closed
 write http:status "200" "OK"
@@ -25,12 +33,10 @@ write "request1"
 write close
 
 accept "http://localhost:8080/request2"
-accepted
-connected
-read http:method "GET"
-read closed
-abort
-
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 accepted
 connected
 read http:method "GET"
@@ -39,4 +45,18 @@ write http:status "200" "OK"
 write http:content-length
 write "request2"
 write close
-closed
+
+accept "http://localhost:8080/request3"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newSourceInputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+accepted
+connected
+read http:method "GET"
+read closed
+write http:status "200" "OK"
+write http:content-length
+write "request3"
+write close
+

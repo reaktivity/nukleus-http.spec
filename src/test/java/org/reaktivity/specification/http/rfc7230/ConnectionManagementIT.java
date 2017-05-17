@@ -102,8 +102,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "connections.should.persist.by.default/client",
-        "connections.should.persist.by.default/backend" })
+        "${scripts}/multiple.requests.same.connection/client",
+        "${scripts}/multiple.requests.same.connection/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void connectionsShouldPersistByDefault() throws Exception
     {
         k3po.start();
@@ -111,58 +112,6 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
-
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.1">RFC 7230 section 6.1: Connection</a>.
-     *
-     * In order to avoid confusing downstream recipients, a proxy or gateway MUST remove or replace any received
-     * connection options before forwarding the message.
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "intermediary.must.remove.connection.header.on.forward.request/client",
-        "intermediary.must.remove.connection.header.on.forward.request/intermediary",
-        "intermediary.must.remove.connection.header.on.forward.request/server" })
-    public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
-
-
-    @Test
-    @Specification({
-            "reverse.proxy.connection.established/client",
-            "reverse.proxy.connection.established/proxy",
-            "reverse.proxy.connection.established/server" })
-    public void reverseProxyConnectionEstablished() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
-
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.1">RFC 7230 section 6.3.1: Retrying Requests</a>.
-     *
-     * A proxy MUST NOT automatically retry non-idempotent requests.
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "proxy.must.not.retry.non.idempotent.requests/client",
-        "proxy.must.not.retry.non.idempotent.requests/proxy",
-        "proxy.must.not.retry.non.idempotent.requests/server" })
-    public void proxyMustNotRetryNonIdempotentRequests() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.2">RFC 7230 section 6.3.2: Pipelining</a>.
@@ -173,8 +122,9 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "server.should.accept.http.pipelining/request",
-        "server.should.accept.http.pipelining/response" })
+        "${scripts}/multiple.requests.pipelined/client",
+        "${scripts}/multiple.requests.pipelined/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void serverShouldAcceptHttpPipelining() throws Exception
     {
         k3po.start();
@@ -193,29 +143,10 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "client.with.pipelining.must.not.retry.pipelining.immediately.after.failure/request",
-        "client.with.pipelining.must.not.retry.pipelining.immediately.after.failure/response" })
+        "${scripts}/multiple.requests.pipelined.with.retry/client",
+        "${scripts}/multiple.requests.pipelined.with.retry/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
-
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.6">RFC 7230 section 6.6: Tear-down</a>. <blockquote> A
-     * server that receives a "close" connection option MUST initiate a close of the connection (see below) after it
-     * sends the final response to the request that contained "close". The server SHOULD send a "close" connection
-     * option in its final response on that connection. The server MUST NOT process any further requests received on
-     * that connection. </blockquote>
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/request",
-        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/response" })
-    public void serverMustCloseItsHalfOfConnectionAfterSendingResponseIfItReceivesAClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -235,6 +166,27 @@ public class ConnectionManagementIT
         "client.must.not.reuse.tcp.connection.when.receives.connection.close/request",
         "client.must.not.reuse.tcp.connection.when.receives.connection.close/response" })
     public void clientMustNotReuseTcpConnectionWhenReceivesConnectionClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.6">RFC 7230 section 6.6: Tear-down</a>. <blockquote> A
+     * server that receives a "close" connection option MUST initiate a close of the connection (see below) after it
+     * sends the final response to the request that contained "close". The server SHOULD send a "close" connection
+     * option in its final response on that connection. The server MUST NOT process any further requests received on
+     * that connection. </blockquote>
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/request",
+        "server.must.close.its.half.of.connection.after.sending.response.if.it.receives.a.close/response" })
+    public void serverMustCloseItsHalfOfConnectionAfterSendingResponseIfItReceivesAClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -292,6 +244,61 @@ public class ConnectionManagementIT
         "server.that.is.upgrading.must.send.a.101.response/request",
         "server.that.is.upgrading.must.send.a.101.response/response" })
     public void serverThatIsUpgradingMustSendA100Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.1">RFC 7230 section 6.1: Connection</a>.
+     *
+     * In order to avoid confusing downstream recipients, a proxy or gateway MUST remove or replace any received
+     * connection options before forwarding the message.
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "${scripts}/request.with.connection.header.forwarded/client",
+        "${scripts}/request.with.connection.header.forwarded/intermediary",
+        "${scripts}/request.with.connection.header.forwarded/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+
+    @Test
+    @Specification({
+            "reverse.proxy.connection.established/client",
+            "reverse.proxy.connection.established/proxy",
+            "reverse.proxy.connection.established/server" })
+    public void reverseProxyConnectionEstablished() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.1">RFC 7230 section 6.3.1: Retrying Requests</a>.
+     *
+     * A proxy MUST NOT automatically retry non-idempotent requests.
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "proxy.must.not.retry.non.idempotent.requests/client",
+        "proxy.must.not.retry.non.idempotent.requests/proxy",
+        "proxy.must.not.retry.non.idempotent.requests/server" })
+    public void proxyMustNotRetryNonIdempotentRequests() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
