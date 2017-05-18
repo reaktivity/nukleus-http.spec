@@ -98,7 +98,6 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
-
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3">RFC 7230 section 6.3: Persistence</a>.
      *
@@ -112,6 +111,25 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.same.connection/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void connectionsShouldPersistByDefault() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3">RFC 7230 section 6.3: Persistence</a>.
+     *
+     * HTTP implementations SHOULD support persistent connections.
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "${scripts}/multiple.requests.different.connections/client",
+        "${scripts}/multiple.requests.different.connections/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void multipleRequestsDifferentConnections() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

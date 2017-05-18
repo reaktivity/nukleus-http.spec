@@ -32,7 +32,8 @@ write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 0" "\r\n"
 write "\r\n"
 
-
+accepted
+connected
 read "GET /request2 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
@@ -41,7 +42,8 @@ write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 0" "\r\n"
 write "\r\n"
 
-
+accepted
+connected
 read "GET /request3 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"

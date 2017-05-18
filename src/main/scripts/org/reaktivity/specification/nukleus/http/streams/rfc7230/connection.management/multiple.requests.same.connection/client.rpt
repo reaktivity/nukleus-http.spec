@@ -23,7 +23,7 @@ connect "nukleus://http/streams/source"
 
 write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
 write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request1"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
@@ -40,7 +40,7 @@ connect "nukleus://http/streams/source"
 
 write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
 write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request2"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
@@ -57,7 +57,7 @@ connect "nukleus://http/streams/source"
 
 write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
 write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request3"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
