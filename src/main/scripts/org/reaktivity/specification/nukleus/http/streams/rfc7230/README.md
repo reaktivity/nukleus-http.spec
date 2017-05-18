@@ -31,7 +31,7 @@ first.pipelined.response.has.connection.close | client.must.not.reuse.tcp.connec
 upgrade.request.and.response                  | server.getting.upgrade.request.must.respond.with.upgrade.header
 upgrade.request.and.response.with.data        | server.that.is.upgrading.must.send.a.101.response
 request.and.upgrade.required.response         | server.that.sends.upgrade.required.must.include.upgrade.header
-request.with.connection.header.forwarded      | intermediary.must.remove.connection.header.on.forward.request
+TODO: proxy.must.not.forward.connection.header| intermediary.must.remove.connection.header.on.forward.request
 TBD                                           | proxy.must.not.retry.non.idempotent.requests
 TBD                                           | reverse.proxy.connection.established
                                  

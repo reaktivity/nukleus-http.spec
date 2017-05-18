@@ -16,42 +16,20 @@
 
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_INPUT 
-        "nukleus://http/streams/source"
+connect await ROUTED_INPUT
+        "http://localhost:8080/"
+  option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newSourceInputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
 
-write "GET /request1 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
+write http:method "GET"
+write http:header "Upgrade" "WebSocket"
+write http:header "Connection" "upgrade"
+write http:header "Host" "localhost:8080"
 
-write "GET /request2 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
+read http:status "101" /.*/
+read http:header "Upgrade" "WebSocket"
 
-write "GET /request3 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
-
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
-read "\r\n"
-read "request1"
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
-read "\r\n"
-read "request2"
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
-read "\r\n"
-read "request3"
-
-close 
-closed
-
-
+read "initial data from server"

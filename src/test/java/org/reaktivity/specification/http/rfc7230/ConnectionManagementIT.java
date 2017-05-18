@@ -240,58 +240,6 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    // Proxy tests only have "cooked" versions
 
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.1">RFC 7230 section 6.1: Connection</a>.
-     *
-     * In order to avoid confusing downstream recipients, a proxy or gateway MUST remove or replace any received
-     * connection options before forwarding the message.
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "${scripts}/request.with.connection.header.forwarded/client",
-        "${scripts}/request.with.connection.header.forwarded/intermediary",
-        "${scripts}/request.with.connection.header.forwarded/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
-
-
-    @Test
-    @Specification({
-            "reverse.proxy.connection.established/client",
-            "reverse.proxy.connection.established/proxy",
-            "reverse.proxy.connection.established/server" })
-    public void reverseProxyConnectionEstablished() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
-
-
-    /**
-     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.1">RFC 7230 section 6.3.1: Retrying Requests</a>.
-     *
-     * A proxy MUST NOT automatically retry non-idempotent requests.
-     *
-     * @throws Exception when K3PO is not started
-     */
-    @Test
-    @Specification({
-        "proxy.must.not.retry.non.idempotent.requests/client",
-        "proxy.must.not.retry.non.idempotent.requests/proxy",
-        "proxy.must.not.retry.non.idempotent.requests/server" })
-    public void proxyMustNotRetryNonIdempotentRequests() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.finish();
-    }
 }

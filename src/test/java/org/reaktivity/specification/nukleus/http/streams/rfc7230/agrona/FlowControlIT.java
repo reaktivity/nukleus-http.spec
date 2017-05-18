@@ -30,7 +30,7 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class FlowControlIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/flow.control");
+            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/flow.control/agrona");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
