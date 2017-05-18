@@ -17,7 +17,6 @@
 property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-property source "http"
 
 accept ${serverConnect}
        option nukleus:route ${newTargetInputRef}

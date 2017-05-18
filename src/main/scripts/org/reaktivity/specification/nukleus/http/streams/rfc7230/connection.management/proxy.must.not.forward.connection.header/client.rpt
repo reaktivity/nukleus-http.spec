@@ -14,10 +14,24 @@
 # under the License.
 #
 
-connect "http://localhost:8080/intermediary"
-connected
-write http:method "GET"
-write http:header "Connection" "aNeverImplementedClientConnectionHeader"
-write flush
-read http:header "Connection" "aNeverImplementedServerConnectionHeader"
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
+connect "nukleus://http/streams/source"
+    option nukleus:route ${newTargetInputRef}
+    option nukleus:window 8192
+    option nukleus:transmission "duplex"
+
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write nukleus:begin.ext [0x00] [0x0a] "connection" [0x09] "connectionOption1,close"
+write nukleus:begin.ext [0x00] [0x11] "connectionOption1" [0x06] "value1"
+
+read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+read nukleus:begin.ext [0x00] [0x0a] "connection" [0x05] "close"
+
+connected
+
+write close
+read closed

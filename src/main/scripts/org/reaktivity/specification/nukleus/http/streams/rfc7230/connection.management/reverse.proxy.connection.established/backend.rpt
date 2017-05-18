@@ -16,20 +16,27 @@
 
 property newTargetInputRef ${nuklei:newReferenceId()} # external scope
 
-connect "nukleus://http/streams/source"
-    option nukleus:route ${newTargetInputRef}
-    option nukleus:window 8192
-    option nukleus:transmission "duplex"
+property serverConnect "nukleus://target/streams/http#source"
+property source "http"
 
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x0d] "/intermediary"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0a] "proxy:8080"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
+accept ${serverConnect}
+       option nukleus:route ${newTargetInputRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
+accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "502"
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x0b] "/index.html"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0c] "backend:8080"
+
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "24"
 
 connected
 
-write "This is some data"
+write "<html><body>Hello World!</body></html>"
 write close
+read closed
+
+

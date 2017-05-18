@@ -14,32 +14,46 @@
 # under the License.
 #
 
-accept "tcp://localhost:8080"
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+
+property serverConnect "nukleus://target/streams/http#source"
+property source "http"
+
+accept "nukleus://http/streams/source"
+       option nukleus:route ${newTargetInputRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x0d] "/intermediary"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0a] "proxy:8080"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
+
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "502"
+
 connected
 
-read "POST" /.*\r\n/
-read "Host:" /.*\r\n/
-read "Content-Length: " "17" "\r\n"
-read "\r\n"
 read "This is some data"
-read notify CLIENT_REQUEST
+read closed
+write close
 
-write await SERVER_FAILURE
-write "HTTP/1.1 502 Bad Gateway" "\r\n"
-write "\r\n"
 
-connect "tcp://localhost:8081"
+connect ${serverConnect}
+    option nukleus:route ${newTargetInputRef}
+    option nukleus:window 8192
+    option nukleus:transmission "duplex"
+
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x0d] "/intermediary"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0a] "proxy:8080"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
+
 connected
-write await CLIENT_REQUEST
-write "POST /backend\r\n"
-write "Host: localhost:8081\r\n"
-write "Content-Length: " "17" "\r\n"
-write "\r\n"
+
 write "This is some data"
+write close
 
-# Ideally this would be closed, notify
-write notify SERVER_FAILURE
-closed
-
-
+aborted

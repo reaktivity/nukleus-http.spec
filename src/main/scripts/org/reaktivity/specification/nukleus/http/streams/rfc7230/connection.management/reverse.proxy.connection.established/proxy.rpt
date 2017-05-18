@@ -1,4 +1,4 @@
-#
+ #
 # Copyright 2016-2017 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
@@ -14,42 +14,48 @@
 # under the License.
 #
 
-#
-# client <--> proxy
-#
-accept "http://localhost:8080/index.html"
+property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+
+property serverConnect "nukleus://target/streams/http#source"
+property source "http"
+
+accept "nukleus://http/streams/source"
+       option nukleus:route ${newTargetInputRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+read nukleus:begin.ext [0x00] [0x05] ":path" [0x0b] "/index.html"
+read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0a] "proxy:8080"
+
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "24"
+
 connected
 
-read http:method "GET"
-read http:header "Host" "localhost:8080"
-read notify GOT_REQUEST
-read closed
-
-write await GOT_RESPONSE
-write http:status "200" "OK"
-write http:version "HTTP/1.1"
-write http:content-length
-write http:header "Content-Type" "text/html"
 write "<html><body>Hello World!</body></html>"
 write close
+read closed
 
+connect ${serverConnect}
+    option nukleus:route ${newTargetInputRef}
+    option nukleus:window 8192
+    option nukleus:transmission "duplex"
 
-#
-# proxy <--> server (listening at localhost:8081)
-#
-connect await GOT_REQUEST
-        "http://localhost:8080/index.html"
-        option http:transport "tcp://localhost:8081"
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x0b] "/index.html"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0c] "backend:8080"
+
+read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "24"
+
 connected
 
-write http:method "GET"
-write http:version "HTTP/1.1"
-write http:host
+read "<html><body>Hello World!</body></html>" 
+read closed
 write close
 
-read http:status "200" /.+/
-read http:version "HTTP/1.1"
-read "<html><body>Hello World!</body></html>"
-read notify GOT_RESPONSE
-read closed
+

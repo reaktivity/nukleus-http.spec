@@ -144,26 +144,22 @@ public class ConnectionManagementIT
     @Test
     @Specification({
         "${scripts}/proxy.must.not.forward.connection.header/client",
-        "${scripts}/request.with.connection.header.forwarded/proxy",
-        "${scripts}/request.with.connection.header.forwarded/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+        "${scripts}/proxy.must.not.forward.connection.header/proxy",
+        "${scripts}/proxy.must.not.forward.connection.header/backend" })
     public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
     {
         k3po.finish();
     }
 
-
     @Test
     @Specification({
             "${scripts}/reverse.proxy.connection.established/client",
             "${scripts}/reverse.proxy.connection.established/proxy",
-            "${scripts}/reverse.proxy.connection.established/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+            "${scripts}/reverse.proxy.connection.established/backend" })
     public void reverseProxyConnectionEstablished() throws Exception
     {
         k3po.finish();
     }
-
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.1">RFC 7230 section 6.3.1: Retrying Requests</a>.
@@ -176,7 +172,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/proxy.must.not.retry.non.idempotent.requests/client",
         "${scripts}/proxy.must.not.retry.non.idempotent.requests/proxy",
-        "${scripts}/proxy.must.not.retry.non.idempotent.requests/server" })
+        "${scripts}/proxy.must.not.retry.non.idempotent.requests/backend" })
     public void proxyMustNotRetryNonIdempotentRequests() throws Exception
     {
         k3po.finish();
