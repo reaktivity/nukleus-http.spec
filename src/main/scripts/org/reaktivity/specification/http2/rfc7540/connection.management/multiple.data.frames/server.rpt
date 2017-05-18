@@ -32,7 +32,7 @@ write [0x00 0x00 0x06]                   # length = 6
       [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
 write flush
 
-# client connection preface)
+# client connection preface
 read "PRI * HTTP/2.0\r\n"
      "\r\n"
      "SM\r\n"

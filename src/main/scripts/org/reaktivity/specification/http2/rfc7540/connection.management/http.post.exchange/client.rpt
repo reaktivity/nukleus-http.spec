@@ -23,7 +23,7 @@ connect await ROUTED_INPUT
         option nukleus:transmission "duplex"
 connected
 
-# client connection preface)
+# client connection preface
 write "PRI * HTTP/2.0\r\n"
       "\r\n"
       "SM\r\n"
