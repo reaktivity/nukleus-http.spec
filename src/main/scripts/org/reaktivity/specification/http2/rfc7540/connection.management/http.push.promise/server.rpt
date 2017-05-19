@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property newSourceInputRef 1234L # external
+property newSourceInputRef ${nukleus:newRouteRef()} # external
 
 accept await ROUTED_INPUT
        "nukleus://http2/streams/source"
