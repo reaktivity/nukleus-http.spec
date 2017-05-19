@@ -14,6 +14,7 @@
 # under the License.
 #
 
+
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
 property serverTransport "nukleus://target/streams/http#source"
 
@@ -25,10 +26,10 @@ accept "http://localhost:8080/"
 accepted
 connected
 
-read http:header "secret" "header"
+read http:method "POST"
+read http:header "Content-length" "0"
 read closed
+
 write http:status "200" "OK"
-write http:header "doubleSecret" "probation"
-write http:content-length
 write close
 

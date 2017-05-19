@@ -25,10 +25,9 @@ accept "http://localhost:8080/"
 accepted
 connected
 
-read http:header "secret" "header"
+read http:header "Transfer-Encoding" "Unknown"
 read closed
-write http:status "200" "OK"
-write http:header "doubleSecret" "probation"
+write http:status "501" "Not Implemented"
 write http:content-length
 write close
 

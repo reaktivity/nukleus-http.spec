@@ -39,31 +39,31 @@ TBD                                           | reverse.proxy.connection.establi
 
 nukleus-http.spec                       | k3po
 --------------------------------------- | ----
-(moved to flow.control)                 | server.should.send.414.to.request.with.too.long.a.request[URI]
+request.with.start.line.too.long        | server.should.send.414.to.request.with.too.long.a.request[URI]
 request.with.content.length             | inbound.should.process.request.with.content.length
 request.with.headers                    | inbound.should.accept.headers
 response.with.content.length            | outbound.should.process.response.with.content.length
 response.with.headers                   | outbound.should.accept.headers
-architecture/request.and.response       | outbound.should.accept.no.headers
-TBD                                     | client.should.send.content.length.header.in.post.even.if.no.content
-TBD                                     | gateway.must.reject.request.with.multiple.different.content.length
-TBD                                     | head.response.must.not.have.content
-TBD                                     | head.response.must.not.have.content.though.may.have.content.length
-TBD                                     | inbound.on.receiving.field.with.length.larger.than.wanting.to.process.must.reply.with.4xx
+invalid.request.whitespace.after.start.line | inbound.should.reject.request.with.whitespace.between.start.line.and.first.header
+invalid.request.not.http                | non.http.request.to.http.server.should.be.responded.to.with.400
+request.with.unimplemented.method       | server.should.send.501.to.unimplemented.methods
+request.with.extra.CRLF.after.request.line | robust.server.should.allow.extra.CRLF.after.request.line
+request.with.obsolete.line.folding      | server.should.reject.obs.in.header.value
+request.with.unknown.transfer.encoding  | server.should.send.501.to.unknown.transfer.encoding
+post.request.with.no.content            | client.should.send.content.length.header.in.post.even.if.no.content
+head.request.and.response               | head.response.must.not.have.content
+head.request.and.response.with.content.length | head.response.must.not.have.content.though.may.have.content.length
+request.with.header.value.too.long      | inbound.on.receiving.field.with.length.larger.than.wanting.to.process.must.reply.with.4xx
 TBD                                     | inbound.should.reject.invalid.request.line
-TBD                                     | inbound.should.reject.request.with.whitespace.between.start.line.and.first.header
-TBD                                     | non.http.request.to.http.server.should.be.responded.to.with.400
-TBD                                     | request.must.start.with.request.line
-TBD                                     | robust.server.should.allow.extra.CRLF.after.request.line
 TBD                                     | server.must.reject.header.with.space.between.header.name.and.colon
 TBD                                     | server.must.reject.request.with.multiple.different.content.length
-TBD                                     | server.should.reject.obs.in.header.value
-TBD                                     | server.should.send.501.to.unimplemented.methods
-TBD                                     | server.should.send.501.to.unknown.transfer.encoding
-TBD                                     | server.should.send.status.line.in.start.line
 TBD                                     | on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon
+TBD                                     | gateway.must.reject.request.with.multiple.different.content.length
 TBD                                     | proxy.or.gateway.must.reject.obs.in.header.value
 TBD                                     | proxy.should.preserve.unrecongnized.headers
+none (covered by architecture/request.and.response) | outbound.should.accept.no.headers
+none (covered by architecture/request.and.response) | request.must.start.with.request.line
+none (covered by architecture/request.and.response) | server.should.send.status.line.in.start.line
 
 ### flow.control
 
