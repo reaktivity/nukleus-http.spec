@@ -14,10 +14,10 @@
 # under the License.
 #
 
-property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+property newSourceOutputRef ${nuklei:newReferenceId()} 
+property newTargetInputRef ${newSourceOutputRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-property source "http"
        
 accept ${serverConnect}
        option nukleus:route ${newTargetInputRef}

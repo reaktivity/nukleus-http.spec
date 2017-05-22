@@ -14,12 +14,13 @@
 # under the License.
 #
 
-property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newSourceInputRef ${nuklei:newReferenceId()} # external scope
+property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
-accept "http://localhost:8080/"
+accept "http://localhost:8080/Some%20%2f%20Path"
   option http:transport ${serverTransport}
-  option nukleus:route  ${newSourceInputRef}
+  option nukleus:route  ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
@@ -30,3 +31,4 @@ read http:version "HTTP/1.1"
 write http:status "200" "OK"
 write http:version "HTTP/1.1"
 write flush
+

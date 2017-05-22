@@ -48,6 +48,8 @@ public class ArchitectureIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void requestAndResponse() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -58,6 +60,8 @@ public class ArchitectureIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -68,6 +72,8 @@ public class ArchitectureIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -78,6 +84,8 @@ public class ArchitectureIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void responseVersionMissing() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 

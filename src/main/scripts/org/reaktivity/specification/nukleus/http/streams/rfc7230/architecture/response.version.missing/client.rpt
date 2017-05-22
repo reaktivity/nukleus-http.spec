@@ -14,10 +14,11 @@
 # under the License.
 #
 
-property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
 
-connect "nukleus://http/streams/source"
-    option nukleus:route ${newTargetInputRef}
+connect await ROUTED_OUTPUT
+    "nukleus://http/streams/source"
+    option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 

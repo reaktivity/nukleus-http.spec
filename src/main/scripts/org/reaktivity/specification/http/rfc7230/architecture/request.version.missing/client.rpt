@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 
 connect await ROUTED_INPUT 
         "nukleus://http/streams/source"
