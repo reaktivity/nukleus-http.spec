@@ -19,7 +19,8 @@ property newSourceInputRef ${nuklei:newReferenceId()} # external scope
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
 property sourceInput ${nuklei.streams("http", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http#target")}
+property sourceOutputEst1 ${nuklei.streams("source", "http#source")}
+property sourceOutputEst2 ${nuklei.streams("source", "http#target")}
 
 property newSourceInputId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
@@ -62,8 +63,8 @@ closed
 
 connect await ROUTED_OUTPUT
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst.buffer)}
-        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst.throttle)}
+        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst1.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst1.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
@@ -75,6 +76,12 @@ write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
 write [0x26 0x00 0x00 0x00]
 write flush
+
+connect await ROUTED_OUTPUT
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst2.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst2.throttle)}
+connected
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
