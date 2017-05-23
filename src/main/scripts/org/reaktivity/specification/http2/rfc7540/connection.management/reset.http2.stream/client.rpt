@@ -72,14 +72,12 @@ write [0x00 0x00 0x0c]                  # length = 12
       "Hello, world"
 write flush
 
-# connection-level flow control
 read [0x00 0x00 0x04]                                      # length
      [0x08]                                                # WINDOW_UPDATE frame
      [0x00]                                                # no flags
      [0x00 0x00 0x00 0x00]                                 # stream_id=0
      [0x00 0x00 0x00 0x0c]                                 # window size increment = 12
 
-# stream-level flow control
 read [0x00 0x00 0x04]                                      # length
      [0x08]                                                # WINDOW_UPDATE frame
      [0x00]                                                # no flags
@@ -96,18 +94,8 @@ read [0x00 0x00 0x59]                                      # length
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
      [0x0f 0x0d] [0x03] "113"                              # content-length
 
-read [0x00 0x00 0x3c]                          # length = 113
-     [0x00]                                    # HTTP2 DATA frame
-     [0x00]                                    # no flags
-     [0x00 0x00 0x00 0x01]                     # stream_id=1
-     "<html>"
-     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-
-read [0x00 0x00 0x35]                          # length = 113
-     [0x00]                                    # HTTP2 DATA frame
-     [0x00]                                    # no flags
-     [0x00 0x00 0x00 0x01]                     # stream_id=1
-     "<body><script src=\"script.js\"></script></body>"
-     "</html>"
-
-
+write [0x00 0x00 0x04]                          # length = 113
+      [0x03]                                    # HTTP2 RST_STREAM frame
+      [0x00]                                    # no flags
+      [0x00 0x00 0x00 0x01]                     # stream_id=1
+      [0x00 0x00 0x00 0x01]                     # PROTOCOL_ERROR

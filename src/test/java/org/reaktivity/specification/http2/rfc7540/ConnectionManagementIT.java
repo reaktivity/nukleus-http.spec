@@ -120,4 +120,16 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${spec}/reset.http2.stream/client",
+            "${spec}/reset.http2.stream/server",
+    })
+    public void resetHttp2Stream() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }
