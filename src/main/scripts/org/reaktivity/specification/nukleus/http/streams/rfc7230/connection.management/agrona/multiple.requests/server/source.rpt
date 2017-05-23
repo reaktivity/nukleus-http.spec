@@ -90,6 +90,8 @@ write ${sourceOutputEstId1}
 write [0x00 0x02 0x00 0x00]
 write flush
 
+write notify SOURCE_OUTPUT_BEGIN_ONE_RECEIVED
+
 read [0x00 0x00 0x00 0x01]
 read ([0..8]:sourceOutputEstId2)
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
@@ -100,7 +102,9 @@ write ${sourceOutputEstId2}
 write [0x00 0x02 0x00 0x00]
 write flush
 
-connect await ROUTED_OUTPUT
+read notify SOURCE_OUTPUT_BEGIN_TWO_RECEIVED
+
+connect await SOURCE_OUTPUT_BEGIN_ONE_RECEIVED
         "agrona://stream/bidirectional"
         option agrona:reader ${agrona:oneToOneReader(sourceOutputEst2.buffer)}
         option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst2.throttle)}
@@ -128,6 +132,7 @@ write ${sourceOutputEstId1}
 write [0x08 0x00 0x00 0x00]
 write flush
 
+read await SOURCE_OUTPUT_BEGIN_TWO_RECEIVED
 
 read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId2}
