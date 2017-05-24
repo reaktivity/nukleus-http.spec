@@ -21,8 +21,8 @@ connected
 read "GET"
 
 write "HTTP/1.1 200 OK\r\n"
-write "Content-length: 11" "\r\n"
-write "Content-length: 200" "\r\n"
+write "Content-Length: 11" "\r\n"
+write "Content-Length: 200" "\r\n"
 write "\r\n"
 write "Hello world"
 

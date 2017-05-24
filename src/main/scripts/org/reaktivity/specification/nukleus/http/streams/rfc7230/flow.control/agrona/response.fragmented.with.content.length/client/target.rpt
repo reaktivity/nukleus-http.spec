@@ -79,7 +79,7 @@ write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId}
 write [0x00 0x36]
 write "HTTP/1.1 200 OK\r\n"
-write "Custom-header: value\r\n"
+write "Custom-Header: value\r\n"
 write "Content-Length:"
 write flush
 

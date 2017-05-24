@@ -105,7 +105,7 @@ write ${newTargetOutputId}
 write [0x00 0x30]
 write "POST / HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
-write "Content-l"
+write "Content-L"
 write flush
 
 read [0x40 0x00 0x00 0x02]

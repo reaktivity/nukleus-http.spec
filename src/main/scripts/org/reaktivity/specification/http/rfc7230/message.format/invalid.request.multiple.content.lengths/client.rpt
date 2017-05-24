@@ -25,8 +25,8 @@ connected
 
 write "POST / HTTP/1.1" "\r\n"
 write "Host: localhost:8080\r\n"
-write "Content-length: 11" "\r\n"
-write "Content-length: 200" "\r\n"
+write "Content-Length: 11" "\r\n"
+write "Content-Length: 200" "\r\n"
 write "\r\n"
 write "hello world"
 

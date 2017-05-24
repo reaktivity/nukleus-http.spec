@@ -44,7 +44,7 @@ read ${newTargetOutputId}
 read [0x00 0x3e]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
-read "Custom-header: value\r\n"
+read "Custom-Header: value\r\n"
 read "\r\n"
 
 read notify HTTP_REQUEST_DECODED

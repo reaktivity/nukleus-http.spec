@@ -23,8 +23,8 @@ write "Host: localhost:8080\r\n"
 write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-length: 11" "\r\n"
-read "Content-length: 200" "\r\n"
+read "Content-Length: 11" "\r\n"
+read "Content-Length: 200" "\r\n"
 read "\r\n"
 read "Hello world"
 read notify SERVER_RESPONSE

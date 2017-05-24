@@ -44,7 +44,7 @@ read ${newTargetOutputId}
 read [0x00 0x30]
 read "POST / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
-read "Content-l"
+read "Content-L"
 
 write [0x40 0x00 0x00 0x02]
 write ${newTargetOutputId}

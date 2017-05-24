@@ -80,7 +80,7 @@ write ${newTargetOutputId}
 write [0x00 0x3e]
 write "GET / HTTP/1.1\r\n"
 write "Host: localhost:8080\r\n"
-write "Custom-header: value\r\n"
+write "Custom-Header: value\r\n"
 write "\r\n"
 write flush
 
