@@ -143,7 +143,7 @@ write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId}
 write [0x00 0x27]
 write "HTTP/1.1 200 OK\r\n"
-write "Content-length: 11\r\n"
+write "Content-Length: 11\r\n"
 write "\r\n"
 write flush
 

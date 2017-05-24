@@ -224,7 +224,7 @@ write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId1}
 write [0x00 0x26]
 write "HTTP/1.1 200 OK\r\n"
-write "Content-length: 8\r\n"
+write "Content-Length: 8\r\n"
 write "\r\n"
 write flush
 
@@ -248,7 +248,7 @@ write [0x00 0x00 0x00 0x02]
 write ${newSourceOutputEstId2}
 write [0x00 0x26]
 write "HTTP/1.1 200 OK\r\n"
-write "Content-length: 8\r\n"
+write "Content-Length: 8\r\n"
 write "\r\n"
 write flush
 

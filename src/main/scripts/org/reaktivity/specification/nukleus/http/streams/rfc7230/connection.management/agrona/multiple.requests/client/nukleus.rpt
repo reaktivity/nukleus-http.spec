@@ -156,7 +156,7 @@ read [0x00 0x00 0x00 0x02]
 read ${targetInputEstId1}
 read [0x00 0x26]
 read "HTTP/1.1 200 OK\r\n"
-read "Content-length: 8\r\n"
+read "Content-Length: 8\r\n"
 read "\r\n"
 
 read [0x00 0x00 0x00 0x02]
@@ -180,7 +180,7 @@ read [0x00 0x00 0x00 0x02]
 read ${targetInputEstId2}
 read [0x00 0x26]
 read "HTTP/1.1 200 OK\r\n"
-read "Content-length: 8\r\n"
+read "Content-Length: 8\r\n"
 read "\r\n"
 
 read [0x00 0x00 0x00 0x02]

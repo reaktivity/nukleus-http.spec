@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property newServerOutputRef ${nuklei:newReferenceId()} # external scope
+property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
 property newTargetInputRef ${newSourceOutputRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"

@@ -44,7 +44,7 @@ read ${newTargetOutputId}
 read [0x00 0x3d]
 read "POST / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
-read "Content-length: 11\r\n"
+read "Content-Length: 11\r\n"
 read "\r\n"
 
 read notify HTTP_REQUEST_ENCODED

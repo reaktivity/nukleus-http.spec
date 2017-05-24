@@ -81,7 +81,7 @@ read [0x00 0x00 0x00 0x02]
 read ${sourceOutputEstId}
 read [0x00 0x20]
 read "HTTP/1.1 200 OK\r\n"
-read "Content-length:"
+read "Content-Length:"
 
 write [0x40 0x00 0x00 0x02]
 write ${sourceOutputEstId}
