@@ -15,10 +15,11 @@
 #
 
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
 accept ${serverTransport}
-  option nukleus:route  ${newSourceInputRef}
+  option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
@@ -34,4 +35,5 @@ write "Connection: close\r\n"
 write "\r\n"
 
 write close
+read closed
 

@@ -25,9 +25,9 @@ connect await ROUTED_INPUT
 connected
 
 write http:method "GET"
+write http:header "Host" "localhost:8080"
 write http:header "Upgrade" "WebSocket"
 write http:header "Connection" "upgrade"
-write http:header "Host" "localhost:8080"
 
 read http:status "101" /.*/
 read http:header "Upgrade" "WebSocket"

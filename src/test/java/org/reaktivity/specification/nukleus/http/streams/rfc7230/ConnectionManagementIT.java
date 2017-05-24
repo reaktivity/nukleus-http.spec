@@ -48,6 +48,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -58,6 +60,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverMustCloseConnectionAfterResponseWithConnectionClose() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -68,6 +72,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void connectionsShouldPersistByDefault() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -78,6 +84,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldSupporttHttpPipelining() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -88,6 +96,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -98,6 +108,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -108,6 +120,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -118,6 +132,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -128,6 +144,8 @@ public class ConnectionManagementIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -146,8 +164,11 @@ public class ConnectionManagementIT
         "${scripts}/proxy.must.not.forward.connection.header/client",
         "${scripts}/proxy.must.not.forward.connection.header/proxy",
         "${scripts}/proxy.must.not.forward.connection.header/backend" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -158,6 +179,8 @@ public class ConnectionManagementIT
             "${scripts}/reverse.proxy.connection.established/backend" })
     public void reverseProxyConnectionEstablished() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
@@ -175,6 +198,8 @@ public class ConnectionManagementIT
         "${scripts}/proxy.must.not.retry.non.idempotent.requests/backend" })
     public void proxyMustNotRetryNonIdempotentRequests() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 }

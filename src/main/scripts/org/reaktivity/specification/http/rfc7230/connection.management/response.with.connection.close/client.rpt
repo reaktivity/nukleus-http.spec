@@ -32,4 +32,5 @@ read "Content-Type: text/plain\r\n"
 read "Connection: close" "\r\n"
 read "\r\n"
 read closed
+write close
 

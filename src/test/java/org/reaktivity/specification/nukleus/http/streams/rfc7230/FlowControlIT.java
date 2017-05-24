@@ -50,6 +50,7 @@ public class FlowControlIT
     public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
     {
         k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.notifyBarrier("SOURCE_END_WRITTEN");
         k3po.finish();
     }
@@ -61,6 +62,8 @@ public class FlowControlIT
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldAcceptFragmentedRequest() throws Exception
     {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 

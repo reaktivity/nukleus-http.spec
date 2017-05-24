@@ -37,19 +37,19 @@ write "\r\n"
 
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 9\r\n"
 read "\r\n"
-read "request1"
+read "response1"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 9\r\n"
 read "\r\n"
-read "request2"
+read "response2"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 9\r\n"
 read "\r\n"
-read "request3"
+read "response3"
 
 close 
 closed

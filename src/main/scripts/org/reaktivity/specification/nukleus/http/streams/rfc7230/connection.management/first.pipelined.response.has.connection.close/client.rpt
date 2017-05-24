@@ -14,10 +14,11 @@
 # under the License.
 #
 
-property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
 
-connect "nukleus://http/streams/source"
-    option nukleus:route ${newTargetInputRef}
+connect await ROUTED_OUTPUT
+        "nukleus://http/streams/source"
+    option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
@@ -28,15 +29,17 @@ write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 read nukleus:begin.ext [0x00] [0x0a] "connection" [0x05] "close"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "8"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
 connected
 
 write close
-read "request1"
+read "response1"
+read notify RESPONSE_ONE_RECEIVED
 read closed
 
-connect "nukleus://http/streams/source"
-    option nukleus:route ${newTargetInputRef}
+connect await RESPONSE_ONE_RECEIVED
+        "nukleus://http/streams/source"
+    option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
@@ -46,9 +49,9 @@ write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request2"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "8"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
 connected
 
 write close
-read "request2"
+read "response2"
 read closed

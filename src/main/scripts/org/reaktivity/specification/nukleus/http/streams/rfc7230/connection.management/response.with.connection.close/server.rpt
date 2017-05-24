@@ -14,7 +14,8 @@
 # under the License.
 #
 
-property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+property newServerOutputRef ${nuklei:newReferenceId()} # external scope
+property newTargetInputRef ${newSourceOutputRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
 property source "http"
@@ -31,10 +32,11 @@ read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
 read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-write nukleus:begin.ext [0x00] [0x0a] "connection" [0x05] "close"
 write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+write nukleus:begin.ext [0x00] [0x0a] "connection" [0x05] "close"
 
 connected
 
+read closed
 write close
 

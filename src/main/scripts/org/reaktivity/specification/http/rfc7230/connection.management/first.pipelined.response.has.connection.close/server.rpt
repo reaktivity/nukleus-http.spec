@@ -15,10 +15,11 @@
 #
 
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
 accept ${serverTransport}
-  option nukleus:route  ${newSourceInputRef}
+  option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
@@ -30,9 +31,10 @@ read "\r\n"
 
 write "HTTP/1.1 200 OK" "\r\n"
 write "Connection: close" "\r\n"
-write "Content-Length: " "8" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
-write "request1"
+write "response1"
+write flush
 
 read closed
 
@@ -44,7 +46,8 @@ read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
 write "HTTP/1.1 200 OK" "\r\n"
-write "Content-Length: " "8" "\r\n"
+write "Content-Length: " "9" "\r\n"
 write "\r\n"
-write "request2"
+write "response2"
+write flush
 

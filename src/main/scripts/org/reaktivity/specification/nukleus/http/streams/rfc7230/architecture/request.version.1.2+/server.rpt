@@ -15,6 +15,7 @@
 #
 
 property newSourceOutputRef ${nuklei:newReferenceId()} 
+property newServerOutputRef ${newSourceOutputRef} # external scope
 property newTargetInputRef ${newSourceOutputRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
