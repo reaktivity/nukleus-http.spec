@@ -18,122 +18,303 @@ package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
 
+@Ignore("High level scripts not yet done")
 public class MessageFormatIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/message.format")
-            .addScriptRoot("http", "org/kaazing/specification/http/rfc7230/message.format");
+            .addScriptRoot("scripts", "org/reaktivity/specification/nukleus/http/streams/rfc7230/message.format");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
     private final NukleusRule nukleus = new NukleusRule()
-        .directory("target/nukleus-itests")
-        .streams("http", "source")
-        .streams("source", "http#source")
-        .streams("target", "http#source")
-        .streams("http", "target")
-        .streams("source", "http#target");
+        .directory("target/nukleus-itests");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
 
     @Test
     @Specification({
-        "${streams}/request.with.content.length/server/source",
-        "${streams}/request.with.content.length/server/nukleus",
-        "${streams}/request.with.content.length/server/target" })
-    public void shouldAcceptRequestWithContentLength() throws Exception
+            "${scripts}/request.with.headers/client",
+            "${scripts}/request.with.headers/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/request.with.headers/server/source",
-        "${streams}/request.with.headers/server/nukleus",
-        "${streams}/request.with.headers/server/target" })
-    public void shouldAcceptRequestWithHeaders() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/response.with.content.length/server/source",
-        "${streams}/response.with.content.length/server/nukleus",
-        "${streams}/response.with.content.length/server/target" })
-    public void shouldWriteResponseWithContentLength() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/response.with.content.length/client/source",
-        "${streams}/response.with.content.length/client/nukleus",
-        "${streams}/response.with.content.length/client/target" })
-    public void shouldAcceptResponseWithContentLength() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${streams}/response.with.headers/client/source",
-        "${streams}/response.with.headers/client/nukleus",
-        "${streams}/response.with.headers/client/target" })
-    public void shouldAcceptResponseWithHeaders() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.headers/client/source",
-        "${streams}/request.with.headers/client/nukleus",
-        "${streams}/request.with.headers/client/target" })
-    public void shouldWriteRequestWithHeaders() throws Exception
+            "${scripts}/request.with.content.length/client",
+            "${scripts}/request.with.content.length/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.content.length/client/source",
-        "${streams}/request.with.content.length/client/nukleus",
-        "${streams}/request.with.content.length/client/target" })
-    public void shouldWriteRequestWithContentLength() throws Exception
+            "${scripts}/response.with.headers/client",
+            "${scripts}/response.with.headers/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void responseWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
+
+
+    @Test
+    @Specification({
+            "${scripts}/response.with.content.length/client",
+            "${scripts}/response.with.content.length/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void responseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/invalid.request.whitespace.after.start.line/client",
+            "${scripts}/invalid.request.whitespace.after.start.line/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void invalidRequestWhitespaceAfterStartLine() throws Exception
+    {
+        // As per RFC, alternatively could process everything before whitespace,
+        // but the better choice is to reject
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/invalid.request.missing.target/client",
+            "${scripts}/invalid.request.missing.target/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void invalidRequestMissingTarget() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/invalid.request.not.http/client",
+            "${scripts}/invalid.request.not.http/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void invalidRequestNotHttp() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.unimplemented.method/client",
+            "${scripts}/request.with.unimplemented.method/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithUnimplementedMethod() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.extra.CRLF.after.request.line/client",
+            "${scripts}/request.with.extra.CRLF.after.request.line/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void robustServerShouldAllowExtraCRLFAfterRequestLine() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.start.line.too.long/client",
+            "${scripts}/request.with.start.line.too.long/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithStartLineTooLong() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/invalid.request.space.before.colon.in.header/client",
+            "${scripts}/invalid.request.space.before.colon.in.header/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void invalidRequestSpaceBeforeColonInHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.obsolete.line.folding/client",
+            "${scripts}/request.with.obsolete.line.folding/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithObsoleteLineFolding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.header.value.too.long/client",
+            "${scripts}/request.with.header.value.too.long/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithHeaderValueTooLong() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/request.with.unknown.transfer.encoding/client",
+            "${scripts}/request.with.unknown.transfer.encoding/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithUnknownTransferEncoding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/post.request.with.no.content/client",
+            "${scripts}/post.request.with.no.content/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void postRequestWithNoContent() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/head.request.and.response/client",
+            "${scripts}/head.request.and.response/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void headRequestAndResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/head.request.and.response.with.content.length/client",
+            "${scripts}/head.request.and.response.with.content.length/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void headRequestAndResponseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/invalid.request.multiple.content.lengths/client",
+            "${scripts}/invalid.request.multiple.content.lengths/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void invalidRequestMultipleContentLengths() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/client",
+            "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/gateway",
+            "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @Ignore("proxy tests not tests implemented")
+    public void gatewayMustRejectResponseWithMultipleDifferentContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/client",
+            "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/server",
+            "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/proxy" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @Ignore("proxy tests not tests implemented")
+    public void onResponseProxyMustRemoveSpaceInHeaderWithSpaceBetweenHeaderNameAndColon() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/client",
+            "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @Ignore("proxy tests not tests implemented")
+    public void proxyOrGatewayMustRejectOBSInHeaderValue() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/proxy.should.preserve.unrecongnized.headers/client",
+            "${scripts}/proxy.should.preserve.unrecongnized.headers/server",
+            "${scripts}/proxy.should.preserve.unrecongnized.headers/proxy" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @Ignore("proxy tests not tests implemented")
+    public void proxyShouldPreserveUnrecognizedHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
 }

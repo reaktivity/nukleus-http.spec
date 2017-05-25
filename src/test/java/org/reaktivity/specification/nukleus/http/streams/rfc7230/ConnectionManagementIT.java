@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
@@ -30,99 +31,175 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class ConnectionManagementIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/connection.management")
-            .addScriptRoot("http", "org/kaazing/specification/http/rfc7230/connection.management");
+            .addScriptRoot("scripts", "org/reaktivity/specification/nukleus/http/streams/rfc7230/connection.management");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
     private final NukleusRule nukleus = new NukleusRule()
-        .directory("target/nukleus-itests")
-        .streams("http", "source")
-        .streams("source", "http#source")
-        .streams("target", "http#source")
-        .streams("http", "target")
-        .streams("source", "http#target");
+        .directory("target/nukleus-itests");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
 
     @Test
     @Specification({
-//      "${http}/response.status.101.with.upgrade/request",
-        "${streams}/response.status.101.with.upgrade/server/source",
-        "${streams}/response.status.101.with.upgrade/server/nukleus",
-        "${streams}/response.status.101.with.upgrade/server/target" })
-    public void shouldSwitchProtocolAfterUpgrade() throws Exception
+        "${scripts}/request.with.connection.close/client",
+        "${scripts}/request.with.connection.close/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests/server/source",
-        "${streams}/multiple.requests/server/nukleus",
-        "${streams}/multiple.requests/server/target" })
-    public void shouldAcceptMultipleRequests() throws Exception
+        "${scripts}response.with.connection.close/client",
+        "${scripts}response.with.connection.close/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void serverMustCloseConnectionAfterResponseWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.same.connection/server/source",
-        "${streams}/multiple.requests.same.connection/server/nukleus",
-        "${streams}/multiple.requests.same.connection/server/target" })
-    public void shouldAcceptMultipleRequestsOnSameConnectoin() throws Exception
+        "${scripts}/multiple.requests.same.connection/client",
+        "${scripts}/multiple.requests.same.connection/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void connectionsShouldPersistByDefault() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-    // "${http}/response.status.101.with.upgrade/request",
-    "${streams}/response.status.101.with.upgrade/client/source",
-    "${streams}/response.status.101.with.upgrade/client/nukleus",
-    "${streams}/response.status.101.with.upgrade/client/target" })
-    public void shouldSwitchProtocolAfterUpgradeClient() throws Exception
+        "${scripts}/multiple.requests.pipelined/client",
+        "${scripts}/multiple.requests.pipelined/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldSupporttHttpPipelining() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests/client/source",
-        "${streams}/multiple.requests/client/nukleus",
-        "${streams}/multiple.requests/client/target" })
-    public void shouldIssueMultipleRequests() throws Exception
+        "${scripts}/multiple.requests.pipelined.with.retry/client",
+        "${scripts}/multiple.requests.pipelined.with.retry/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.same.connection/client/source",
-        "${streams}/multiple.requests.same.connection/client/nukleus",
-        "${streams}/multiple.requests.same.connection/client/target" })
-    public void shouldIssueMultipleRequestsUsingConnectionPool() throws Exception
+        "${scripts}/first.pipelined.response.has.connection.close/client",
+        "${scripts}/first.pipelined.response.has.connection.close/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/upgrade.request.and.response/client",
+        "${scripts}/upgrade.request.and.response/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.upgrade.required.response/client",
+        "${scripts}/request.and.upgrade.required.response/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/upgrade.request.and.response.with.data/client",
+        "${scripts}/upgrade.request.and.response.with.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    // Proxy tests only have "cooked" versions
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.1">RFC 7230 section 6.1: Connection</a>.
+     *
+     * In order to avoid confusing downstream recipients, a proxy or gateway MUST remove or replace any received
+     * connection options before forwarding the message.
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "${scripts}/proxy.must.not.forward.connection.header/client",
+        "${scripts}/proxy.must.not.forward.connection.header/proxy",
+        "${scripts}/proxy.must.not.forward.connection.header/backend" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/reverse.proxy.connection.established/client",
+            "${scripts}/reverse.proxy.connection.established/proxy",
+            "${scripts}/reverse.proxy.connection.established/backend" })
+    public void reverseProxyConnectionEstablished() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.1">RFC 7230 section 6.3.1: Retrying Requests</a>.
+     *
+     * A proxy MUST NOT automatically retry non-idempotent requests.
+     *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+        "${scripts}/proxy.must.not.retry.non.idempotent.requests/client",
+        "${scripts}/proxy.must.not.retry.non.idempotent.requests/proxy",
+        "${scripts}/proxy.must.not.retry.non.idempotent.requests/backend" })
+    public void proxyMustNotRetryNonIdempotentRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 }

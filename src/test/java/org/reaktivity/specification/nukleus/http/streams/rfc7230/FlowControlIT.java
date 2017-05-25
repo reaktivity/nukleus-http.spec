@@ -18,11 +18,13 @@ package org.reaktivity.specification.nukleus.http.streams.rfc7230;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 import org.reaktivity.specification.nukleus.NukleusRule;
@@ -30,326 +32,282 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class FlowControlIT
 {
     private final K3poRule k3po = new K3poRule()
-            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http/streams/rfc7230/flow.control");
+        .addScriptRoot("scripts", "org/reaktivity/specification/nukleus/http/streams/rfc7230/flow.control");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
 
     private final NukleusRule nukleus = new NukleusRule()
-        .directory("target/nukleus-itests")
-        .streams("http", "source")
-        .streams("source", "http#source")
-        .streams("target", "http#source")
-        .streams("http", "target")
-        .streams("source", "http#target");
+        .directory("target/nukleus-itests");
 
     @Rule
     public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
 
     @Test
     @Specification({
-        "${streams}/request.with.content.length.and.end.late.target.window/server/source",
-        "${streams}/request.with.content.length.and.end.late.target.window/server/nukleus",
-        "${streams}/request.with.content.length.and.end.late.target.window/server/target" })
+        "${scripts}/request.with.content.length.and.end.late.target.window/client",
+        "${scripts}/request.with.content.length.and.end.late.target.window/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.fragmented/server/source",
-        "${streams}/request.fragmented/server/nukleus",
-        "${streams}/request.fragmented/server/target" })
+        "${scripts}/request.fragmented/client",
+        "${scripts}/request.fragmented/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldAcceptFragmentedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
+    //////////////////// DONE TO HERE
+
     @Test
     @Specification({
-        "${streams}/request.fragmented.with.content.length/server/source",
-        "${streams}/request.fragmented.with.content.length/server/nukleus",
-        "${streams}/request.fragmented.with.content.length/server/target" })
+        "${scripts}/request.fragmented.with.content.length/client",
+        "${scripts}/request.fragmented.with.content.length/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptFragmentedRequestWithContentLength() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.headers.too.long/server/source",
-        "${streams}/request.headers.too.long/server/nukleus" })
+        "${scripts}/request.headers.too.long/client",
+        "${scripts}/request.headers.too.long/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.content.flow.controlled/server/source",
-        "${streams}/request.with.content.flow.controlled/server/nukleus",
-        "${streams}/request.with.content.flow.controlled/server/target"})
+        "${scripts}/request.with.content.flow.controlled/client",
+        "${scripts}/request.with.content.flow.controlled/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldSplitRequestDataToRespectTargetWindow() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.fragmented.content.flow.controlled/server/source",
-        "${streams}/request.with.fragmented.content.flow.controlled/server/nukleus",
-        "${streams}/request.with.fragmented.content.flow.controlled/server/target" })
+        "${scripts}/request.with.fragmented.content.flow.controlled/client",
+        "${scripts}/request.with.fragmented.content.flow.controlled/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptRequestWithFragmentedContentWithTargetFlowControl() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.flow.controlled/server/source",
-        "${streams}/response.flow.controlled/server/nukleus",
-        "${streams}/response.flow.controlled/server/target" })
+        "${scripts}/response.flow.controlled/client",
+        "${scripts}/response.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlResponse() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.with.content.flow.controlled/server/source",
-        "${streams}/response.with.content.flow.controlled/server/nukleus",
-        "${streams}/response.with.content.flow.controlled/server/target" })
+        "${scripts}/response.with.content.flow.controlled/client",
+        "${scripts}/response.with.content.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlResponseWithContent() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.headers.too.long/server/source",
-        "${streams}/response.headers.too.long/server/nukleus",
-        "${streams}/response.headers.too.long/server/target" })
+        "${scripts}/response.headers.too.long/client",
+        "${scripts}/response.headers.too.long/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldNotWriteResponseExceedingMaximumHeadersSize() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.pipelined/server/source",
-        "${streams}/multiple.requests.pipelined/server/nukleus",
-        "${streams}/multiple.requests.pipelined/server/target" })
+        "${scripts}/multiple.requests.pipelined/client",
+        "${scripts}/multiple.requests.pipelined/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptMultipleRequestsInSameDataFrame() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.pipelined.fragmented/server/source",
-        "${streams}/multiple.requests.pipelined.fragmented/server/nukleus",
-        "${streams}/multiple.requests.pipelined.fragmented/server/target" })
+        "${scripts}/multiple.requests.pipelined.fragmented/client",
+        "${scripts}/multiple.requests.pipelined.fragmented/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptMultipleRequestsInSameDataFrameFragmented() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/source",
-        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/nukleus",
-        "${streams}/multiple.requests.with.content.length.pipelined.fragmented/server/target" })
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/client",
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptMultipleRequestsWithContentLengthPipelinedFragmented() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.with.response.flow.control/server/source",
-        "${streams}/multiple.requests.with.response.flow.control/server/nukleus",
-        "${streams}/multiple.requests.with.response.flow.control/server/target" })
+        "${scripts}/multiple.requests.with.response.flow.control/client",
+        "${scripts}/multiple.requests.with.response.flow.control/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlMultipleResponses() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.upgrade.and.data/server/source",
-        "${streams}/request.with.upgrade.and.data/server/nukleus",
-        "${streams}/request.with.upgrade.and.data/server/target" })
+        "${scripts}/request.with.upgrade.and.data/client",
+        "${scripts}/request.with.upgrade.and.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlRequestDataAfterUpgrade() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.with.upgrade.and.data/server/source",
-        "${streams}/response.with.upgrade.and.data/server/nukleus",
-        "${streams}/response.with.upgrade.and.data/server/target" })
+        "${scripts}/response.with.upgrade.and.data/client",
+        "${scripts}/response.with.upgrade.and.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlResponseDataAfterUpgrade() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.fragmented/client/source",
-        "${streams}/response.fragmented/client/nukleus",
-        "${streams}/response.fragmented/client/target" })
+        "${scripts}/response.fragmented/client",
+        "${scripts}/response.fragmented/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptFragmentedResponse() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
     @Test
     @Specification({
-        "${streams}/response.fragmented.with.content.length/client/source",
-        "${streams}/response.fragmented.with.content.length/client/nukleus",
-        "${streams}/response.fragmented.with.content.length/client/target" })
+        "${scripts}/response.fragmented.with.content.length/client",
+        "${scripts}/response.fragmented.with.content.length/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldAcceptFragmentedResponseWithContentLength() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.headers.too.long/client/source",
-        "${streams}/response.headers.too.long/client/nukleus",
-        "${streams}/response.headers.too.long/client/target"})
+        "${scripts}/response.headers.too.long/client",
+        "${scripts}/response.headers.too.long/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldRejectResponseExceedingMaximumHeadersSize() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.with.content.flow.controlled/client/source",
-        "${streams}/response.with.content.flow.controlled/client/nukleus",
-        "${streams}/response.with.content.flow.controlled/client/target" })
+        "${scripts}/response.with.content.flow.controlled/client",
+        "${scripts}/response.with.content.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldSplitResponseDataToRespectTargetWindow() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.with.fragmented.content.flow.controlled/client/source",
-        "${streams}/response.with.fragmented.content.flow.controlled/client/nukleus",
-        "${streams}/response.with.fragmented.content.flow.controlled/client/target" })
+        "${scripts}/response.with.fragmented.content.flow.controlled/client",
+        "${scripts}/response.with.fragmented.content.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldSlabResponseDataWhenTargetWindowStillNegative() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/response.with.content.length.and.end.late.target.window/client/source",
-        "${streams}/response.with.content.length.and.end.late.target.window/client/nukleus",
-        "${streams}/response.with.content.length.and.end.late.target.window/client/target" })
+        "${scripts}/response.with.content.length.and.end.late.target.window/client",
+        "${scripts}/response.with.content.length.and.end.late.target.window/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldWaitForSourceWindowAndWriteDataBeforeProcessingTargetEnd() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.flow.controlled/client/source",
-        "${streams}/request.flow.controlled/client/nukleus",
-        "${streams}/request.flow.controlled/client/target" })
+        "${scripts}/request.flow.controlled/client",
+        "${scripts}/request.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlRequest() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.with.content.flow.controlled/client/source",
-        "${streams}/request.with.content.flow.controlled/client/nukleus",
-        "${streams}/request.with.content.flow.controlled/client/target" })
+        "${scripts}/request.with.content.flow.controlled/client",
+        "${scripts}/request.with.content.flow.controlled/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldFlowControlRequestWithContent() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${streams}/request.headers.too.long/client/source",
-        "${streams}/request.headers.too.long/client/nukleus" })
+        "${scripts}/request.headers.too.long/client",
+        "${scripts}/request.headers.too.long/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("Not yet migrated onto k3po nukleus transport")
     public void shouldNotWriteRequestExceedingMaximumHeadersSize() throws Exception
     {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.finish();
     }
+
+
 }
