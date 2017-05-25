@@ -51,7 +51,6 @@ public class FlowControlIT
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("SOURCE_END_WRITTEN");
         k3po.finish();
     }
 

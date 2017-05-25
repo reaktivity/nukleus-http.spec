@@ -31,7 +31,6 @@ read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
 read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
 read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
-write await SOURCE_END_WRITTEN
 write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
