@@ -31,10 +31,12 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "0"
 connected
 
+read notify RESPONSE_ONE_RECEIVED
+
 read closed
 write close
 
-connect await ROUTED_OUTPUT
+connect await RESPONSE_ONE_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
@@ -49,10 +51,12 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "0"
 connected
 
+read notify RESPONSE_TWO_RECEIVED
+
 read closed
 write close
 
-connect await ROUTED_OUTPUT
+connect await RESPONSE_TWO_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
