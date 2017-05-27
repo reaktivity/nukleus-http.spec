@@ -51,26 +51,5 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "0"
 connected
 
-read notify RESPONSE_TWO_RECEIVED
-
 read closed
 write close
-
-connect await RESPONSE_TWO_RECEIVED
-        "nukleus://http/streams/source"
-    option nukleus:route ${newSourceOutputRef}
-    option nukleus:window 8192
-    option nukleus:transmission "duplex"
-
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request3"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "0"
-connected
-
-read closed
-write close
-

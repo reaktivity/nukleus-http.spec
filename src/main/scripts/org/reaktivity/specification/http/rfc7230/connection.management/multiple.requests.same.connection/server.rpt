@@ -29,6 +29,9 @@ read "GET /request1 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
+read notify REQUEST_ONE_RECEIVED
+write await WRITE_RESPONSE_ONE
+
 write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 0" "\r\n"
 write "\r\n"
@@ -38,10 +41,12 @@ read "GET /request2 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
+read notify REQUEST_TWO_RECEIVED
+write await WRITE_RESPONSE_TWO
+
 write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 0" "\r\n"
 write "\r\n"
-
 
 read "GET /request3 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"

@@ -107,10 +107,10 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "${scripts}/multiple.requests.same.connection/client",
-        "${scripts}/multiple.requests.same.connection/server" })
+        "${scripts}/concurrent.requests.different.connections/client",
+        "${scripts}/concurrent.requests.different.connections/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void connectionsShouldPersistByDefault() throws Exception
+    public void concurrentRequestsDifferentConnections() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
@@ -126,16 +126,16 @@ public class ConnectionManagementIT
      */
     @Test
     @Specification({
-        "${scripts}/multiple.requests.different.connections/client",
-        "${scripts}/multiple.requests.different.connections/server" })
+        "${scripts}/multiple.requests.same.connection/client",
+        "${scripts}/multiple.requests.same.connection/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void multipleRequestsDifferentConnections() throws Exception
+    public void multipleRequestsSameConnection() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("WRITE_RESPONSE_ONE");
         k3po.finish();
     }
-
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.3.2">RFC 7230 section 6.3.2: Pipelining</a>.
@@ -149,7 +149,7 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.pipelined/client",
         "${scripts}/multiple.requests.pipelined/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverShouldAcceptHttpPipelining() throws Exception
+    public void multipleRequestsPipelined() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

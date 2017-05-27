@@ -67,10 +67,23 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/multiple.requests.same.connection/client",
-        "${scripts}/multiple.requests.same.connection/server" })
+        "${scripts}/concurrent.requests/client",
+        "${scripts}/concurrent.requests/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void connectionsShouldPersistByDefault() throws Exception
+    public void concurrentRequests() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/multiple.requests.serialized/client",
+        "${scripts}/multiple.requests.serialized/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void multipleRequestsSerialized() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
