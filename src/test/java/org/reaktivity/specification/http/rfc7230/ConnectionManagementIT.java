@@ -134,6 +134,8 @@ public class ConnectionManagementIT
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");
         k3po.notifyBarrier("WRITE_RESPONSE_ONE");
+        k3po.notifyBarrier("WRITE_RESPONSE_TWO");
+        k3po.notifyBarrier("WRITE_RESPONSE_THREE");
         k3po.finish();
     }
 

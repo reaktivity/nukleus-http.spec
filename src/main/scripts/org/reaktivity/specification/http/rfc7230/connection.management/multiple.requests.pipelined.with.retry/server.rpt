@@ -38,16 +38,25 @@ read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
 write "HTTP/1.1 200 OK" "\r\n"
-write "Content-Length: 8" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
-write "request1"
+write "response1"
 
 read "GET /request2 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
+read "GET /request3 HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+
 write "HTTP/1.1 200 OK" "\r\n"
-write "Content-Length: 8" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
-write "request2"
+write "response2"
+
+write "HTTP/1.1 200 OK" "\r\n"
+write "Content-Length: 9" "\r\n"
+write "\r\n"
+write "response3"
 

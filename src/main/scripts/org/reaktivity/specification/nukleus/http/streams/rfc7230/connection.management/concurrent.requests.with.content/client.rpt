@@ -28,14 +28,14 @@ write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request1"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "8"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
 connected
 
 write close
-read "request1"
+read "response1"
 read closed
 
-connect await ROUTED_OUTPUT
+connect await REQUEST_ONE_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
@@ -47,14 +47,14 @@ write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request2"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "8"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
 connected
 
 write close
-read "request2"
+read "response2"
 read closed
 
-connect await ROUTED_OUTPUT
+connect await REQUEST_TWO_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
@@ -66,9 +66,9 @@ write nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request3"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 
 read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "8"
+read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
 connected
 
 write close
-read "request3"
+read "response3"
 read closed

@@ -75,6 +75,21 @@ public class ConnectionManagementIT
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
         k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
+        k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/concurrent.requests.with.content/client",
+        "${scripts}/concurrent.requests.with.content/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void concurrentRequestsWithContent() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
+        k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
         k3po.finish();
     }
 
@@ -84,30 +99,6 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.serialized/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void multipleRequestsSerialized() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${scripts}/multiple.requests.pipelined/client",
-        "${scripts}/multiple.requests.pipelined/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldSupporttHttpPipelining() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${scripts}/multiple.requests.pipelined.with.retry/client",
-        "${scripts}/multiple.requests.pipelined.with.retry/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");

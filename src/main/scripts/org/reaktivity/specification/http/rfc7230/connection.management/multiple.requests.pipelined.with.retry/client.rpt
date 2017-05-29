@@ -31,6 +31,10 @@ write "GET /request2 HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
+write "GET /request3 HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
 abort
 read notify REPLAY_REQUESTS
 
@@ -47,17 +51,26 @@ write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 9\r\n"
 read "\r\n"
-read "request1"
+read "response1"
 
 write "GET /request2 HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
+write "GET /request3 HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 8\r\n"
+read "Content-Length: 9\r\n"
 read "\r\n"
-read "request2"
+read "response2"
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 9\r\n"
+read "\r\n"
+read "response3"
 
 
