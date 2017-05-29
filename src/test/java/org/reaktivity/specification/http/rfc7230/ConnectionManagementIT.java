@@ -260,6 +260,22 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/client",
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.awaitBarrier("REQUEST_ONE_RECEIVED");
+        k3po.awaitBarrier("REQUEST_TWO_RECEIVED");
+        k3po.notifyBarrier("WRITE_DATA_REQUEST_ONE");
+        k3po.notifyBarrier("WRITE_DATA_REQUEST_TWO");
+        k3po.finish();
+    }
+
     // Proxy tests only have "cooked" versions
 
 }

@@ -153,6 +153,18 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/client",
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
     // Proxy tests only have "cooked" versions
 
     /**
