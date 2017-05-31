@@ -119,5 +119,10 @@ read ${sourceOutputEstId}
 read [0x00 0x08]
 read "request2"
 
+write [0x40 0x00 0x00 0x02]
+write ${sourceOutputEstId}
+write [0x08 0x00 0x00 0x00]
+write flush
+
 close
 closed
