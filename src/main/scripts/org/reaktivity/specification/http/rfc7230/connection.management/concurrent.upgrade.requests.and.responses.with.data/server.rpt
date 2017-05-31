@@ -18,44 +18,45 @@ property newSourceInputRef  ${nuklei:newReferenceId()} # external
 property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
-accept ${serverTransport}
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
   option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
 
-read "GET /request1 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
+read http:method "GET"
+read http:header "Upgrade" /(?<upgradeHeader>.*)/
+read http:header "Connection" "upgrade" 
 
 read notify REQUEST_ONE_RECEIVED
-write await WRITE_RESPONSE_ONE
 
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
-write "\r\n"
+write http:status "101" "Some Upgrade Protocol"
+write http:header "Upgrade" ${upgradeHeader}
+write flush
 
+write await WRITE_DATA_REQUEST_ONE
 
-read "GET /request2 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
+write "request one data from server"
+write flush
+
+accepted
+connected
+
+read http:method "GET"
+read http:header "Upgrade" /(?<upgradeHeader>.*)/
+read http:header "Connection" "upgrade" 
 
 read notify REQUEST_TWO_RECEIVED
-write await WRITE_RESPONSE_TWO
 
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
-write "\r\n"
+write http:status "101" "Some Upgrade Protocol"
+write http:header "Upgrade" ${upgradeHeader}
+write flush
 
-read "GET /request3 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
+write await WRITE_DATA_REQUEST_TWO
 
-read notify REQUEST_THREE_RECEIVED
-write await WRITE_RESPONSE_THREE
+write "request two data from server"
+write flush
 
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
-write "\r\n"
 

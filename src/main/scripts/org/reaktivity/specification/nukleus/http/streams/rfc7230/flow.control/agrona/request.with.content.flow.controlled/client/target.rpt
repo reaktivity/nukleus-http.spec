@@ -57,8 +57,6 @@ read [0x00 0x0d]
 read "ength: 11\r\n"
 read "\r\n"
 
-read notify HTTP_REQUEST_ENCODED
-
 read [0x00 0x00 0x00 0x02]
 read ${newTargetOutputId}
 read [0x00 0x03]
@@ -83,6 +81,8 @@ read [0x00 0x00 0x00 0x02]
 read ${newTargetOutputId}
 read [0x00 0x06]
 read " world"
+
+read notify HTTP_REQUEST_ENCODED
 
 close
 closed
