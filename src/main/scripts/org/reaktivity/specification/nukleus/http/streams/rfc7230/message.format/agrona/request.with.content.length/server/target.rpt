@@ -81,5 +81,4 @@ write [0x00 0x00 0x00 0x03]
 write ${newTargetOutputEstId}
 write flush
 
-close
-closed
+
