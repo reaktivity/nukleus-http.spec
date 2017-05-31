@@ -53,7 +53,7 @@ connected
 
 write close
 read closed
-       
+
 accepted
 
 read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"

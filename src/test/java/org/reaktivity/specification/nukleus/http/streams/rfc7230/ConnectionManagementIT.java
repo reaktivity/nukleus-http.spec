@@ -67,34 +67,38 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/multiple.requests.same.connection/client",
-        "${scripts}/multiple.requests.same.connection/server" })
+        "${scripts}/concurrent.requests/client",
+        "${scripts}/concurrent.requests/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void connectionsShouldPersistByDefault() throws Exception
+    public void concurrentRequests() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
+        k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${scripts}/multiple.requests.pipelined/client",
-        "${scripts}/multiple.requests.pipelined/server" })
+        "${scripts}/concurrent.requests.with.content/client",
+        "${scripts}/concurrent.requests.with.content/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldSupporttHttpPipelining() throws Exception
+    public void concurrentRequestsWithContent() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
+        k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
         k3po.finish();
     }
 
     @Test
     @Specification({
-        "${scripts}/multiple.requests.pipelined.with.retry/client",
-        "${scripts}/multiple.requests.pipelined.with.retry/server" })
+        "${scripts}/multiple.requests.serialized/client",
+        "${scripts}/multiple.requests.serialized/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
+    public void multipleRequestsSerialized() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
@@ -143,6 +147,18 @@ public class ConnectionManagementIT
         "${scripts}/upgrade.request.and.response.with.data/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/client",
+        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");

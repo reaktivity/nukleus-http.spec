@@ -35,7 +35,7 @@ write close
 read "response1"
 read closed
 
-connect await ROUTED_OUTPUT
+connect await REQUEST_ONE_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192
@@ -54,7 +54,7 @@ write close
 read "response2"
 read closed
 
-connect await ROUTED_OUTPUT
+connect await REQUEST_TWO_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newSourceOutputRef}
     option nukleus:window 8192

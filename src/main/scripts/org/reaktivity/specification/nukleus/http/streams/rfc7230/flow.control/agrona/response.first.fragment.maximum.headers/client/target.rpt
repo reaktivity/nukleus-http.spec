@@ -16,55 +16,41 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property newTargetOutput ${nuklei.streams("target", "http#source")}
+property targetOutput ${nuklei.streams("target", "http#source")}
 property targetInputEst ${nuklei.streams("http", "target")}
 
 property newTargetInputEstId ${nuklei:newStreamId()}
 
 connect await ROUTED_OUTPUT
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(newTargetOutput.buffer)}
-        option agrona:writer ${agrona:oneToOneWriter(newTargetOutput.throttle)}
+        option agrona:reader ${agrona:oneToOneReader(targetOutput.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(targetOutput.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:newTargetOutputId)
-read ([0..8]:newTargetOutputRef)
-read ([0..8]:newTargetCorrelationId)
+read ([0..8]:targetInputId)
+read ([0..8]:targetInputRef)
+read ([0..8]:targetCorrelationId)
 
 read notify HTTP_CONNECTION_POOL_OPENED
 
 write [0x40 0x00 0x00 0x02]
-write ${newTargetOutputId}
+write ${targetInputId}
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${newTargetOutputId}
-read [0x00 0x30]
-read "GET /request1 HTTP/1.1\r\n"
+read ${targetInputId}
+read [0x00 0x28]
+read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
 read "\r\n"
 
-read notify HTTP_REQUEST_ONE_DECODED
+read notify HTTP_REQUEST_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${newTargetOutputId}
-write [0x30 0x00 0x00 0x00]
-write flush
-
-read [0x00 0x00 0x00 0x02]
-read ${newTargetOutputId}
-read [0x00 0x30]
-read "GET /request2 HTTP/1.1\r\n"
-read "Host: localhost:8080\r\n"
-read "\r\n"
-
-read notify HTTP_REQUEST_TWO_DECODED
-
-write [0x40 0x00 0x00 0x02]
-write ${newTargetOutputId}
-write [0x30 0x00 0x00 0x00]
+write ${targetInputId}
+write [0x28 0x00 0x00 0x00] # TODO: native int
 write flush
 
 close
@@ -80,44 +66,47 @@ connected
 write [0x00 0x00 0x00 0x01]
 write ${newTargetInputEstId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write ${newTargetCorrelationId}
+write ${targetCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
 read ${newTargetInputEstId}
-read [0..4]
+read [0x40 0x00 0x00 0x00]
 
-write await HTTP_REQUEST_ONE_DECODED
+write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId}
-write [0x00 0x26]
+write [0x00 0x40]
 write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 8\r\n"
+write "Custom-Header: value123\r\n"
+write "Content-Length: 11\r\n"
 write "\r\n"
 write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputEstId}
+read [0x40 0x00 0x00 0x00]
+
+write [0x00 0x00 0x00 0x02]
+write ${newTargetInputEstId}
+write [0x00 0x03]
+write "hel"
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputEstId}
+read [0x03 0x00 0x00 0x00]
 
 write [0x00 0x00 0x00 0x02]
 write ${newTargetInputEstId}
 write [0x00 0x08]
-write "request1"
+write "lo world"
 write flush
 
-write await HTTP_REQUEST_TWO_DECODED
-
-write [0x00 0x00 0x00 0x02]
-write ${newTargetInputEstId}
-write [0x00 0x26]
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 8\r\n"
-write "\r\n"
-write flush
-
-write [0x00 0x00 0x00 0x02]
-write ${newTargetInputEstId}
-write [0x00 0x08]
-write "request2"
-write flush
+read [0x40 0x00 0x00 0x02]
+read ${newTargetInputEstId}
+read [0x08 0x00 0x00 0x00]
 
 close
 closed
