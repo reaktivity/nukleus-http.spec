@@ -33,5 +33,5 @@ read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
 
 connected
 
-read "Hello world"
+read "hello world"
 read closed

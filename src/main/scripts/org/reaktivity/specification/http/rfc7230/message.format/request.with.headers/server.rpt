@@ -27,5 +27,8 @@ accepted
 connected
 
 read http:method "GET"
-write http:header "some" "header"
+read http:header "some" "header"
 read closed
+
+write http:status "200" "OK"
+write close

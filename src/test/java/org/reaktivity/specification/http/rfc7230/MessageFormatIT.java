@@ -485,9 +485,9 @@ public class MessageFormatIT
      */
     @Test
     @Specification({
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/client",
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/server",
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/proxy" })
+            "${scripts}/proxy.should.preserve.unrecognized.headers/client",
+            "${scripts}/proxy.should.preserve.unrecognized.headers/server",
+            "${scripts}/proxy.should.preserve.unrecognized.headers/proxy" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     @Ignore("proxy tests not tests implemented")
     public void proxyShouldPreserveUnrecognizedHeaders() throws Exception

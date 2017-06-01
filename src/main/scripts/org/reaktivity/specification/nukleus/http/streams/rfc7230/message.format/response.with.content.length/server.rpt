@@ -36,7 +36,7 @@ write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
 
 connected
 
-write "Hello world"
+write "hello world"
 write close
 
 

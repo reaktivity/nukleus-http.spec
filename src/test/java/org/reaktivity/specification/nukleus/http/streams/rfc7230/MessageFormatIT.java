@@ -58,7 +58,8 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.content.length/client",
             "${scripts}/request.with.content.length/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty({"serverConnect \"nukleus://http/streams/source\"",
+                     "serverConnectReply \"nukleus://source/streams/http\""})
     public void requestWithContentLength() throws Exception
     {
         k3po.start();
@@ -170,6 +171,19 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+            "${scripts}/proxy.gets.response.with.multiple.content.lengths/client",
+            "${scripts}/proxy.gets.response.with.multiple.content.lengths/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @Ignore("proxy tests not tests implemented")
+    public void proxyGetsResponseWithMultipleContentLengths() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/client",
             "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
@@ -183,9 +197,9 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/client",
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/server",
-            "${scripts}/proxy.should.preserve.unrecongnized.headers/proxy" })
+            "${scripts}/proxy.should.preserve.unrecognized.headers/client",
+            "${scripts}/proxy.should.preserve.unrecognized.headers/server",
+            "${scripts}/proxy.should.preserve.unrecognized.headers/proxy" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     @Ignore("proxy tests not tests implemented")
     public void proxyShouldPreserveUnrecognizedHeaders() throws Exception

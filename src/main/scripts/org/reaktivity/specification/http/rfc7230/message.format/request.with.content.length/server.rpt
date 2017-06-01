@@ -27,7 +27,7 @@ accepted
 connected
 
 read http:method "POST"
-read http:header "Content-length" /(?<length>.*)/
+read http:header "Content-Length" /(?<length>.*)/
 read [0..${length}]
 
 write http:status "200" "OK"
