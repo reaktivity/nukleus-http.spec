@@ -15,10 +15,11 @@
 #
 
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
 accept ${serverTransport}
-  option nukleus:route  ${newSourceInputRef}
+  option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
@@ -26,10 +27,10 @@ connected
 
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080" "\r\n"
-read "BadHeader: value\r\nPart of value\tstill part of value\r\n"
+read "BadHeader: value\r\n Part of value\r\n\tstill part of value\r\n"
 read "\r\n"
 
-write "HTTP/1.1 400 Bad Request\r\n"
+write "HTTP/1.1 400 Bad Request - line folding not supported\r\n"
 write "Server: k3po\r\n"
 write "Content-Length: 0\r\n"
 write "Content-Type: text/html\r\n"

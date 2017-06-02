@@ -15,18 +15,20 @@
 #
 
 property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
+property headerSize 8001
 
 accept "http://localhost:8080/"
   option http:transport ${serverTransport}
-  option nukleus:route  ${newSourceInputRef}
+  option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
 
 read http:method "GET"
-read http:header "header" [0..8001]
+read http:header "header" [0..${headerSize}]
 read closed
 write http:status "400" "Bad Request"
 write http:content-length
