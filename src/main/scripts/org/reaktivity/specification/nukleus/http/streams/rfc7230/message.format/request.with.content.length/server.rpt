@@ -14,17 +14,16 @@
 # under the License.
 #
 
-property newSourceOutputRef ${nukleus:newRouteRef()} 
+property newSourceOutputRef ${nuklei:newReferenceId()} 
 property newSourceOutputRef ${newSourceOutputRef} # external scope
 property newTargetInputRef ${newSourceOutputRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-property serverConnectReply "nukleus://http/streams/target"
        
 accept ${serverConnect}
        option nukleus:route ${newTargetInputRef}
        option nukleus:window 8192
-       option nukleus:transmission "simplex"
+       option nukleus:transmission "duplex"
 accepted
 
 read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
@@ -33,18 +32,9 @@ read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
 read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
 
+write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+
 connected
 
 read "hello world"
 read closed
-
-connect await ROUTED_OUTPUT
-        ${serverConnectReply}
-    option nukleus:route 0L
-    option nukleus:correlation ${newCorrelationId}
-    option nukleus:window 8192
-    option nukleus:transmission "simplex"  
-    
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-
-connected

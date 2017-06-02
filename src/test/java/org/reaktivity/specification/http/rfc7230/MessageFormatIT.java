@@ -206,10 +206,10 @@ public class MessageFormatIT
      */
     @Test
     @Specification({
-            "${scripts}/request.with.extra.CRLF.after.request.line/client",
-            "${scripts}/request.with.extra.CRLF.after.request.line/server" })
+            "${scripts}/request.with.extra.CRLF.before.request.line/client",
+            "${scripts}/request.with.extra.CRLF.before.request.line/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void robustServerShouldAllowExtraCRLFAfterRequestLine() throws Exception
+    public void robustServerShouldAllowExtraCRLFBeforeRequestLine() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_INPUT");

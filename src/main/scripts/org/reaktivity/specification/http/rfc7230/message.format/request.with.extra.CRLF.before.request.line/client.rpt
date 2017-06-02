@@ -23,8 +23,9 @@ connect await ROUTED_INPUT
   option nukleus:transmission "duplex"
 connected
 
-write "GET / HTTP/1.1" "\r\n"
 write "\r\n" # robust server should allow this
+write "\r\n" # robust server should allow this
+write "GET / HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 

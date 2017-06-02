@@ -25,7 +25,7 @@ accept ${serverTransport}
 accepted
 connected
 
-read "GET http://localhost:8080/" [0..8001] " HTTP/1.1" "\r\n"
+read "GET http://localhost:8080/" [0..9001] " HTTP/1.1" "\r\n"
 
 write "HTTP/1.1 414 Request-URI Too Long\r\n"
 write "Server: k3po\r\n"

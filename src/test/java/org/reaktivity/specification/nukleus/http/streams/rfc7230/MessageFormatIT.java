@@ -58,8 +58,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.content.length/client",
             "${scripts}/request.with.content.length/server" })
-    @ScriptProperty({"serverConnect \"nukleus://http/streams/source\"",
-                     "serverConnectReply \"nukleus://source/streams/http\""})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void requestWithContentLength() throws Exception
     {
         k3po.start();
@@ -94,10 +93,10 @@ public class MessageFormatIT
 
     @Test
     @Specification({
-            "${scripts}/request.with.extra.CRLF.after.request.line/client",
-            "${scripts}/request.with.extra.CRLF.after.request.line/server" })
+            "${scripts}/request.with.extra.CRLF.before.request.line/client",
+            "${scripts}/request.with.extra.CRLF.before.request.line/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void robustServerShouldAllowExtraCRLFAfterRequestLine() throws Exception
+    public void robustServerShouldAllowExtraCRLFBeforeRequestLine() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_OUTPUT");
