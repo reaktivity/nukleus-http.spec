@@ -19,19 +19,24 @@ property newTargetOutputRef ${newSourceInputRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 property headerSize 8001
 
-accept "http://localhost:8080/"
-  option http:transport ${serverTransport}
+accept ${serverTransport}
   option nukleus:route ${newTargetOutputRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
 
-read http:method "GET"
-read http:header "header" [0..${headerSize}]
-read closed
-write http:status "400" "Bad Request"
-write http:content-length
-write "Header length was larger than allowed"
-write close
+
+read "GET / HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "header: " [0..${headerSize}] "\r\n"
+read "\r\n"
+
+write "HTTP/1.1 400 Bad Request\r\n"
+write "Connection: close\r\n"
+write "\r\n"
+write flush
+
+abort
+
 

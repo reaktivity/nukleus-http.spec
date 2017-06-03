@@ -28,6 +28,7 @@ connected
 read "BAD HTTP/1.1"
 
 write "HTTP/1.1 501 Not Implemented\r\n"
-write "Server: k3po\r\n"
+write "Connection: close\r\n"
 write "\r\n"
 
+abort
