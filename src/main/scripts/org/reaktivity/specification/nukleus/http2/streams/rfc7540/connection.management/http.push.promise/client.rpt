@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newTargetInputRef ${nuklei:newReferenceId()} # external scope
+property newServerConnectRef ${nuklei:newReferenceId()} # external scope
 
-connect await ROUTED_INPUT
+connect await ROUTED_SERVER
         "nukleus://target/streams/http2"
-        option nukleus:route ${newTargetInputRef}
+        option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 
@@ -64,7 +64,7 @@ read "<html>"
 #
 connect await FIRST_PUSH_PROMISE_RECEIVED
         "nukleus://target/streams/http2"
-        option nukleus:route ${newTargetInputRef}
+        option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 
@@ -91,7 +91,7 @@ read "h1 {"
 #
 connect await SECOND_PUSH_PROMISE_RECEIVED
         "nukleus://target/streams/http2"
-        option nukleus:route ${newTargetInputRef}
+        option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 

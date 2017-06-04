@@ -14,30 +14,29 @@
 # under the License.
 #
 
-property nukleiRG010102C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
+property nukleiRG010101N ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlRG010102C ${nukleiRG010102C.control("http2")}
+property controlRG010101N ${nukleiRG010101N.controlNew("http2")}
 
 connect "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:broadcastReceiver(controlRG010102C.controller)}
-        option agrona:writer ${agrona:manyToOneWriter(controlRG010102C.nukleus)}
+        option agrona:reader ${agrona:manyToOneReader(controlRG010101N.nukleus)}
+        option agrona:writer ${agrona:broadcastTransmitter(controlRG010101N.controller)}
 
 connected
 
-write [0x00 0x00 0x00 0x01]
-write ${controlRG010102C.nextCorrelationId()}
-write [0x01 0x02]
-write [0x06] "target"
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
-write [0x06] "source"
-write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:correlationIdRG010101N)
+read [0x01]
+read [0x06] "source"
+read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+read [0x06] "target"
+read ([0..8]:clientConnectRefRG010101N)
+read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+
+write [0x40 0x00 0x00 0x01]
+write ${correlationIdRG010101N}
+write ${nuklei:newReferenceId()}
 write flush
-
-read [0x40 0x00 0x00 0x01]
-read ${controlRG010102C.correlationId()}
-read ([0..8]:newTargetOutputEstRef)
-
-read notify ROUTED_OUTPUT
 
 close
 closed
