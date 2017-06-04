@@ -23,7 +23,7 @@ connect await ROUTED_SERVER
         option nukleus:transmission "duplex"
 
 
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
                         [0x00] [0x07] ":scheme" [0x04] "http"
                         [0x00] [0x05] ":path" [0x01] "/"
                         [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
@@ -36,9 +36,6 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
-read "<html>"
-     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-     "<body><script src=\"script.js\"></script></body>"
-     "</html>"
+write "Hello, world"
+write close
 
-read closed

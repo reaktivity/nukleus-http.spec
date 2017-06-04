@@ -41,3 +41,5 @@ write "<html>"
       "<body><script src=\"script.js\"></script></body>"
       "</html>"
 write flush
+
+write close
