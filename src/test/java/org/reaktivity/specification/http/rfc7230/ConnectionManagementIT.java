@@ -68,7 +68,7 @@ public class ConnectionManagementIT
     public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -94,7 +94,7 @@ public class ConnectionManagementIT
     public void serverMustCloseConnectionAfterResponseWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -113,7 +113,7 @@ public class ConnectionManagementIT
     public void concurrentRequestsDifferentConnections() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -132,7 +132,7 @@ public class ConnectionManagementIT
     public void multipleRequestsSameConnection() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.notifyBarrier("WRITE_RESPONSE_ONE");
         k3po.notifyBarrier("WRITE_RESPONSE_TWO");
         k3po.notifyBarrier("WRITE_RESPONSE_THREE");
@@ -154,7 +154,7 @@ public class ConnectionManagementIT
     public void multipleRequestsPipelined() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -175,7 +175,7 @@ public class ConnectionManagementIT
     public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -195,7 +195,7 @@ public class ConnectionManagementIT
     public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -216,7 +216,7 @@ public class ConnectionManagementIT
     public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -235,7 +235,7 @@ public class ConnectionManagementIT
     public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -256,7 +256,7 @@ public class ConnectionManagementIT
     public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -268,7 +268,7 @@ public class ConnectionManagementIT
     public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.awaitBarrier("REQUEST_ONE_RECEIVED");
         k3po.awaitBarrier("REQUEST_TWO_RECEIVED");
         k3po.notifyBarrier("WRITE_DATA_REQUEST_ONE");

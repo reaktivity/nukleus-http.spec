@@ -49,7 +49,7 @@ public class ArchitectureIT
     public void requestAndResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -61,7 +61,7 @@ public class ArchitectureIT
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -73,7 +73,7 @@ public class ArchitectureIT
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -85,7 +85,7 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenHostHeaderMissing() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -97,7 +97,7 @@ public class ArchitectureIT
     public void shouldRejectRequestWithUserInfo() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -109,7 +109,7 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenVersionInvalid() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -121,7 +121,7 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenVersionMissing() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -133,7 +133,7 @@ public class ArchitectureIT
     public void shouldRejectRequestWhenVersionNotHttp1x() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -145,7 +145,7 @@ public class ArchitectureIT
     public void responseVersionMissing() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 

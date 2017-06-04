@@ -60,7 +60,7 @@ public class MessageFormatIT
     public void requestWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -77,7 +77,7 @@ public class MessageFormatIT
     public void requestWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -99,7 +99,7 @@ public class MessageFormatIT
     public void responseWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -116,7 +116,7 @@ public class MessageFormatIT
     public void responseWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -141,7 +141,7 @@ public class MessageFormatIT
         // As per RFC, alternatively could process everything before whitespace,
         // but the better choice is to reject
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -158,7 +158,7 @@ public class MessageFormatIT
     public void invalidRequestMissingTarget() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -175,7 +175,7 @@ public class MessageFormatIT
     public void invalidRequestNotHttp() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -192,7 +192,7 @@ public class MessageFormatIT
     public void requestWithUnimplementedMethod() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -212,7 +212,7 @@ public class MessageFormatIT
     public void robustServerShouldAllowExtraCRLFBeforeRequestLine() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -229,7 +229,7 @@ public class MessageFormatIT
     public void requestWithStartLineTooLong() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -252,7 +252,7 @@ public class MessageFormatIT
     public void invalidRequestSpaceBeforeColonInHeader() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -275,7 +275,7 @@ public class MessageFormatIT
     public void requestWithObsoleteLineFolding() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -292,7 +292,7 @@ public class MessageFormatIT
     public void requestWithHeaderValueTooLong() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -309,7 +309,7 @@ public class MessageFormatIT
     public void requestWithUnknownTransferEncoding() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -326,7 +326,7 @@ public class MessageFormatIT
     public void postRequestWithNoContent() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -350,7 +350,7 @@ public class MessageFormatIT
     public void headRequestAndResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -374,7 +374,7 @@ public class MessageFormatIT
     public void headRequestAndResponseWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -399,7 +399,7 @@ public class MessageFormatIT
     public void invalidRequestMultipleContentLengths() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -426,7 +426,7 @@ public class MessageFormatIT
     public void gatewayMustRejectResponseWithMultipleDifferentContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -451,7 +451,7 @@ public class MessageFormatIT
     public void onResponseProxyMustRemoveSpaceInHeaderWithSpaceBetweenHeaderNameAndColon() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -474,7 +474,7 @@ public class MessageFormatIT
     public void proxyOrGatewayMustRejectOBSInHeaderValue() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -493,7 +493,7 @@ public class MessageFormatIT
     public void proxyShouldPreserveUnrecognizedHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 

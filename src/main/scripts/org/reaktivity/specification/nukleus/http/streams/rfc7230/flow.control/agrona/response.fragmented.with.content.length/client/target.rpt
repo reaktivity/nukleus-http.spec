@@ -16,31 +16,33 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property targetOutput ${nuklei.streams("target", "http#source")}
-property targetInputEst ${nuklei.streams("http", "target")}
+property clientConnect ${nuklei.streams("target", "http#source")}
+property clientConnectReply ${nuklei.streams("http", "target")}
 
-property newTargetInputEstId ${nuklei:newStreamId()}
+property newClientConnectReplyId ${nuklei:newStreamId()}
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_CLIENT
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(targetOutput.buffer)}
-        option agrona:writer ${agrona:oneToOneWriter(targetOutput.throttle)}
+        option agrona:reader ${agrona:oneToOneReader(clientConnect.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(clientConnect.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInputId)
-read ([0..8]:targetInputRef)
+read ([0..8]:serverConnectId)
+read [0x04] "http"
+read ([0..8]:serverConnectRef)
 read ([0..8]:targetCorrelationId)
 
 read notify HTTP_CONNECTION_POOL_OPENED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId}
+write ${serverConnectId}
+write [0x00 0x02 0x00 0x00]
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetInputId}
+read ${serverConnectId}
 read [0x00 0x28]
 read "GET / HTTP/1.1\r\n"
 read "Host: localhost:8080\r\n"
@@ -49,7 +51,8 @@ read "\r\n"
 read notify HTTP_REQUEST_DECODED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId}
+write ${serverConnectId}
+write [0x28 0x00 0x00 0x00] # TODO: native int
 write [0x28 0x00 0x00 0x00] # TODO: native int
 write flush
 
@@ -59,24 +62,26 @@ closed
 
 connect await HTTP_CONNECTION_POOL_OPENED
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(targetInputEst.throttle)}
-        option agrona:writer ${agrona:oneToOneWriter(targetInputEst.buffer)}
+        option agrona:reader ${agrona:oneToOneReader(clientConnectReply.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(clientConnectReply.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newTargetInputEstId}
+write ${newClientConnectReplyId}
+write [0x06] "target"
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputEstId}
+read ${newClientConnectReplyId}
+read [0..4]
 read [0..4]
 
 write await HTTP_REQUEST_DECODED
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInputEstId}
+write ${newClientConnectReplyId}
 write [0x00 0x36]
 write "HTTP/1.1 200 OK\r\n"
 write "Custom-Header: value\r\n"
@@ -84,7 +89,7 @@ write "Content-Length:"
 write flush
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInputEstId}
+write ${newClientConnectReplyId}
 write [0x00 0x0a]
 write " 11\r\n"
 write "\r\n"
@@ -92,11 +97,12 @@ write "hel"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetInputEstId}
+read ${newClientConnectReplyId}
 read [0x40 0x00 0x00 0x00]
+read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetInputEstId}
+write ${newClientConnectReplyId}
 write [0x00 0x08]
 write "lo world"
 write flush

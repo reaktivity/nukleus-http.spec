@@ -14,12 +14,12 @@
 # under the License.
 #
 
-property newSourceOutputRef ${nukleus:newRouteRef()} # external scope
+property newClientAcceptRef ${nukleus:newRouteRef()} # external scope
 property newCorrelationId ${nukleus:newCorrelationId()}
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
-    option nukleus:route ${newSourceOutputRef}
+    option nukleus:route ${newClientAcceptRef}
     option nukleus:correlation ${newCorrelationId}
     option nukleus:window 8192
     option nukleus:transmission "simplex"
@@ -36,7 +36,7 @@ write "hello world"
 write close
 
 
-accept await ROUTED_OUTPUT
+accept await ROUTED_CLIENT
        "nukleus://source/streams/http"
     option nukleus:route 0L
     option nukleus:window 8192

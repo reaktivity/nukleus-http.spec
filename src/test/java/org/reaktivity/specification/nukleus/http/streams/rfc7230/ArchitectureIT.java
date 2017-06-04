@@ -49,7 +49,7 @@ public class ArchitectureIT
     public void requestAndResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -61,7 +61,7 @@ public class ArchitectureIT
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -73,7 +73,7 @@ public class ArchitectureIT
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -85,7 +85,7 @@ public class ArchitectureIT
     public void responseVersionMissing() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 

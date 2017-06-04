@@ -49,7 +49,7 @@ public class ConnectionManagementIT
     public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -61,7 +61,7 @@ public class ConnectionManagementIT
     public void serverMustCloseConnectionAfterResponseWithConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -73,7 +73,7 @@ public class ConnectionManagementIT
     public void concurrentRequests() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
         k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
         k3po.finish();
@@ -87,7 +87,7 @@ public class ConnectionManagementIT
     public void concurrentRequestsWithContent() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.notifyBarrier("REQUEST_ONE_RECEIVED");
         k3po.notifyBarrier("REQUEST_TWO_RECEIVED");
         k3po.finish();
@@ -101,7 +101,7 @@ public class ConnectionManagementIT
     public void multipleRequestsSerialized() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -113,7 +113,7 @@ public class ConnectionManagementIT
     public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -125,7 +125,7 @@ public class ConnectionManagementIT
     public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -137,7 +137,7 @@ public class ConnectionManagementIT
     public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -149,7 +149,7 @@ public class ConnectionManagementIT
     public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -161,7 +161,7 @@ public class ConnectionManagementIT
     public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -184,7 +184,7 @@ public class ConnectionManagementIT
     public void intermediaryMustRemoveConnectionHeaderOnForwardRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -196,7 +196,7 @@ public class ConnectionManagementIT
     public void reverseProxyConnectionEstablished() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -215,7 +215,7 @@ public class ConnectionManagementIT
     public void proxyMustNotRetryNonIdempotentRequests() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 }

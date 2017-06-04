@@ -50,7 +50,7 @@ public class FlowControlIT
     public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -62,7 +62,7 @@ public class FlowControlIT
     public void shouldAcceptFragmentedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 

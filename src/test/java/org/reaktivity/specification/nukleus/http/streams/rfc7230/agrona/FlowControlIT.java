@@ -53,8 +53,7 @@ public class FlowControlIT
     public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -66,8 +65,7 @@ public class FlowControlIT
     public void shouldAcceptFragmentedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -79,8 +77,7 @@ public class FlowControlIT
     public void shouldAcceptFragmentedRequestWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -91,8 +88,7 @@ public class FlowControlIT
     public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -104,8 +100,7 @@ public class FlowControlIT
     public void shouldSplitRequestDataToRespectTargetWindow() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -117,8 +112,7 @@ public class FlowControlIT
     public void shouldAcceptRequestWithFragmentedContentWithTargetFlowControl() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -130,8 +124,7 @@ public class FlowControlIT
     public void shouldFlowControlResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -143,8 +136,7 @@ public class FlowControlIT
     public void shouldFlowControlResponseWithContent() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -156,8 +148,7 @@ public class FlowControlIT
     public void shouldNotWriteResponseExceedingMaximumHeadersSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -169,8 +160,7 @@ public class FlowControlIT
     public void shouldAcceptMultipleRequestsInSameDataFrame() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -182,8 +172,7 @@ public class FlowControlIT
     public void shouldAcceptMultipleRequestsInSameDataFrameFragmented() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -195,8 +184,7 @@ public class FlowControlIT
     public void shouldAcceptMultipleRequestsWithContentLengthPipelinedFragmented() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -208,8 +196,7 @@ public class FlowControlIT
     public void shouldFlowControlMultipleResponses() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -221,8 +208,7 @@ public class FlowControlIT
     public void shouldFlowControlRequestDataAfterUpgrade() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -234,8 +220,7 @@ public class FlowControlIT
     public void shouldFlowControlResponseDataAfterUpgrade() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -247,8 +232,7 @@ public class FlowControlIT
     public void shouldAcceptFragmentedResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
     @Test
@@ -259,8 +243,7 @@ public class FlowControlIT
     public void shouldAcceptFragmentedResponseWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -272,8 +255,7 @@ public class FlowControlIT
     public void shouldRejectResponseExceedingMaximumHeadersSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -285,8 +267,7 @@ public class FlowControlIT
     public void shouldSplitResponseDataToRespectTargetWindow() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -298,8 +279,7 @@ public class FlowControlIT
     public void shouldSlabResponseDataWhenTargetWindowStillNegative() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -311,8 +291,7 @@ public class FlowControlIT
     public void shouldWaitForSourceWindowAndWriteDataBeforeProcessingTargetEnd() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -324,8 +303,7 @@ public class FlowControlIT
     public void shouldFlowControlRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -337,8 +315,7 @@ public class FlowControlIT
     public void shouldFlowControlRequestWithContent() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -349,7 +326,7 @@ public class FlowControlIT
     public void shouldNotWriteRequestExceedingMaximumHeadersSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 }

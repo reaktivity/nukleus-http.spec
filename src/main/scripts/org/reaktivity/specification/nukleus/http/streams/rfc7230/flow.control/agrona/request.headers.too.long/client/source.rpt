@@ -14,25 +14,26 @@
 # under the License.
 #
 
-property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceOutput ${nuklei.streams("http", "source")}
-property sourceInputEst ${nuklei.streams("source", "http#target")}
+property clientAccept ${nuklei.streams("http", "source")}
+property clientAcceptReply ${nuklei.streams("source", "http#target")}
 
-property newSourceOutputId ${nuklei:newStreamId()}
+property newClientAcceptId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_CLIENT
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(sourceOutput.throttle)}
-        option agrona:writer ${agrona:oneToOneWriter(sourceOutput.buffer)}
+        option agrona:reader ${agrona:oneToOneReader(clientAccept.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(clientAccept.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newSourceOutputId}
-write ${newSourceOutputRef}
+write ${newClientAcceptId}
+write [0x06] "source"
+write ${newClientAcceptRef}
 write ${newSourceCorrelationId}
 write [0x00] [0x07] ":scheme" [0x04] "http"
 write [0x00] [0x07] ":method" [0x03] "GET"
@@ -43,7 +44,7 @@ write [0x00] [0x0f] "Custom-Header-2" [0x15] "custom header 2 value"
 write flush
 
 read [0x40 0x00 0x00 0x01]
-read ${newSourceOutputId}
+read ${newClientAcceptId}
 
 close
 closed

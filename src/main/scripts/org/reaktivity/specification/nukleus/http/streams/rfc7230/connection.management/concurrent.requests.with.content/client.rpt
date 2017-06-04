@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
-    option nukleus:route ${newSourceOutputRef}
+    option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
@@ -37,7 +37,7 @@ read closed
 
 connect await REQUEST_ONE_RECEIVED
         "nukleus://http/streams/source"
-    option nukleus:route ${newSourceOutputRef}
+    option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
@@ -56,7 +56,7 @@ read closed
 
 connect await REQUEST_TWO_RECEIVED
         "nukleus://http/streams/source"
-    option nukleus:route ${newSourceOutputRef}
+    option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
