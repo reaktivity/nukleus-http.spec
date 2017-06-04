@@ -44,7 +44,7 @@ public class MessageFormatIT
     public void continuationFrames() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
@@ -56,7 +56,7 @@ public class MessageFormatIT
     public void dynamicTableRequests() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 }
