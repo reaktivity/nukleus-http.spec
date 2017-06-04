@@ -14,82 +14,87 @@
 # under the License.
 #
 
-property newSourceInputRef ${nuklei:newReferenceId()} # external scope
+property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property sourceInput ${nuklei.streams("http", "source")}
-property sourceOutputEst ${nuklei.streams("source", "http#source")}
+property serverAccept ${nuklei.streams("http", "source")}
+property serverAcceptReply ${nuklei.streams("source", "http#source")}
 
-property newSourceInputId ${nuklei:newStreamId()}
+property newServerAcceptId ${nuklei:newStreamId()}
 property newSourceCorrelationId ${nuklei:newCorrelationId()}
 
-connect await ROUTED_INPUT
+connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(sourceInput.throttle)}
-        option agrona:writer ${agrona:oneToOneWriter(sourceInput.buffer)}
+        option agrona:reader ${agrona:oneToOneReader(serverAccept.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(serverAccept.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newSourceInputId}
-write ${newSourceInputRef}
+write ${newServerAcceptId}
+write [0x06] "source"
+write ${newServerAcceptRef}
 write ${newSourceCorrelationId}
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
+read ${newServerAcceptId}
 read [0x40 0x00 0x00 0x00]
+read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
+write ${newServerAcceptId}
 write [0x00 0x1a]
 write "GET / HTTP/1.1\r\n"
 write "Host: loca"
 write flush
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
+write ${newServerAcceptId}
 write [0x00 0x26]
 write "lhost:8080\r\n"
 write "X-Custom-header-1: header "
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newSourceInputId}
+read ${newServerAcceptId}
+read [0..4]
 read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newSourceInputId}
+write ${newServerAcceptId}
 write [0x00 0x08]
 write "er 2\r\n"
 write "\r\n"
 write flush
 
 read [0x40 0x00 0x00 0x01]
-read ${newSourceInputId}
+read ${newServerAcceptId}
 
 close
 closed
 
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(sourceOutputEst.buffer)}
-        option agrona:writer ${agrona:oneToOneWriter(sourceOutputEst.throttle)}
+        option agrona:reader ${agrona:oneToOneReader(serverAcceptReply.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(serverAcceptReply.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:sourceOutputEstId)
+read ([0..8]:serverAcceptReplyId)
+read [0x04] "http"
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newSourceCorrelationId}
 
 write [0x40 0x00 0x00 0x02]
-write ${sourceOutputEstId}
+write ${serverAcceptReplyId}
+write [0x00 0x02 0x00 0x00]
 write [0x00 0x02 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${sourceOutputEstId}
+read ${serverAcceptReplyId}
 read [0x00]
 read (byte:lengthByte)
 read /HTTP\/1.1 4\d\d .*\r\n/

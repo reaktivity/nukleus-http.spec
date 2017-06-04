@@ -16,21 +16,22 @@
 
 property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
 
-property targetInput ${nuklei.streams("target", "http#source")}
-property targetOutputEst ${nuklei.streams("http", "target")}
+property serverConnect ${nuklei.streams("target", "http#source")}
+property serverConnectReply ${nuklei.streams("http", "target")}
 
-property newTargetOutputEstId1 ${nuklei:newStreamId()}
-property newTargetOutputEstId2 ${nuklei:newStreamId()}
+property newServerConnectReplyId1 ${nuklei:newStreamId()}
+property newServerConnectReplyId2 ${nuklei:newStreamId()}
 
-connect await ROUTED_INPUT
+connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(targetInput.buffer)}
-        option agrona:writer ${agrona:oneToOneWriter(targetInput.throttle)}
+        option agrona:reader ${agrona:oneToOneReader(serverConnect.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(serverConnect.throttle)}
 connected
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInputId1)
-read ([0..8]:targetInputRef)
+read ([0..8]:serverConnectId1)
+read [0x04] "http"
+read ([0..8]:serverConnectRef)
 read ([0..8]:targetCorrelationId1)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x04] "POST"
@@ -41,26 +42,29 @@ read [0x00] [0x0e] "content-length" [0x01] "8"
 read notify HTTP_REQUEST_ONE_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId1}
+write ${serverConnectId1}
+write [0x00 0x20 0x00 0x00]
 write [0x00 0x20 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetInputId1}
+read ${serverConnectId1}
 read [0x00 0x08]
 read "request1"
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId1}
+write ${serverConnectId1}
+write [0x08 0x00 0x00 0x00]
 write [0x08 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x03]
-read ${targetInputId1}
+read ${serverConnectId1}
 
 read [0x00 0x00 0x00 0x01]
-read ([0..8]:targetInputId2)
-read ([0..8]:targetInputRef)
+read ([0..8]:serverConnectId2)
+read [0x04] "http"
+read ([0..8]:serverConnectRef)
 read ([0..8]:targetCorrelationId2)
 read [0x00] [0x07] ":scheme" [0x04] "http"
 read [0x00] [0x07] ":method" [0x04] "POST"
@@ -71,42 +75,46 @@ read [0x00] [0x0e] "content-length" [0x01] "8"
 read notify HTTP_REQUEST_TWO_RECEIVED
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId2}
+write ${serverConnectId2}
+write [0x04 0x00 0x00 0x00]
 write [0x04 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetInputId2}
+read ${serverConnectId2}
 read [0x00 0x04]
 read "requ"
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId2}
+write ${serverConnectId2}
+write [0x04 0x00 0x00 0x00]
 write [0x04 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x02]
-read ${targetInputId2}
+read ${serverConnectId2}
 read [0x00 0x04]
 read "est2"
 
 write [0x40 0x00 0x00 0x02]
-write ${targetInputId2}
+write ${serverConnectId2}
+write [0x04 0x00 0x00 0x00]
 write [0x04 0x00 0x00 0x00]
 write flush
 
 read [0x00 0x00 0x00 0x03]
-read ([0..8]:targetInputId2)
+read ([0..8]:serverConnectId2)
 
 
 connect await HTTP_REQUEST_ONE_RECEIVED
         "agrona://stream/bidirectional"
-        option agrona:reader ${agrona:oneToOneReader(targetOutputEst.throttle)}
-        option agrona:writer ${agrona:oneToOneWriter(targetOutputEst.buffer)}
+        option agrona:reader ${agrona:oneToOneReader(serverConnectReply.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(serverConnectReply.buffer)}
 connected
 
 write [0x00 0x00 0x00 0x01]
-write ${newTargetOutputEstId1}
+write ${newServerConnectReplyId1}
+write [0x06] "target"
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId1}
 write [0x00] [0x07] ":status" [0x03] "200"
@@ -114,31 +122,35 @@ write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId1}
+read ${newServerConnectReplyId1}
+read [0..4]
 read [0..4]
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId1}
+read ${newServerConnectReplyId1}
 read [0x26 0x00 0x00 0x00]
+read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId1}
+write ${newServerConnectReplyId1}
 write [0x00 0x08]
 write "request1"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId1}
+read ${newServerConnectReplyId1}
 read [0x08 0x00 0x00 0x00]
+read [0..4]
 
 write [0x00 0x00 0x00 0x03]
-write ${newTargetOutputEstId1}
+write ${newServerConnectReplyId1}
 write flush
 
 write await HTTP_REQUEST_TWO_RECEIVED
 
 write [0x00 0x00 0x00 0x01]
-write ${newTargetOutputEstId2}
+write ${newServerConnectReplyId2}
+write [0x06] "target"
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId2}
 write [0x00] [0x07] ":status" [0x03] "200"
@@ -146,23 +158,26 @@ write [0x00] [0x0e] "content-length" [0x01] "8"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId2}
+read ${newServerConnectReplyId2}
+read [0..4]
 read [0..4]
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId2}
+read ${newServerConnectReplyId2}
 read [0x26 0x00 0x00 0x00]
+read [0..4]
 
 write [0x00 0x00 0x00 0x02]
-write ${newTargetOutputEstId2}
+write ${newServerConnectReplyId2}
 write [0x00 0x08]
 write "request2"
 write flush
 
 read [0x40 0x00 0x00 0x02]
-read ${newTargetOutputEstId2}
+read ${newServerConnectReplyId2}
+read [0..4]
 read [0..4]
 
 write [0x00 0x00 0x00 0x03]
-write ${newTargetOutputEstId2}
+write ${newServerConnectReplyId2}
 write flush

@@ -50,7 +50,7 @@ public class MessageFormatIT
     public void requestWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -62,7 +62,7 @@ public class MessageFormatIT
     public void requestWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -74,7 +74,7 @@ public class MessageFormatIT
     public void responseWithHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -87,7 +87,7 @@ public class MessageFormatIT
     public void responseWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -99,7 +99,7 @@ public class MessageFormatIT
     public void robustServerShouldAllowExtraCRLFBeforeRequestLine() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -112,7 +112,7 @@ public class MessageFormatIT
     public void postRequestWithNoContent() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -124,7 +124,7 @@ public class MessageFormatIT
     public void headRequestAndResponse() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -136,7 +136,7 @@ public class MessageFormatIT
     public void headRequestAndResponseWithContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -150,7 +150,7 @@ public class MessageFormatIT
     public void gatewayMustRejectResponseWithMultipleDifferentContentLength() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -164,7 +164,7 @@ public class MessageFormatIT
     public void onResponseProxyMustRemoveSpaceInHeaderWithSpaceBetweenHeaderNameAndColon() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -177,7 +177,7 @@ public class MessageFormatIT
     public void proxyGetsResponseWithMultipleContentLengths() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -190,7 +190,7 @@ public class MessageFormatIT
     public void proxyOrGatewayMustRejectOBSInHeaderValue() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -204,7 +204,7 @@ public class MessageFormatIT
     public void proxyShouldPreserveUnrecognizedHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
