@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newSourceInputRef ${nukleus:newRouteRef()} # external
+property newServerAcceptRef ${nukleus:newRouteRef()} # external
 
-connect await ROUTED_INPUT
+connect await ROUTED_SERVER
         "nukleus://http2/streams/source"
-        option nukleus:route ${newSourceInputRef}
+        option nukleus:route ${newServerAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 connected
