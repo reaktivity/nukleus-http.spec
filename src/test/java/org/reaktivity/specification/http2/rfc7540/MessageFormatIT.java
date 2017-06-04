@@ -13,10 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.nukleus.http2.control;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.junit.rules.RuleChain.outerRule;
+package org.reaktivity.specification.http2.rfc7540;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,41 +23,25 @@ import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
-public class ControlIT
-{
-    private final K3poRule k3po = new K3poRule();
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.rules.RuleChain.outerRule;
 
-    private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
+public class MessageFormatIT
+{
+    private final K3poRule k3po = new K3poRule()
+        .addScriptRoot("spec", "org/reaktivity/specification/http2/rfc7540/message.format");
+
+    private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     @Rule
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
     @Specification({
-        "route/server/nukleus",
-        "route/server/controller"
+            "${spec}/continuation.frames/client",
+            "${spec}/continuation.frames/server",
     })
-    public void shouldRouteServer() throws Exception
-    {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "route/client/nukleus",
-        "route/client/controller"
-    })
-    public void shouldRouteClient() throws Exception
-    {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "unroute/server/nukleus",
-        "unroute/server/controller"
-    })
-    public void shouldUnrouteServer() throws Exception
+    public void continuationFrames() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -69,13 +50,14 @@ public class ControlIT
 
     @Test
     @Specification({
-        "unroute/client/nukleus",
-        "unroute/client/controller"
+            "${spec}/dynamic.table.requests/client",
+            "${spec}/dynamic.table.requests/server",
     })
-    public void shouldUnrouteClient() throws Exception
+    public void dynamicTableRequests() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
 }
