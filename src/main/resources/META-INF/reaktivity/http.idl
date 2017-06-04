@@ -41,5 +41,10 @@ scope http
         {
             // TODO: extensions like chunked parameters etc
         }
+
+        struct HttpEndEx
+        {
+            list<http::HttpHeader> trailers;
+        }
     }
 }

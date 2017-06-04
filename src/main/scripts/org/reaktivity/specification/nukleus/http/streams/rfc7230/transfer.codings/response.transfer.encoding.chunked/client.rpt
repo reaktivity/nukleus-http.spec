@@ -1,0 +1,44 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property newSourceOutputRef  ${nuklei:newReferenceId()} # external
+
+connect await ROUTED_OUTPUT
+        "nukleus://http/streams/source"
+  option nukleus:route ${newSourceOutputRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x00] "0"
+
+read nukleus:begin.ext [0x00] [0x06] "status" [0x03] "200"
+read nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+read nukleus:begin.ext [0x00] [0x11] "transfer-encoding" [0x07] "chunked"
+
+connected
+
+write close
+
+read "Chunk A"
+read "Chunk B"
+read "Chunk C"
+read closed
+
