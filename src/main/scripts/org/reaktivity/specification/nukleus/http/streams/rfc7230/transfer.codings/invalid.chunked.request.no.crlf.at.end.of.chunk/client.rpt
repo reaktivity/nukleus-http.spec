@@ -17,7 +17,7 @@
 property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 property newCorrelationId ${nukleus:newCorrelationId()}
 
-connect await ROUTED_OUTPUT
+connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
   option nukleus:correlation ${newCorrelationId}

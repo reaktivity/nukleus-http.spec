@@ -16,7 +16,7 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_INPUT
+connect await ROUTED_SERVER
         "http://localhost:8080/"
   option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}

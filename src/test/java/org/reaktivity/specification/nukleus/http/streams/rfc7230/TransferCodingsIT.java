@@ -50,7 +50,7 @@ public class TransferCodingsIT
     public void requestTransferEncodingChunked() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -62,7 +62,7 @@ public class TransferCodingsIT
     public void multipleRequestsTransferEncodingChunked() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -74,7 +74,7 @@ public class TransferCodingsIT
     public void invalidRequestTransferEncodingChunked() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -86,7 +86,7 @@ public class TransferCodingsIT
     public void responseTransferEncodingChunked() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -96,7 +96,7 @@ public class TransferCodingsIT
     public void requestTransferEncodingChunkedExtension() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -106,7 +106,7 @@ public class TransferCodingsIT
     public void responseTransferEncodingChunkedExtension() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -118,7 +118,7 @@ public class TransferCodingsIT
     public void requestTransferEncodingChunkedWithTrailer() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
@@ -130,7 +130,7 @@ public class TransferCodingsIT
     public void responseTransferEncodingChunkedWithTrailer() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_OUTPUT");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
