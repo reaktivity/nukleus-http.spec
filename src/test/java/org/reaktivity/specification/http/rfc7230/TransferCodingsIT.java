@@ -56,6 +56,18 @@ public class TransferCodingsIT
 
     @Test
     @Specification({
+        "${scripts}/multiple.requests.transfer.encoding.chunked/client",
+        "${scripts}/multiple.requests.transfer.encoding.chunked/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void multipleRequeststTransferEncodingChunked() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/invalid.chunked.request.no.crlf.at.end.of.chunk/client",
         "${scripts}/invalid.chunked.request.no.crlf.at.end.of.chunk/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")

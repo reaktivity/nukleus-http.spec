@@ -27,9 +27,9 @@ write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
 write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
 write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
 write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x00] "0"
+write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "0"
 
-read nukleus:begin.ext [0x00] [0x06] "status" [0x03] "200"
+read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 read nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
 read nukleus:begin.ext [0x00] [0x11] "transfer-encoding" [0x07] "chunked"
 
