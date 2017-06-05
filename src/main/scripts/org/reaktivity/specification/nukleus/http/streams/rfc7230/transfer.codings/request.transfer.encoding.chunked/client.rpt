@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newSourceOutputRef  ${nuklei:newReferenceId()} # external
+property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 
 connect await ROUTED_OUTPUT
         "nukleus://http/streams/source"
-  option nukleus:route ${newSourceOutputRef}
+  option nukleus:route ${newClientAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 

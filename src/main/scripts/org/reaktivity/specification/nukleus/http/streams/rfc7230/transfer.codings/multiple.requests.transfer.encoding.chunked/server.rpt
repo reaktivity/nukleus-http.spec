@@ -14,13 +14,14 @@
 # under the License.
 #
 
-property newSourceOutputRef ${nuklei:newReferenceId()} # external scope
-property newTargetInputRef ${newSourceOutputRef} # external scope
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property newServerConnectRef ${newClientAcceptRef} # external scope
+
 property serverConnect "nukleus://target/streams/http#source"
 
 accept ${serverConnect}
   option http:transport ${serverConnect}
-  option nukleus:route  ${newTargetInputRef}
+  option nukleus:route  ${newServerConnectRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
