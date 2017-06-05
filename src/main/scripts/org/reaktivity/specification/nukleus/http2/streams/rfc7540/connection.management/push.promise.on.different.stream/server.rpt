@@ -113,6 +113,7 @@ write "h1 {"
       "    color: blue;"
       "}"
 write flush
+write notify FIRST_PROMISED_RESPONSE
 
 
 #
@@ -133,6 +134,7 @@ write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
+write await FIRST_PROMISED_RESPONSE
 write "function f() {"
       "}"
 write flush
