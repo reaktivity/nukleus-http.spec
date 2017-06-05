@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newSourceInputRef  ${nuklei:newReferenceId()} # external
+property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_INPUT 
+connect await ROUTED_SERVER 
         "nukleus://http/streams/source"
-  option nukleus:route ${newSourceInputRef}
+  option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -35,7 +35,7 @@ read "\r\n"
 
 connect await REQUEST_ONE_WRITTEN 
         "nukleus://http/streams/source"
-  option nukleus:route ${newSourceInputRef}
+  option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -52,7 +52,7 @@ read "\r\n"
 
 connect await REQUEST_TWO_WRITTEN 
         "nukleus://http/streams/source"
-  option nukleus:route ${newSourceInputRef}
+  option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected

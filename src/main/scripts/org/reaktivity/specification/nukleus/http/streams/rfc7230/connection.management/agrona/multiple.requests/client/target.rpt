@@ -1,0 +1,144 @@
+#
+# Copyright 2016-2017 The Reaktivity Project
+#
+# The Reaktivity Project licenses this file to you under the Apache License,
+# version 2.0 (the "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at:
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+property nuklei ${nuklei:directory("target/nukleus-itests").streamsCapacity(1024 * 1024, 64 * 1024)}
+
+property clientConnect ${nuklei.streams("target", "http#source")}
+property clientConnectReply ${nuklei.streams("http", "target")}
+
+property newClientConnectReplyId1 ${nuklei:newStreamId()}
+property newClientConnectReplyId2 ${nuklei:newStreamId()}
+
+connect await ROUTED_CLIENT
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(clientConnect.buffer)}
+        option agrona:writer ${agrona:oneToOneWriter(clientConnect.throttle)}
+connected
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:newClientConnectId1)
+read ([0..8]:newClientConnectRef)
+read ([0..8]:newTargetCorrelationId1)
+
+read notify HTTP_CONNECTION_POOL_OPENED
+
+write [0x40 0x00 0x00 0x02]
+write ${newClientConnectId1}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${newClientConnectId1}
+read [0x00 0x30]
+read "GET /request1 HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "\r\n"
+
+read notify HTTP_REQUEST_ONE_DECODED
+
+write [0x40 0x00 0x00 0x02]
+write ${newClientConnectId1}
+write [0x30 0x00 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x01]
+read ([0..8]:newClientConnectId2)
+read ([0..8]:newClientConnectRef)
+read ([0..8]:newTargetCorrelationId2)
+
+write [0x40 0x00 0x00 0x02]
+write ${newClientConnectId2}
+write [0x00 0x02 0x00 0x00]
+write flush
+
+read [0x00 0x00 0x00 0x02]
+read ${newClientConnectId2}
+read [0x00 0x30]
+read "GET /request2 HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "\r\n"
+
+read notify HTTP_REQUEST_TWO_DECODED
+
+write [0x40 0x00 0x00 0x02]
+write ${newClientConnectId2}
+write [0x30 0x00 0x00 0x00]
+write flush
+
+close
+closed
+
+
+connect await HTTP_CONNECTION_POOL_OPENED
+        "agrona://stream/bidirectional"
+        option agrona:reader ${agrona:oneToOneReader(clientConnectReply.throttle)}
+        option agrona:writer ${agrona:oneToOneWriter(clientConnectReply.buffer)}
+connected
+
+write [0x00 0x00 0x00 0x01]
+write ${newClientConnectReplyId1}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${newTargetCorrelationId1}
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newClientConnectReplyId1}
+read [0..4]
+
+write await HTTP_REQUEST_ONE_DECODED
+
+write [0x00 0x00 0x00 0x02]
+write ${newClientConnectReplyId1}
+write [0x00 0x26]
+write "HTTP/1.1 200 OK\r\n"
+write "Content-Length: 8\r\n"
+write "\r\n"
+write flush
+
+write [0x00 0x00 0x00 0x02]
+write ${newClientConnectReplyId1}
+write [0x00 0x08]
+write "request1"
+write flush
+
+write await HTTP_REQUEST_TWO_DECODED
+
+write [0x00 0x00 0x00 0x01]
+write ${newClientConnectReplyId2}
+write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+write ${newTargetCorrelationId2}
+write flush
+
+read [0x40 0x00 0x00 0x02]
+read ${newClientConnectReplyId2}
+read [0..4]
+
+write [0x00 0x00 0x00 0x02]
+write ${newClientConnectReplyId2}
+write [0x00 0x26]
+write "HTTP/1.1 200 OK\r\n"
+write "Content-Length: 8\r\n"
+write "\r\n"
+write flush
+
+write [0x00 0x00 0x00 0x02]
+write ${newClientConnectReplyId2}
+write [0x00 0x08]
+write "request2"
+write flush
+
+close
+closed
