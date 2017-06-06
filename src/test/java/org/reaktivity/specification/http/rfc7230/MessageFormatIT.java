@@ -209,7 +209,7 @@ public class MessageFormatIT
     public void incompleteRequestWithUnimplementedMethod() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_INPUT");
+        k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
