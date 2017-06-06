@@ -14,27 +14,28 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 
-accept "http://localhost:8080/"
-  option http:transport ${serverTransport}
-  option nukleus:route  ${newClientConnectRef}
+connect await ROUTED_CLIENT
+        "nukleus://http/streams/source"
+  option nukleus:route ${newClientAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
-accepted
+
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+write nukleus:begin.ext [0x00] [0x11] "transfer-encoding" [0x07] "chunked"
+
+read nukleus:begin.ext [0x00] [0x06] "status" [0x03] "200"
+
 connected
 
-read http:method "POST"
-read http:header "Content-Type" "text/plain"
-read http:header "Transfer-Encoding" "chunked"
-read "Chunk A"
-read "Chunk B"
-read "Chunk C"
-read closed
-
-write http:status "200" "OK"
-write http:content-length
+write "Chunk A"
+write "Chunk B"
+write "Chunk C"
 write close
 
+read closed

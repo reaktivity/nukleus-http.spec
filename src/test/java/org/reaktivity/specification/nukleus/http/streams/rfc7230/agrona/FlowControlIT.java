@@ -83,17 +83,6 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/request.headers.too.long/server/source",
-        "${streams}/request.headers.too.long/server/nukleus" })
-    public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/request.with.content.flow.controlled/server/source",
         "${streams}/request.with.content.flow.controlled/server/nukleus",
         "${streams}/request.with.content.flow.controlled/server/target"})

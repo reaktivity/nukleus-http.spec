@@ -17,7 +17,6 @@
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
-property headerSize 8001
 
 accept ${serverTransport}
   option nukleus:route ${newClientConnectRef}
@@ -26,17 +25,10 @@ accept ${serverTransport}
 accepted
 connected
 
+read "BAD HTTP/1.1"
 
-read "GET / HTTP/1.1\r\n"
-read "Host: localhost:8080\r\n"
-read "header: " [0..${headerSize}] "\r\n"
-read "\r\n"
-
-write "HTTP/1.1 400 Bad Request\r\n"
+write "HTTP/1.1 501 Not Implemented\r\n"
 write "Connection: close\r\n"
 write "\r\n"
-write flush
 
 abort
-
-

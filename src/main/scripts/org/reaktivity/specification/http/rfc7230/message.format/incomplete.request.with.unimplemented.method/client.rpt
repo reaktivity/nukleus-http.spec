@@ -15,28 +15,18 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
-property headerSize 8001
 
-accept ${serverTransport}
-  option nukleus:route ${newClientConnectRef}
+connect await ROUTED_SERVER 
+        "nukleus://http/streams/source"
+  option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
-accepted
 connected
 
-
-read "GET / HTTP/1.1\r\n"
-read "Host: localhost:8080\r\n"
-read "header: " [0..${headerSize}] "\r\n"
+write "BAD HTTP/1.1"
+read "HTTP/1.1 501" /.*/ "\r\n"
+read "Connection: close\r\n"
 read "\r\n"
 
-write "HTTP/1.1 400 Bad Request\r\n"
-write "Connection: close\r\n"
-write "\r\n"
-write flush
-
-abort
-
+aborted
 

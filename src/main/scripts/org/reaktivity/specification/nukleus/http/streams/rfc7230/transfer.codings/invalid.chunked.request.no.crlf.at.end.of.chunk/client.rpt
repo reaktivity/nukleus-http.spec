@@ -14,23 +14,25 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-property headerSize 8001
+property newClientAcceptRef  ${nuklei:newReferenceId()} # external
+property newCorrelationId ${nukleus:newCorrelationId()}
 
-connect await ROUTED_SERVER 
+connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+  option nukleus:route ${newClientAcceptRef}
+  option nukleus:correlation ${newCorrelationId}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "simplex"
+
+write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
+write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
+write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
+write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+write nukleus:begin.ext [0x00] [0x11] "transfer-encoding" [0x07] "chunked"
+
 connected
 
-write "GET / HTTP/1.1" "\r\n"
-write "Host: " "localhost:8080" "\r\n"
-write "header: " ${http:randomAscii(headerSize)} "\r\n"
-write "\r\n"
-read "HTTP/1.1 " /4\d\d/ /.*/ "\r\n"
-read "Connection: close\r\n\r\n"
-
-aborted
+write "Chunk A"
 
 
