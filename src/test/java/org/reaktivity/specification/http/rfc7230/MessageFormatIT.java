@@ -199,6 +199,23 @@ public class MessageFormatIT
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-3">RFC 7230 section 3: Message Format</a>.
      *
+     * @throws Exception when K3PO is not started
+     */
+    @Test
+    @Specification({
+            "${scripts}/incomplete.request.with.unimplemented.method/client",
+            "${scripts}/incomplete.request.with.unimplemented.method/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void incompleteRequestWithUnimplementedMethod() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    /**
+     * See <a href="https://tools.ietf.org/html/rfc7230#section-3">RFC 7230 section 3: Message Format</a>.
+     *
      * In the interest of robustness, a server that is expecting to receive and parse a request-line SHOULD ignore at
      * least one empty line (CRLF) received prior to the request-line.
      *

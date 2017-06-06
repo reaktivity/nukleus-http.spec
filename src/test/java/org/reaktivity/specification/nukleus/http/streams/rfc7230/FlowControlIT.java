@@ -81,17 +81,6 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${scripts}/request.headers.too.long/client",
-        "${scripts}/request.headers.too.long/server"})
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    @Ignore("Not yet migrated onto k3po nukleus transport")
-    public void shouldRejectRequestExceedingMaximumHeadersSize() throws Exception
-    {
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${scripts}/request.with.content.flow.controlled/client",
         "${scripts}/request.with.content.flow.controlled/server"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")

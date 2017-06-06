@@ -14,29 +14,42 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
-property headerSize 8001
 
-accept ${serverTransport}
-  option nukleus:route ${newClientConnectRef}
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newClientConnectRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
 
+read http:method "POST"
+read http:header "Content-Type" "text/plain"
+read http:header "Transfer-Encoding" "chunked"
+read "Chunk A"
+read "Chunk B"
+read "Chunk C"
+read closed
 
-read "GET / HTTP/1.1\r\n"
-read "Host: localhost:8080\r\n"
-read "header: " [0..${headerSize}] "\r\n"
-read "\r\n"
+write http:status "200" "OK"
+write http:content-length
+write close
 
-write "HTTP/1.1 400 Bad Request\r\n"
-write "Connection: close\r\n"
-write "\r\n"
-write flush
+accepted
+connected
 
-abort
+read http:method "POST"
+read http:header "Content-Type" "text/plain"
+read http:header "Transfer-Encoding" "chunked"
+read "1"
+read "12"
+read "12345"
+read closed
 
+write http:status "200" "OK"
+write http:content-length
+write close
 

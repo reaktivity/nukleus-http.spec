@@ -14,7 +14,14 @@
 # under the License.
 #
 
-connect "http://localhost:8080/"
+property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+
+connect await ROUTED_SERVER
+        "http://localhost:8080/"
+  option http:transport "nukleus://http/streams/source"
+  option nukleus:route ${newServerAcceptRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
 connected
 
 write http:method "GET"
