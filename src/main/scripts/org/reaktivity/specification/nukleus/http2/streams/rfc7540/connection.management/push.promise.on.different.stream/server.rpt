@@ -42,6 +42,8 @@ connected
 
 read "Hello, world"
 
+write await SECOND_REQUEST_RECEIVED
+
 # First push promise
 write nukleus:data.ext [0x00] [0x07] ":method" [0x03] "GET"
                        [0x00] [0x07] ":scheme" [0x04] "http"
@@ -80,7 +82,7 @@ write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
-
+read notify SECOND_REQUEST_RECEIVED
 
 
 
