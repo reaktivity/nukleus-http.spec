@@ -35,6 +35,20 @@ public final class Functions
     }
 
     @Function
+    public static byte[] header(String name, String value)
+    {
+        int nameLength = name.length(), valueLength = value.length();
+        int length = nameLength + valueLength + 3;
+        byte[] result = new byte[length];
+        result[0] = (byte) 0x00;
+        result[1] = (byte) nameLength;
+        System.arraycopy(name.getBytes(), 0, result, 2, nameLength);
+        result[2 + nameLength] = (byte) valueLength;
+        System.arraycopy(value.getBytes(), 0, result, 3 + nameLength, valueLength);
+        return result;
+    }
+
+    @Function
     public static String append(String... strings)
     {
         StringBuilder x = new StringBuilder();

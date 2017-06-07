@@ -38,10 +38,10 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:clientAcceptId1)
 read ([0..8]:clientAcceptRef)
 read ([0..8]:sourceCorrelationId1)
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x09] "/request1"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read ${http:header(":scheme", "http")}
+read ${http:header(":method", "GET")}
+read ${http:header(":path", "/request1")}
+read ${http:header(":authority", "localhost:8080")}
 
 read notify HTTP_REQUEST_ONE_RECEIVED
 
@@ -57,10 +57,10 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:clientAcceptId2)
 read ([0..8]:clientAcceptRef)
 read ([0..8]:sourceCorrelationId2)
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x09] "/request2"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read ${http:header(":scheme", "http")}
+read ${http:header(":method", "GET")}
+read ${http:header(":path", "/request2")}
+read ${http:header(":authority", "localhost:8080")}
 
 read notify HTTP_REQUEST_TWO_RECEIVED
 
@@ -182,8 +182,8 @@ write [0x00 0x00 0x00 0x01]
 write ${newClientAcceptReplyId1}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${newSourceCorrelationId1}
-write [0x00] [0x07] ":status" [0x03] "200"
-write [0x00] [0x0e] "content-length" [0x01] "8"
+write ${http:header(":status", "200")}
+write ${http:header("content-length", "8")}
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -209,8 +209,8 @@ write [0x00 0x00 0x00 0x01]
 write ${newClientAcceptReplyId2}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${newSourceCorrelationId2}
-write [0x00] [0x07] ":status" [0x03] "200"
-write [0x00] [0x0e] "content-length" [0x01] "8"
+write ${http:header(":status", "200")}
+write ${http:header("content-length", "8")}
 write flush
 
 read [0x40 0x00 0x00 0x02]
