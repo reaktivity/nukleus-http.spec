@@ -15,7 +15,6 @@
  */
 package org.reaktivity.specification.http.internal;
 
-import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,23 +40,16 @@ public final class Functions
     @Function
     public static byte[] header(String name, String value)
     {
-        int nameLength = name.length(), valueLength = value.length();
-        byte[] nameBytes = name.getBytes(), valueBytes = value.getBytes();
-        int length = nameLength + valueLength + 3;
-        byte[] result = new byte[length];
-
-        ByteBuffer buf = ByteBuffer.allocate(length);
-        buf.put((byte) 0x00);
-        buf.put((byte) nameLength);
-        buf.put(nameBytes);
-        buf.put((byte) valueLength);
-        buf.put(valueBytes);
-
-        MutableDirectBuffer writeBuffer = new UnsafeBuffer(buf);
-        HttpHeaderFW.Builder builder = new HttpHeaderFW.Builder();
-        builder.wrap(writeBuffer, 0, length);
-        builder.build().buffer().getBytes(0, result);
-        return result;
+        MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[1024]);
+        HttpHeaderFW header = new HttpHeaderFW.Builder()
+                .wrap(writeBuffer, 0, writeBuffer.capacity())
+                .representation((byte) 0)
+                .name(name)
+                .value(value)
+                .build();
+        byte[] headerBytes = new byte[header.sizeof()];
+        header.buffer().getBytes(0, headerBytes);
+        return headerBytes;
     }
 
     @Function
