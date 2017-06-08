@@ -25,14 +25,14 @@ accept ${serverConnect}
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext [0x00] [0x07] "upgrade" (byte:upgradeLength) ([0..${upgradeLength}]:upgrade)
-read nukleus:begin.ext [0x00] [0x0a] "connection" [0x07] "upgrade"
+read nukleus:begin.ext ${http:header("connection", "upgrade")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "101"
+write nukleus:begin.ext ${http:header(":status", "101")}
 write nukleus:begin.ext [0x00] [0x07] "upgrade" ${upgradeLength} ${upgrade}
 
 connected
@@ -42,14 +42,14 @@ write flush
 
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext [0x00] [0x07] "upgrade" (byte:upgradeLength) ([0..${upgradeLength}]:upgrade)
-read nukleus:begin.ext [0x00] [0x0a] "connection" [0x07] "upgrade"
+read nukleus:begin.ext ${http:header("connection", "upgrade")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "101"
+write nukleus:begin.ext ${http:header(":status", "101")}
 write nukleus:begin.ext [0x00] [0x07] "upgrade" ${upgradeLength} ${upgrade}
 
 connected

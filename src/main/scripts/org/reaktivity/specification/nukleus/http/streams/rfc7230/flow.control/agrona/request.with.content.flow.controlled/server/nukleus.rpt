@@ -71,11 +71,11 @@ write ${newServerConnectId}
 write [0x04] "http"
 write ${newServerConnectRef}
 write ${newTargetCorrelationId}
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x04] "POST"
-write [0x00] [0x05] ":path" [0x01] "/"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-write [0x00] [0x0e] "content-length" [0x02] "11"
+write ${http:header(":scheme", "http")}
+write ${http:header(":method", "POST")}
+write ${http:header(":path", "/")}
+write ${http:header(":authority", "localhost:8080")}
+write ${http:header("content-length", "11")}
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -118,7 +118,7 @@ read ([0..8]:serverConnectReplyId)
 read [0x06] "target"
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "200"
+read ${http:header(":status", "200")}
 
 read notify HTTP_RESPONSE_RECEIVED
 

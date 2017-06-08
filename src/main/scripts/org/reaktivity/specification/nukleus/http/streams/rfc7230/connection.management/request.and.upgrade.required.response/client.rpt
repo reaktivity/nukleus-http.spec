@@ -22,12 +22,12 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "426"
+read nukleus:begin.ext ${http:header(":status", "426")}
 read nukleus:begin.ext [0x00] [0x07] "upgrade" (byte:upgradeLength) [0..${upgradeLength}]
 
 connected

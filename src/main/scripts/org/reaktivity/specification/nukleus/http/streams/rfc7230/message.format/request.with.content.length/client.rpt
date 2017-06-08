@@ -24,11 +24,11 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "simplex"
 
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x04] "POST"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "11"
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "POST")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:header("content-length", "11")}
 
 connected
 
@@ -43,6 +43,6 @@ accept await ROUTED_CLIENT
     option nukleus:transmission "simplex"
 accepted  
 
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
+read nukleus:begin.ext ${http:header(":status", "200")}
 
 connected

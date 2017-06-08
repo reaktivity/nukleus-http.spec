@@ -26,13 +26,13 @@ accept ${serverConnect}
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request1"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/request1")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
+write nukleus:begin.ext ${http:header(":status", "200")}
+write nukleus:begin.ext ${http:header("content-length", "9")}
 
 connected
 
@@ -42,13 +42,13 @@ write close
 
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request2"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/request2")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
+write nukleus:begin.ext ${http:header(":status", "200")}
+write nukleus:begin.ext ${http:header("content-length", "9")}
 
 connected
 
@@ -58,13 +58,13 @@ write close
        
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x09] "/request3"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/request3")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x01] "9"
+write nukleus:begin.ext ${http:header(":status", "200")}
+write nukleus:begin.ext ${http:header("content-length", "9")}
 
 connected
 

@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.reaktivity</groupId>
   <artifactId>nukleus-http.spec</artifactId>
-  <version>0.22</version>
+  <version>0.23</version>
   <name>HTTP Nukleus Specification</name>
   <description>HTTP Nukleus Specification</description>
   <url>https://github.com/reaktivity/nukleus-http.spec</url>
@@ -88,11 +88,13 @@
         <artifactId>nukleus-maven-plugin</artifactId>
         <version>${nukleus.plugin.version}</version>
         <configuration>
-          <scopeNames>http</scopeNames>
+          <scopeNames>core http</scopeNames>
+          <packageName>org.reaktivity.specification.http.internal.types</packageName>
         </configuration>
         <executions>
           <execution>
             <goals>
+              <goal>generate</goal>
               <goal>validate</goal>
             </goals>
           </execution>
