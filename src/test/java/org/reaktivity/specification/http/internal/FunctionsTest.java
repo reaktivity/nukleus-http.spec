@@ -22,10 +22,13 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 
+import org.agrona.DirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
+import org.reaktivity.nukleus.http.internal.types.HttpHeaderFW;
 
 public class FunctionsTest
 {
@@ -56,11 +59,23 @@ public class FunctionsTest
         byte[] expected = new byte[] { (byte) 0x00, (byte) "name".length(), (byte) 'n', (byte) 'a', (byte) 'm', (byte) 'e',
                 (byte) "value".length(), (byte) 'v', (byte) 'a', (byte) 'l', (byte) 'u', (byte) 'e' };
         byte[] actual = header("name", "value");
+        DirectBuffer header = new UnsafeBuffer(actual);
+        HttpHeaderFW fw = new HttpHeaderFW().wrap(header, 0, actual.length);
+        Assert.assertEquals(fw.representation(), 0x00);
+        Assert.assertEquals(fw.name().asString(), "name");
+        Assert.assertEquals(fw.value().asString(), "value");
+
         Assert.assertArrayEquals(expected, actual);
 
         byte[] expected2 = new byte[] { (byte) 0x00, (byte) ":status".length(), (byte) ':', (byte) 's', (byte) 't', (byte) 'a',
                 (byte) 't', (byte) 'u', (byte) 's', (byte) "200".length(), (byte) '2', (byte) '0', (byte) '0' };
         byte[] actual2 = header(":status", "200");
+        DirectBuffer header2 = new UnsafeBuffer(actual2);
+        HttpHeaderFW fw2 = new HttpHeaderFW().wrap(header2, 0, actual2.length);
+        Assert.assertEquals(fw2.representation(), 0x00);
+        Assert.assertEquals(fw2.name().asString(), ":status");
+        Assert.assertEquals(fw2.value().asString(), "200");
+
         Assert.assertArrayEquals(expected2, actual2);
     }
 

@@ -15,12 +15,16 @@
  */
 package org.reaktivity.specification.http.internal;
 
+import java.nio.ByteBuffer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.agrona.MutableDirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
+import org.reaktivity.nukleus.http.internal.types.HttpHeaderFW;
 
 public final class Functions
 {
@@ -38,13 +42,21 @@ public final class Functions
     public static byte[] header(String name, String value)
     {
         int nameLength = name.length(), valueLength = value.length();
+        byte[] nameBytes = name.getBytes(), valueBytes = value.getBytes();
         int length = nameLength + valueLength + 3;
         byte[] result = new byte[length];
-        result[0] = (byte) 0x00;
-        result[1] = (byte) nameLength;
-        System.arraycopy(name.getBytes(), 0, result, 2, nameLength);
-        result[2 + nameLength] = (byte) valueLength;
-        System.arraycopy(value.getBytes(), 0, result, 3 + nameLength, valueLength);
+
+        ByteBuffer buf = ByteBuffer.allocate(length);
+        buf.put((byte) 0x00);
+        buf.put((byte) nameLength);
+        buf.put(nameBytes);
+        buf.put((byte) valueLength);
+        buf.put(valueBytes);
+
+        MutableDirectBuffer writeBuffer = new UnsafeBuffer(buf);
+        HttpHeaderFW.Builder builder = new HttpHeaderFW.Builder();
+        builder.wrap(writeBuffer, 0, length);
+        builder.build().buffer().getBytes(0, result);
         return result;
     }
 
