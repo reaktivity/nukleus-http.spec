@@ -23,7 +23,7 @@ import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
-import org.reaktivity.nukleus.http.internal.types.HttpHeaderFW;
+import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
 
 public final class Functions
 {

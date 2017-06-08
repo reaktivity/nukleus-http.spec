@@ -28,7 +28,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
-import org.reaktivity.nukleus.http.internal.types.HttpHeaderFW;
+import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
 
 public class FunctionsTest
 {
@@ -57,10 +57,10 @@ public class FunctionsTest
     public void headerTest()
     {
         DirectBuffer buffer = new UnsafeBuffer(header("name", "value"));
-        HttpHeaderFW fw = new HttpHeaderFW().wrap(buffer, 0, buffer.capacity());
-        Assert.assertEquals(fw.representation(), 0x00);
-        Assert.assertEquals(fw.name().asString(), "name");
-        Assert.assertEquals(fw.value().asString(), "value");
+        HttpHeaderFW header = new HttpHeaderFW().wrap(buffer, 0, buffer.capacity());
+        Assert.assertEquals(header.representation(), 0x00);
+        Assert.assertEquals(header.name().asString(), "name");
+        Assert.assertEquals(header.value().asString(), "value");
     }
 
 }

@@ -89,7 +89,7 @@
         <version>${nukleus.plugin.version}</version>
         <configuration>
           <scopeNames>core http</scopeNames>
-          <packageName>org.reaktivity.nukleus.http.internal.types</packageName>
+          <packageName>org.reaktivity.specification.http.internal.types</packageName>
         </configuration>
         <executions>
           <execution>
