@@ -35,10 +35,10 @@ write ${newClientAcceptId}
 write [0x06] "source"
 write ${newClientAcceptRef}
 write ${newSourceCorrelationId}
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x03] "GET"
-write [0x00] [0x05] ":path" [0x01] "/"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write ${http:header(":scheme", "http")}
+write ${http:header(":method", "GET")}
+write ${http:header(":path", "/")}
+write ${http:header(":authority", "localhost:8080")}
 write flush
 
 write [0x00 0x00 0x00 0x03]
@@ -60,8 +60,8 @@ read ([0..8]:clientAcceptReplyId)
 read [0x04] "http"
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newSourceCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x0e] "content-length" [0x02] "11"
+read ${http:header(":status", "200")}
+read ${http:header("content-length", "11")}
 
 write [0x40 0x00 0x00 0x02]
 write ${clientAcceptReplyId}

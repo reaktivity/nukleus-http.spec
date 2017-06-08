@@ -16,14 +16,19 @@
 package org.reaktivity.specification.http.internal;
 
 import static org.kaazing.k3po.lang.internal.el.ExpressionFactoryUtils.newExpressionFactory;
+import static org.reaktivity.specification.http.internal.Functions.header;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 
+import org.agrona.DirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
+import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
 
 public class FunctionsTest
 {
@@ -46,6 +51,16 @@ public class FunctionsTest
         ValueExpression expression = factory.createValueExpression(ctx, expressionText, String.class);
         String randomBytes = (String) expression.getValue(ctx);
         System.out.println(randomBytes);
+    }
+
+    @Test
+    public void headerTest()
+    {
+        DirectBuffer buffer = new UnsafeBuffer(header("name", "value"));
+        HttpHeaderFW header = new HttpHeaderFW().wrap(buffer, 0, buffer.capacity());
+        Assert.assertEquals(header.representation(), 0x00);
+        Assert.assertEquals(header.name().asString(), "name");
+        Assert.assertEquals(header.value().asString(), "value");
     }
 
 }

@@ -31,12 +31,12 @@ read [0x00 0x00 0x00 0x01]
 read ([0..8]:serverConnectId)
 read ([0..8]:serverConnectRef)
 read ([0..8]:targetCorrelationId)
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-read [0x00] [0x0a] "connection" [0x07] "Upgrade"
-read [0x00] [0x07] "upgrade" [0x08] "protocol" 
+read ${http:header(":scheme", "http")}
+read ${http:header(":method", "GET")}
+read ${http:header(":path", "/")}
+read ${http:header(":authority", "localhost:8080")}
+read ${http:header("connection", "Upgrade")}
+read ${http:header("upgrade", "protocol")} 
 
 read notify HTTP_REQUEST_HEADERS_RECEIVED
 
@@ -67,8 +67,8 @@ write [0x00 0x00 0x00 0x01]
 write ${newServerConnectReplyId}
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "101"
-write [0x00] [0x07] "upgrade" [0x08] "protocol"
+write ${http:header(":status", "101")}
+write ${http:header("upgrade", "protocol")}
 write flush
 
 read [0x40 0x00 0x00 0x02]

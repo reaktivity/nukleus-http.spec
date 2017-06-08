@@ -38,10 +38,10 @@ read ([0..8]:clientAcceptId)
 read [0x06] "source"
 read ([0..8]:clientAcceptRef)
 read ([0..8]:newSourceCorrelationId)
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x07] ":method" [0x03] "GET"
-read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read ${http:header(":scheme", "http")}
+read ${http:header(":method", "GET")}
+read ${http:header(":path", "/")}
+read ${http:header(":authority", "localhost:8080")}
 
 read notify HTTP_REQUEST_RECEIVED
 
@@ -148,7 +148,7 @@ write ${newClientAcceptReplyId}
 write [0x04] "http"
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${newSourceCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "200"
+write ${http:header(":status", "200")}
 write flush
 
 write [0x00 0x00 0x00 0x03]

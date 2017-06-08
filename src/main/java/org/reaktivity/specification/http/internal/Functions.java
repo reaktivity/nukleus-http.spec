@@ -19,8 +19,11 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.agrona.MutableDirectBuffer;
+import org.agrona.concurrent.UnsafeBuffer;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
+import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
 
 public final class Functions
 {
@@ -32,6 +35,21 @@ public final class Functions
     {
         byte[] bytes = login.getBytes();
         return bytesToString(Base64.encode(bytes));
+    }
+
+    @Function
+    public static byte[] header(String name, String value)
+    {
+        MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[1024]);
+        HttpHeaderFW header = new HttpHeaderFW.Builder()
+                .wrap(writeBuffer, 0, writeBuffer.capacity())
+                .representation((byte) 0)
+                .name(name)
+                .value(value)
+                .build();
+        byte[] headerBytes = new byte[header.sizeof()];
+        header.buffer().getBytes(0, headerBytes);
+        return headerBytes;
     }
 
     @Function

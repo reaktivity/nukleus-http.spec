@@ -22,16 +22,16 @@ connect await ROUTED_CLIENT
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x01] "/"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-write nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:header("content-type", "text/plain")}
 
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0c] "content-type" [0x0a] "text/plain"
-read nukleus:begin.ext [0x00] [0x11] "transfer-encoding" [0x07] "chunked"
-read nukleus:begin.ext [0x00] [0x07] "trailer" [0x0a] "Connection"
+read nukleus:begin.ext ${http:header(":status", "200")}
+read nukleus:begin.ext ${http:header("content-type", "text/plain")}
+read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+read nukleus:begin.ext ${http:header("trailer", "Connection")}
 
 connected
 write close
@@ -39,6 +39,6 @@ write close
 read "Chunk A"
 read "Chunk B"
 read "Chunk C"
-read nukleus:end.ext [0x00] [0x0a] "connection" [0x05] "close"
+read nukleus:end.ext ${http:header("connection", "close")}
 read closed
 

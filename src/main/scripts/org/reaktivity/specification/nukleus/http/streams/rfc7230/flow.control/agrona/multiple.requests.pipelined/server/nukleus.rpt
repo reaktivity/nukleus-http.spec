@@ -75,10 +75,10 @@ write ${newServerConnectId1}
 write [0x04] "http"
 write ${newServerConnectRef}
 write ${newTargetCorrelationId}
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x03] "GET"
-write [0x00] [0x05] ":path" [0x09] "/request1"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write ${http:header(":scheme", "http")}
+write ${http:header(":method", "GET")}
+write ${http:header(":path", "/request1")}
+write ${http:header(":authority", "localhost:8080")}
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -97,10 +97,10 @@ write ${newServerConnectId2}
 write [0x04] "http"
 write ${newServerConnectRef}
 write ${newTargetCorrelationId}
-write [0x00] [0x07] ":scheme" [0x04] "http"
-write [0x00] [0x07] ":method" [0x03] "GET"
-write [0x00] [0x05] ":path" [0x09] "/request2"
-write [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+write ${http:header(":scheme", "http")}
+write ${http:header(":method", "GET")}
+write ${http:header(":path", "/request2")}
+write ${http:header(":authority", "localhost:8080")}
 write flush
 
 read [0x40 0x00 0x00 0x02]
@@ -126,8 +126,8 @@ read ([0..8]:serverConnectReplyId1)
 read [0x06] "target"
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x0e] "content-length" [0x01] "8"
+read ${http:header(":status", "200")}
+read ${http:header("content-length", "8")}
 
 read notify HTTP_RESPONSE_ONE_RECEIVED
 
@@ -162,8 +162,8 @@ read ([0..8]:serverConnectReplyId2)
 read [0x06] "target"
 read [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 read ${newTargetCorrelationId}
-read [0x00] [0x07] ":status" [0x03] "200"
-read [0x00] [0x0e] "content-length" [0x01] "8"
+read ${http:header(":status", "200")}
+read ${http:header("content-length", "8")}
 
 write [0x40 0x00 0x00 0x02]
 write ${serverConnectReplyId2}

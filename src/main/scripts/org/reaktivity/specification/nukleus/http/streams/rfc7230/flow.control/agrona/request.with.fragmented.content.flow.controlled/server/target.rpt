@@ -34,11 +34,11 @@ read ([0..8]:serverConnectId)
 read [0x04] "http"
 read ([0..8]:serverConnectRef)
 read ([0..8]:targetCorrelationId)
-read [0x00] [0x07] ":scheme" [0x04] "http"
-read [0x00] [0x07] ":method" [0x04] "POST"
-read [0x00] [0x05] ":path" [0x01] "/"
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
-read [0x00] [0x0e] "content-length" [0x02] "11"
+read ${http:header(":scheme", "http")}
+read ${http:header(":method", "POST")}
+read ${http:header(":path", "/")}
+read ${http:header(":authority", "localhost:8080")}
+read ${http:header("content-length", "11")}
 
 read notify HTTP_REQUEST_RECEIVED
 
@@ -92,7 +92,7 @@ write ${newServerConnectReplyId}
 write [0x06] "target"
 write [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
 write ${targetCorrelationId}
-write [0x00] [0x07] ":status" [0x03] "200"
+write ${http:header(":status", "200")}
 write flush
 
 read [0x40 0x00 0x00 0x02]

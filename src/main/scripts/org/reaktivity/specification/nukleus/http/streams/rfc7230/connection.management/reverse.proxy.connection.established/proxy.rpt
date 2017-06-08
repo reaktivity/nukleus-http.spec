@@ -26,13 +26,13 @@ accept "nukleus://http/streams/source"
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-read nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-read nukleus:begin.ext [0x00] [0x05] ":path" [0x0b] "/index.html"
-read nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0a] "proxy:8080"
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/index.html")}
+read nukleus:begin.ext ${http:header(":authority", "proxy:8080")}
 
-write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-write nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "24"
+write nukleus:begin.ext ${http:header(":status", "200")}
+write nukleus:begin.ext ${http:header("content-length", "24")}
 
 connected
 
@@ -45,13 +45,13 @@ connect ${serverConnect}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
-write nukleus:begin.ext [0x00] [0x07] ":scheme" [0x04] "http"
-write nukleus:begin.ext [0x00] [0x07] ":method" [0x03] "GET"
-write nukleus:begin.ext [0x00] [0x05] ":path" [0x0b] "/index.html"
-write nukleus:begin.ext [0x00] [0x0a] ":authority" [0x0c] "backend:8080"
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/index.html")}
+write nukleus:begin.ext ${http:header(":authority", "backend:8080")}
 
-read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
-read nukleus:begin.ext [0x00] [0x0e] "content-length" [0x02] "24"
+read nukleus:begin.ext ${http:header(":status", "200")}
+read nukleus:begin.ext ${http:header("content-length", "24")}
 
 connected
 
