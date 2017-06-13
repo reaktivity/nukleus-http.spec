@@ -36,8 +36,6 @@ write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
-read "Hello, world"
-
 write "<html>"
       "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
 write flush

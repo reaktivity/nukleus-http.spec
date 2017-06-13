@@ -64,6 +64,17 @@ read [0x00 0x00 0x13]                   # length = 19
      [0x84]                             # :path: /
      [0x01] [0x0e] "localhost:8080"     # :authority: localhost:8080
 
+write [0x00 0x00 0x59]                                      # length
+      [0x01]                                                # HTTP2 HEADERS frame
+      [0x04]                                                # END_HEADERS
+      [0x00 0x00 0x00 0x01]                                 # stream_id=1
+      [0x88]                                                # :status: 200
+      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
+      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
+      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
+      [0x0f 0x0d] [0x03] "113"                              # content-length
+write flush
+
 read [0x00 0x00 0x0c]                   # length = 12
      [0x00]                             # HTTP2 DATA frame
      [0x01]                             # END_STREAM
@@ -75,22 +86,13 @@ write [0x00 0x00 0x04]                                      # length
       [0x00]                                                # no flags
       [0x00 0x00 0x00 0x00]                                 # stream_id=0
       [0x00 0x00 0x00 0x0c]                                 # window size increment = 12
+write flush
 
 write [0x00 0x00 0x04]                                      # length
       [0x08]                                                # WINDOW_UPDATE frame
       [0x00]                                                # no flags
       [0x00 0x00 0x00 0x01]                                 # stream_id=1
       [0x00 0x00 0x00 0x0c]                                 # window size increment = 12
-
-write [0x00 0x00 0x59]                                      # length
-      [0x01]                                                # HTTP2 HEADERS frame
-      [0x04]                                                # END_HEADERS
-      [0x00 0x00 0x00 0x01]                                 # stream_id=1
-      [0x88]                                                # :status: 200
-      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
-      [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
-      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
-      [0x0f 0x0d] [0x03] "113"                              # content-length
 write flush
 
 read [0x00 0x00 0x04]                          # length = 4

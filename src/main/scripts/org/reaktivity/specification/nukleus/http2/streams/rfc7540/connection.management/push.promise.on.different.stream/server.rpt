@@ -40,8 +40,6 @@ write nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
-read "Hello, world"
-
 write await SECOND_REQUEST_RECEIVED
 
 # First push promise
