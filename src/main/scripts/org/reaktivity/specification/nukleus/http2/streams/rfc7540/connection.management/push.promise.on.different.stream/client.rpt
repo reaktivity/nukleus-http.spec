@@ -39,8 +39,6 @@ read nukleus:begin.ext [0x00] [0x07] ":status" [0x03] "200"
 
 connected
 
-write "Hello, world"
-write flush
 
 # First push promise
 read nukleus:data.ext [0x00] [0x07] ":method" [0x03] "GET"
