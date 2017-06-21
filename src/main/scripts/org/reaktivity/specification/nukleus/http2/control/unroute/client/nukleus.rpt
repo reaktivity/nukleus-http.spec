@@ -32,7 +32,7 @@ read [0x06] "source"
 read ([0..8]:clientAcceptRefUR020101N)
 read [0x06] "target"
 read ([0..8]:clientConnectRefRG010101N)
-read [0x00] [0x0a] ":authority" [0x0e] "localhost:8080"
+read ${http:header(":authority", "localhost:8080")}
 
 write [0x40 0x00 0x00 0x02]
 write ${correlationIdUR020101N}
