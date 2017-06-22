@@ -27,7 +27,7 @@ accepted
 connected
 
 read http:method "GET"
-read http:host
+read http:header "Host" "localhost:8080"
 read http:header "Header" [0..4096]
 
 write http:status "200" "OK"

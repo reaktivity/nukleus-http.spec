@@ -27,7 +27,7 @@ connect await ROUTED_SERVER
 connected
 
 write http:method "GET"
-write http:host
+write http:header "Host" "localhost:8080"
 write http:header "Header" ${headerValue}
 
 read http:status "200" /.*/
