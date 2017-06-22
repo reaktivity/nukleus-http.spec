@@ -514,4 +514,16 @@ public class MessageFormatIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${scripts}/request.with.long.header.value/client",
+            "${scripts}/request.with.long.header.value/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestWithLongHeaderValue() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
