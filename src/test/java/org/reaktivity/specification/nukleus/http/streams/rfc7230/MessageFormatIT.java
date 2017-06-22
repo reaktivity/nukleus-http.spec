@@ -68,6 +68,18 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+            "${scripts}/request.with.long.header.value/client",
+            "${scripts}/request.with.long.header.value/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestWith4kHeaderValue() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${scripts}/response.with.headers/client",
             "${scripts}/response.with.headers/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")

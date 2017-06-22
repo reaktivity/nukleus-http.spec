@@ -40,7 +40,7 @@ public final class Functions
     @Function
     public static byte[] header(String name, String value)
     {
-        MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[1024]);
+        MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[name.length() + value.length() + 4]);
         HttpHeaderFW header = new HttpHeaderFW.Builder()
                 .wrap(writeBuffer, 0, writeBuffer.capacity())
                 .representation((byte) 0)
