@@ -29,11 +29,11 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext [0x00] [0x07] "upgrade" (byte:upgradeLength) ([0..${upgradeLength}]:upgrade)
+read nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 read nukleus:begin.ext ${http:header("connection", "upgrade")}
 
 write nukleus:begin.ext ${http:header(":status", "101")}
-write nukleus:begin.ext [0x00] [0x07] "upgrade" ${upgradeLength} ${upgrade}
+write nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 
 connected
 
