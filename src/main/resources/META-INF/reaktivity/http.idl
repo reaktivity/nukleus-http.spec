@@ -19,7 +19,7 @@ scope http
     {
         int8 representation;
         string name;
-        string value;
+        string16 value;
     }
 
     scope control
