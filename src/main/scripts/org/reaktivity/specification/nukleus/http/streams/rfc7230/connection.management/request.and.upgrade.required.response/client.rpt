@@ -28,6 +28,6 @@ write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
 read nukleus:begin.ext ${http:header(":status", "426")}
-read nukleus:begin.ext [0x00] [0x07] "upgrade" (byte:upgradeLength) [0..${upgradeLength}]
+read nukleus:begin.ext [0x00] [0x00 0x07] "upgrade" (short:upgradeLength) [0..${upgradeLength}]
 
 connected
