@@ -32,11 +32,11 @@ read nukleus:begin.ext ${http:header(":status", "200")}
                        ${http:header("server", "CERN/3.0 libwww/2.17")}
                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                       ${http:header("content-length", "60000")}
+                       ${http:header("content-length", "55000")}
 
 connected
 
 write "Hello, world"
 write flush
 
-read [0..60000]
+read [0..55000]
