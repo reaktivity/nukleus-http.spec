@@ -97,9 +97,6 @@ read ${newServerAcceptId}
 read [0x22 0x00 0x00 0x00]
 read [0..4]
 
-close
-closed
-
 
 connect await ROUTED_SERVER
         "agrona://stream/bidirectional"
