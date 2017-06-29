@@ -59,4 +59,16 @@ public class MessageFormatIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${nukleus}/max.frame.size/client",
+            "${nukleus}/max.frame.size/server"
+    })
+    public void maxFrameSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
