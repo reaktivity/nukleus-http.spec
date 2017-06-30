@@ -65,4 +65,16 @@ public class FlowControlIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/request.fragmented.with.content.length/client",
+        "${scripts}/request.fragmented.with.content.length/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldAcceptFragmentedRequestWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
