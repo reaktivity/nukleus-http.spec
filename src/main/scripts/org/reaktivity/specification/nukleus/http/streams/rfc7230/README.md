@@ -69,10 +69,35 @@ none (covered by architecture/request.and.response) | server.should.send.status.
 
 nukleus-http.spec                       | k3po
 --------------------------------------- | ----
-request.fragmented                      | 
-request.fragmented.with.content.length  | 
 request.headers.too.long                | server.should.send.414.to.request.with.too.long.a.request[URI]
-response.fragmented                     | 
-response.fragmented.with.content.length |
-response.headers.too.long               | 
+
+
+#### Migration plan for Agrona-based flow control scripts
+
+- multiple.requests.pipelined:
+  - removed, covered in connection.management/multiple.requests.pipelined
+- multiple.requests.pipelined.fragmented: 
+  - same, low level done
+- multiple.requests.with.content.length.pipelined.fragmented:
+
+- multiple.requests.with.response.flow.control
+                                        | 
+- request.flow.controlled:
+  - network server script forces client to fragment, application level scripts same as architecture/request.and.response
+- request.with.content.flow.controlled:
+  - network server script forces client to fragment data, application level server script forces client to fragment data
+- request.fragmented: same, done
+- request.fragmented.with.content.length: same, low level done
+- request.with.content.length.and.end.late.target.window: same, done
+request.with.fragmented.content.flow.controlled
+request.with.upgrade.and.data
+response.first.fragment.maximum.headers
+response.flow.controlled
+response.fragmented
+response.fragmented.with.content.length
+response.headers.too.long
+response.with.content.flow.controlled
+response.with.content.length.and.end.late.target.window
+response.with.fragmented.content.flow.controlled
+response.with.upgrade.and.data
 

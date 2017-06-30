@@ -143,18 +143,6 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${streams}/multiple.requests.pipelined/server/source",
-        "${streams}/multiple.requests.pipelined/server/nukleus",
-        "${streams}/multiple.requests.pipelined/server/target" })
-    public void shouldAcceptMultipleRequestsInSameDataFrame() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${streams}/multiple.requests.pipelined.fragmented/server/source",
         "${streams}/multiple.requests.pipelined.fragmented/server/nukleus",
         "${streams}/multiple.requests.pipelined.fragmented/server/target" })
