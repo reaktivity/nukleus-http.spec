@@ -71,4 +71,16 @@ public class MessageFormatIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${nukleus}/connection.headers/client",
+            "${nukleus}/connection.headers/server"
+    })
+    public void connectionHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
