@@ -14,22 +14,32 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
+property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
-property serverInitialWindow 8192
 
-accept "http://localhost:8080/"
-  option http:transport ${serverTransport}
-  option nukleus:route  ${newClientConnectRef}
-  option nukleus:window ${serverInitialWindow}
+accept ${serverTransport}
+  option nukleus:route ${newClientConnectRef}
+  option nukleus:window 77
   option nukleus:transmission "duplex"
 accepted
 connected
 
-read http:version "HTTP/1.1"
+read "GET /request1 HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
 
-write http:status "200" "OK"
-write http:version "HTTP/1.1"
-write flush
+read "GET /request2 HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+
+write "HTTP/1.1 200 OK" "\r\n"
+write "Content-Length: 9" "\r\n"
+write "\r\n"
+write "response1"
+
+write "HTTP/1.1 200 OK" "\r\n"
+write "Content-Length: 9" "\r\n"
+write "\r\n"
+write "response2"
 

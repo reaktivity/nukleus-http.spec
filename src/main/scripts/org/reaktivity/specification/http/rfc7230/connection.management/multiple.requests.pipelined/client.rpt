@@ -16,10 +16,12 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
+property clientInitialWindow 8192
+
 connect await ROUTED_SERVER 
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
+  option nukleus:window ${clientInitialWindow}
   option nukleus:transmission "duplex"
 connected
 
