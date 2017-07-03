@@ -43,34 +43,46 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${scripts}/request.with.content.length.and.end.late.target.window/client",
-        "${scripts}/request.with.content.length.and.end.late.target.window/server"})
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_CLIENT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${scripts}/request.fragmented/client",
-        "${scripts}/request.fragmented/server"})
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldAcceptFragmentedRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_CLIENT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${scripts}/response.first.fragment.maximum.headers/client",
         "${scripts}/response.first.fragment.maximum.headers/server"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldProcessResponseWhenFirstFragmentIsHeadersOfLength64() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.headers.too.long/client",
+        "${scripts}/request.headers.too.long/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldRejectRequestWithHeadersExceedingMaximumLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.headers.too.long/client.no.response",
+        "${scripts}/response.headers.too.long/server.no.response"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldRejectNetworkResponseWithHeadersTooLong() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.headers.too.long/client.response.reset",
+        "${scripts}/response.headers.too.long/server.response.reset"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldRejectApplicationResponseWithHeadersTooLong() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");

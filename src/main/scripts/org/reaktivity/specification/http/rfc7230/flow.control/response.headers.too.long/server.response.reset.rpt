@@ -15,21 +15,24 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
-accept "http://localhost:8080/"
-  option http:transport ${serverTransport}
-  option nukleus:route  ${newServerAcceptRef}
-  option nukleus:window 4
+accept ${serverTransport}
+  option nukleus:route ${newClientConnectRef}
+  option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected
 
-read http:version "HTTP/1.1"
-read "hello world"
-read closed
+read "GET / HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "\r\n"
 
-write http:status "200" "OK"
-write http:version "HTTP/1.1"
+write "HTTP/1.1 200 OK\r\n"
+write "Custom-Header-1: custom header 1 value\r\n"
+write "Custom-Header-2: custom header 2 value\r\n"
+write "\r\n"
 write flush
 
+aborted

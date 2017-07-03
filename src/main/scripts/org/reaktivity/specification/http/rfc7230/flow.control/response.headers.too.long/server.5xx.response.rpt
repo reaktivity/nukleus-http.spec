@@ -14,33 +14,21 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
 
-connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
-    option nukleus:window 8192
-    option nukleus:transmission "duplex"
-
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "GET")}
-write nukleus:begin.ext ${http:header(":path", "/")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-
-read nukleus:begin.ext ${http:header(":status", "200")}
-
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newServerAcceptRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+accepted
 connected
 
-write "hello "
+read http:version "HTTP/1.1"
+
+write http:status "507" "Insufficient Storage"
+write http:version "HTTP/1.1"
 write flush
-
-write "world"
-write flush
-
-write close
-
-
-read closed
-
 
 

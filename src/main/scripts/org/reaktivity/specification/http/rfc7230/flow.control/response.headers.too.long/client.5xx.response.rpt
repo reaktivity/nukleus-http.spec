@@ -16,25 +16,18 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_SERVER 
-        "nukleus://http/streams/source"
+connect await ROUTED_SERVER
+        "http://localhost:8080/"
+  option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
 
-write "GET / HTTP/1.1\r\n"
-write "Host: localh"
-write flush
+write http:method "GET"
+write http:version "HTTP/1.1"
+write http:host
+write close
 
-write "ost:8080\r\n"
-write "some"
-write flush
-
-write ": header\r\n"
-write "\r\n"
-write flush
-
-read "HTTP/1.1 200 OK\r\n"
-read "\r\n"
+read http:status /5\d\d/ /.*/
 

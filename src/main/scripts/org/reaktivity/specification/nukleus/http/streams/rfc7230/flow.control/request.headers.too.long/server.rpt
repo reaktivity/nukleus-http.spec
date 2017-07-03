@@ -14,25 +14,21 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property newClientAcceptRef ${nuklei:newReferenceId()} 
 property newServerConnectRef ${newClientAcceptRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-property source "http"
        
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window 8192
-       option nukleus:transmission "duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("custom", "header")}
-
-write nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
+
 
