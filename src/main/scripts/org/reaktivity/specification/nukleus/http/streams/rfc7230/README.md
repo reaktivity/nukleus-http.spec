@@ -79,25 +79,34 @@ request.headers.too.long                | server.should.send.414.to.request.with
 - multiple.requests.pipelined.fragmented: 
   - same, low level done
 - multiple.requests.with.content.length.pipelined.fragmented:
-
-- multiple.requests.with.response.flow.control
-                                        | 
-- request.flow.controlled:
-  - network server script forces client to fragment, application level scripts same as architecture/request.and.response
-- request.with.content.flow.controlled:
-  - network server script forces client to fragment data, application level server script forces client to fragment data
-- request.fragmented: same, done
-- request.fragmented.with.content.length: same, low level done
-- request.with.content.length.and.end.late.target.window: same, done
-request.with.fragmented.content.flow.controlled
-request.with.upgrade.and.data
-response.first.fragment.maximum.headers
-response.flow.controlled
-response.fragmented
-response.fragmented.with.content.length
-response.headers.too.long
-response.with.content.flow.controlled
-response.with.content.length.and.end.late.target.window
-response.with.fragmented.content.flow.controlled
-response.with.upgrade.and.data
+  - same, low level done
+- multiple.requests.with.response.flow.control (server only, initial window for response forces content of second response to be fragmented)
+  - use connection.management/multiple.requests.pipelined with parameterized initial window, low level scripts parameterized
+                                    | 
+- request.flow.controlled (client only):
+  - use architecture/request.and.response: network server script forces client to fragment by setting initial window to 3
+- request.with.content.flow.controlled (client and server):
+  - use message.format/request.with.content.length with initial window property on server scripts
+- request.fragmented: done (only low level needed, use message.format/request.and.response for high level)
+- request.fragmented.with.content.length
+  - done (only low level needed)
+- request.with.content.length.and.end.late.target.window
+  - done
+- request.with.fragmented.content.flow.controlled
+  - use low level request.fragmented.with.content.length with (done) high level message.format/request.with.content.length with server initial window property
+- request.with.upgrade.and.data (server only, but should add client case too, )
+  - parameterised initial window for high-level server, and low-level server for client case 
+- response.with.upgrade.and.data
+  - parameterised initial window for low-level client, and high-level client for client case
+- response.first.fragment.maximum.headers (client only)
+  - low-level and high-level scripts done
+- response.flow.controlled (server only)
+  - use architecture/request.and.response with initial window parameterised in low-level client script  
+- response.fragmented (client only)
+  - low-level scripts done (use message.format/response.with.header for high-level)
+- response.fragmented.with.content.length
+- response.headers.too.long
+- response.with.content.flow.controlled
+- response.with.content.length.and.end.late.target.window
+- response.with.fragmented.content.flow.controlled
 

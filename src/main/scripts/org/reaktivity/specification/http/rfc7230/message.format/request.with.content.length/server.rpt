@@ -17,11 +17,12 @@
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
+property serverInitialWindow 8192
 
 accept "http://localhost:8080/"
   option http:transport ${serverTransport}
   option nukleus:route ${newClientConnectRef}
-  option nukleus:window 8192
+  option nukleus:window ${serverInitialWindow}
   option nukleus:transmission "duplex"
 accepted
 connected

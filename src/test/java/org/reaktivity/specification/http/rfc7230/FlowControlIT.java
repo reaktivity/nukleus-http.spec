@@ -31,7 +31,8 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class FlowControlIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("scripts", "org/reaktivity/specification/http/rfc7230/flow.control");
+        .addScriptRoot("scripts", "org/reaktivity/specification/http/rfc7230/flow.control")
+        .addScriptRoot("messageFormat", "org/reaktivity/specification/http/rfc7230/message.format");
 
     private final NukleusRule nukleus = new NukleusRule()
             .directory("target/nukleus-itests");
@@ -77,8 +78,6 @@ public class FlowControlIT
         k3po.finish();
     }
 
-
-
     @Test
     @Specification({
         "${scripts}/multiple.requests.pipelined.fragmented/client",
@@ -91,5 +90,53 @@ public class FlowControlIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/client",
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void multipleRequestsWithContentLengthPipelinedFragmented() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${messageFormat}/request.with.content.length/client",
+        "${messageFormat}/request.with.content.length/server"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\"",
+                     "serverInitialWindow \"66\""})
+    public void shouldSplitRequestDataToRespectTargetWindow() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.first.fragment.maximum.headers/client",
+        "${scripts}/response.first.fragment.maximum.headers/server"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldProcessResponseWhenFirstFragmentIsHeadersOfLength64() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.fragmented/client",
+        "${scripts}/response.fragmented/server"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldProcessFragmentedResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 
 }
