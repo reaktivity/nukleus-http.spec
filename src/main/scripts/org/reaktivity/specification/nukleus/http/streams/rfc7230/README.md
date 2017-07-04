@@ -87,9 +87,9 @@ request.headers.too.long                | server.should.send.414.to.request.with
 - DONE request.with.content.flow.controlled (client and server):
   - use message.format/request.with.content.length with initial window property on server scripts
 - DONE request.fragmented (server only):
-  - done (only low level needed, use message.format/request.with.headers for high level)
-- request.fragmented.with.content.length
-  - done (only low level needed, use message.format/request.with.content for high-level)
+  - only low level needed, use message.format/request.with.headers for high level
+- request.fragmented.with.content.length (server only)
+  - only low level needed, use message.format/request.with.content for high-level
 - request.headers.too.long (client only: shouldNotWriteRequestExceedingMaximumHeadersSize, server case is covered by message.format/request.with.header.value.too.long)
   - high-level scripts done (no low level needed)
 - request.with.content.length.and.end.late.target.window (server only)
@@ -97,7 +97,7 @@ request.headers.too.long                | server.should.send.414.to.request.with
 - request.with.fragmented.content.flow.controlled
   - use low level request.fragmented.with.content.length with high level message.format/request.with.content.length with server initial window property (done)
 - request.with.upgrade.and.data (server only, but should add client case too, )
-  - parameterised initial window for high-level server, and low-level server for client case 
+  - use connection.management/upgrade.request.and.response.with.data (parameterised initial window for high-level server, and low-level server for client case, added data flow in both directions) 
 - response.with.upgrade.and.data
   - parameterised initial window for low-level client, and high-level client for client case
 - response.first.fragment.maximum.headers (client only)
