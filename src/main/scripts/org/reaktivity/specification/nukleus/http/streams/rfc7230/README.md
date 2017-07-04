@@ -74,20 +74,20 @@ request.headers.too.long                | server.should.send.414.to.request.with
 
 #### Migration plan for Agrona-based flow control scripts
 
-- multiple.requests.pipelined:
+- DONE multiple.requests.pipelined:
   - removed, covered in connection.management/multiple.requests.pipelined
-- multiple.requests.pipelined.fragmented: 
-  - same, low level done
-- multiple.requests.with.content.length.pipelined.fragmented:
-  - same, low level done
-- multiple.requests.with.response.flow.control (server only, initial window for response forces content of second response to be fragmented)
-  - use connection.management/multiple.requests.pipelined with parameterized initial window, low level scripts parameterized
-                                    | 
-- request.flow.controlled (client only):
+- DONE multiple.requests.pipelined.fragmented (server only): 
+  - low level done, use connection.management/concurrent.requests/server for high level
+- DONE multiple.requests.with.content.length.pipelined.fragmented (server only):
+  - low level done, connection.management/multiple.requests.serialized/server for high-level
+- DONE multiple.requests.with.response.flow.control (server only, initial window for response forces content of second response to be fragmented)
+  - use connection.management/multiple.requests.pipelined with parameterized initial window (89)
+- DONE request.flow.controlled (client only):
   - use architecture/request.and.response: network server script forces client to fragment by setting initial window to 3
-- request.with.content.flow.controlled (client and server):
+- DONE request.with.content.flow.controlled (client and server):
   - use message.format/request.with.content.length with initial window property on server scripts
-- request.fragmented: done (only low level needed, use message.format/request.with.headers for high level)
+- DONE request.fragmented (server only):
+  - done (only low level needed, use message.format/request.with.headers for high level)
 - request.fragmented.with.content.length
   - done (only low level needed, use message.format/request.with.content for high-level)
 - request.headers.too.long (client only: shouldNotWriteRequestExceedingMaximumHeadersSize, server case is covered by message.format/request.with.header.value.too.long)
