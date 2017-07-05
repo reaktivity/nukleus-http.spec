@@ -90,10 +90,10 @@ request.headers.too.long                | server.should.send.414.to.request.with
   - only low level needed, use message.format/request.with.headers for high level
 - DONE request.fragmented.with.content.length (server only)
   - only low level needed, use message.format/request.with.content for high-level
-- request.headers.too.long (client only: shouldNotWriteRequestExceedingMaximumHeadersSize, server case is covered by message.format/request.with.header.value.too.long)
+- DONE request.headers.too.long (client only: shouldNotWriteRequestExceedingMaximumHeadersSize, server case is covered by message.format/request.with.header.value.too.long)
   - high-level scripts done (no low level needed)
-- request.with.content.length.and.end.late.target.window (server only)
-  - covered by message.format/request.with.content.length (probably, depending on timing)
+- DONE request.with.content.length.and.end.late.target.window (server only)
+  - low level scripts request.with.content.length.and.transport.close added, use  message.format/request.with.content.length for high-level
 - request.with.fragmented.content.flow.controlled
   - use low level request.fragmented.with.content.length with high level message.format/request.with.content.length with server initial window property (done)
 - request.with.upgrade.and.data (server only, but should add client case too, )
