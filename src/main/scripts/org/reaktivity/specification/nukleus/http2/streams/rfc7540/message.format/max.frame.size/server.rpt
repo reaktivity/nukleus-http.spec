@@ -21,7 +21,7 @@ property data ${http2:randomBytes(55000)}
 accept await ROUTED_SERVER
         "nukleus://target/streams/http2"
         option nukleus:route ${newServerConnectRef}
-        option nukleus:window 40000
+        option nukleus:window 60000
         option nukleus:transmission "duplex"
 accepted
 
