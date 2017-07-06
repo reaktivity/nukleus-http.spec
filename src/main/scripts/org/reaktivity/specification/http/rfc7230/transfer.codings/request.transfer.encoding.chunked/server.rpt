@@ -29,9 +29,9 @@ connected
 read http:method "POST"
 read http:header "Content-Type" "text/plain"
 read http:header "Transfer-Encoding" "chunked"
-read "Chunk A"
-read "Chunk B"
-read "Chunk C"
+read "Chunk A;"
+read "Chunk B;"
+read "Chunk C;"
 read closed
 
 write http:status "200" "OK"

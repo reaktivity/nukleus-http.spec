@@ -15,23 +15,37 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property newClientConnectRef ${newServerAcceptRef} # external scope
+property serverTransport "nukleus://target/streams/http#source"
 
-connect await ROUTED_SERVER
-        "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
+accept ${serverTransport}
+  option nukleus:route ${newClientConnectRef}
+  option nukleus:window 101
   option nukleus:transmission "duplex"
+accepted
 connected
 
-write http:method "POST"
-write http:host
-write http:header "Content-Type" "text/plain"
-write http:header "Transfer-Encoding" "chunked"
-write "Chunk A;"
-write "Chunk B;"
-write "Chunk C;"
-write close
+read "POST /request1 HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
+read "Content-Length: 8\r\n"
+read "\r\n"
+read "request1"
+read "POST /request2 HTTP/1.1\r\n"
 
-read http:status "200" "OK"
+read notify HTTP_REQUEST_ONE_DECODED
+
+read "Host: localhost:8080\r\n"
+read "Content-Length: 8\r\n"
+read "\r\n"
+read "request2"
+
+write "HTTP/1.1 200 OK" "\r\n"
+write "Content-Length: 9" "\r\n"
+write "\r\n"
+write "response1"
+
+write "HTTP/1.1 200 OK" "\r\n"
+write "Content-Length: 9" "\r\n"
+write "\r\n"
+write "response2"
 

@@ -16,22 +16,38 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_SERVER
-        "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
+connect await ROUTED_SERVER 
+        "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
 
-write http:method "POST"
-write http:host
-write http:header "Content-Type" "text/plain"
-write http:header "Transfer-Encoding" "chunked"
-write "Chunk A;"
-write "Chunk B;"
-write "Chunk C;"
-write close
+write "POST /request1 HTTP/1.1\r\n"
+write "Host: localhost:8080\r\n"
+write "Content-Length: 8\r\n"
+write "\r\n"
+write "request1"
+write "POST /request2 HTTP/1.1\r\n"
+write flush
 
-read http:status "200" "OK"
+write "Host: localhost:8080\r\n"
+write "Content-Length: 8\r\n"
+write "\r\n"
+write "request2"
+
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 9\r\n"
+read "\r\n"
+read "response1"
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 9\r\n"
+read "\r\n"
+read "response2"
+
+close 
+closed
+
 

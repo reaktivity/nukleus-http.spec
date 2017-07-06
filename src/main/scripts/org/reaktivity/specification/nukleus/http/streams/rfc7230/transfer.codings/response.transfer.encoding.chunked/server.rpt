@@ -39,8 +39,8 @@ write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
 connected
 read closed
 
-write "Chunk A"
-write "Chunk B"
-write "Chunk C"
+write "Chunk A;"
+write "Chunk B;"
+write "Chunk C;"
 write close
 

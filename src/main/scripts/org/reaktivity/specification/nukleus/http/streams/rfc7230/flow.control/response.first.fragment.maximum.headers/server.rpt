@@ -18,24 +18,24 @@ property newClientAcceptRef ${nuklei:newReferenceId()}
 property newServerConnectRef ${newClientAcceptRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-
-property serverInitialWindow 8192
        
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
-       option nukleus:window ${serverInitialWindow}
+       option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("content-length", "11")}
 
 write nukleus:begin.ext ${http:header(":status", "200")}
+write nukleus:begin.ext ${http:header("content-length", "11")}
 
 connected
 
-read "hello world"
-read closed
+write "hello world"
+write close
+
+

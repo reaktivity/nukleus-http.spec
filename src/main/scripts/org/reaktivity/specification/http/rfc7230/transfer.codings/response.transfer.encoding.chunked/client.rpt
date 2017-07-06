@@ -33,8 +33,8 @@ write close
 read http:status "200" "OK"
 read http:header "Content-Type" "text/plain"
 read http:header "Transfer-Encoding" "chunked"
-read "Chunk A"
-read "Chunk B"
-read "Chunk C"
+read "Chunk A;"
+read "Chunk B;"
+read "Chunk C;"
 read closed
 
