@@ -27,11 +27,8 @@ accepted
 read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("Custom-Header-1", "custom header 1 value")}
-read nukleus:begin.ext ${http:header("Custom-Header-2", "custom header 2 value")}
+read nukleus:begin.ext ${http:header(":authority" , "localhost:8080")}
 
 connected
-abort
 
 
