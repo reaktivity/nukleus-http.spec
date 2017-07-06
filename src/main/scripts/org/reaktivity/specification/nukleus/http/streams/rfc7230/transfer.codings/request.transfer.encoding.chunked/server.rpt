@@ -37,9 +37,9 @@ write nukleus:begin.ext ${http:header("status", "200")}
 
 connected
 
-read "Chunk A"
-read "Chunk B"
-read "Chunk C"
+read "Chunk A;"
+read "Chunk B;"
+read "Chunk C;"
 read closed
 
 write close

@@ -37,8 +37,8 @@ connected
 
 write close
 
-read "Chunk A"
-read "Chunk B"
-read "Chunk C"
+read "Chunk A;"
+read "Chunk B;"
+read "Chunk C;"
 read closed
 
