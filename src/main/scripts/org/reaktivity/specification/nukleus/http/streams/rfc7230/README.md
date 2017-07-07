@@ -110,10 +110,10 @@ request.headers.too.long                | server.should.send.414.to.request.with
 - DONE response.headers.too.long (client and server)
   - Client (shouldRejectResponseExceedingMaximumHeadersSize): low level server script (server.response.reset) gets reset when writing response, high level client script (client.no.response) gets no response  
   - Server (shouldNotWriteResponseExceedingMaximumHeadersSize): high level server gets reset when writing response (server.response.reset), low level client gets 5xx response (client.5xx.response)
-- response.with.content.flow.controlled
-  - use message.format/response.with.content.length with initial window property on server scripts
-- response.with.content.length.and.end.late.target.window (client only)
+- DONE response.with.content.flow.controlled (client and server)
+  - use message.format/response.with.content.length with client initial window property
+- DONE response.with.content.length.and.end.late.target.window (client only)
   - covered by message.format/response.with.content.length (probably, depending on timing) 
-- response.with.fragmented.content.flow.controlled
+- DONE response.with.fragmented.content.flow.controlled (client)
   - use low-level response.fragmented.with.content.length with high-level message.format/response.with.content.length with server initial window property
 

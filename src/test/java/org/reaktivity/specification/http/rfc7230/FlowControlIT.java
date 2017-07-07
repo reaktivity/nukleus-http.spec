@@ -161,4 +161,16 @@ public class FlowControlIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.and.transport.close/client",
+        "${scripts}/response.with.content.length.and.transport.close/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldDeferEndProcessingUntilResponseProcessed() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }

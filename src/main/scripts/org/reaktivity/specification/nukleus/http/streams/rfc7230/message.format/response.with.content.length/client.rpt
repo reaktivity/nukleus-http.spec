@@ -15,11 +15,12 @@
 #
 
 property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property clientInitialWindow 8192
 
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
-    option nukleus:window 8192
+    option nukleus:window ${clientInitialWindow}
     option nukleus:transmission "duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
