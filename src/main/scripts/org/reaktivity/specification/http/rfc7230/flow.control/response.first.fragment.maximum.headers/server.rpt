@@ -31,8 +31,8 @@ read "\r\n"
 
 # Response headers are of length 64 bytes
 write "HTTP/1.1 200 OK\r\n"
-write "Custom-Header: value123\r\n"
 write "Content-Length: 11\r\n"
+write "Custom-Header: value123\r\n"
 write "\r\n"
 write flush
 

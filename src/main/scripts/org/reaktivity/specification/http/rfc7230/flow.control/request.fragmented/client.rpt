@@ -28,7 +28,7 @@ write "Host: localh"
 write flush
 
 write "ost:8080\r\n"
-write "custom"
+write "some"
 write flush
 
 write ": header\r\n"

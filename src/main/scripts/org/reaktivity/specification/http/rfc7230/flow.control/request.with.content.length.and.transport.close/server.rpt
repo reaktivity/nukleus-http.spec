@@ -17,48 +17,20 @@
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
+property serverInitialWindow 8192
 
-accept ${serverTransport}
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
   option nukleus:route ${newClientConnectRef}
-  option nukleus:window 8192
+  option nukleus:window ${serverInitialWindow}
   option nukleus:transmission "duplex"
 accepted
 connected
 
-read "GET /request1 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
+read http:method "POST"
+read http:header "Content-Length" /(?<length>.*)/
+read [0..${length}]
 
-read notify REQUEST_ONE_RECEIVED
-write await WRITE_RESPONSE_ONE
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
-write "\r\n"
-write "response1"
-
-
-read "GET /request2 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-read notify REQUEST_TWO_RECEIVED
-write await WRITE_RESPONSE_TWO
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
-write "\r\n"
-write "response2"
-
-read "GET /request3 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-read notify REQUEST_THREE_RECEIVED
-write await WRITE_RESPONSE_THREE
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
-write "\r\n"
-write "response3"
+write http:status "200" "OK"
+write close
 

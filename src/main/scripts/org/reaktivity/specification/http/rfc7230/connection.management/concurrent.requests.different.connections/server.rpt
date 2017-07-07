@@ -33,8 +33,9 @@ read notify REQUEST_ONE_RECEIVED
 write await REQUEST_TWO_RECEIVED
 
 write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
+write "response1"
 
 accepted
 connected
@@ -46,8 +47,9 @@ read notify REQUEST_TWO_RECEIVED
 write await REQUEST_THREE_RECEIVED
 
 write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
+write "response2"
 
 accepted
 connected
@@ -58,7 +60,8 @@ read "\r\n"
 read notify REQUEST_THREE_RECEIVED
 
 write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0" "\r\n"
+write "Content-Length: 9" "\r\n"
 write "\r\n"
+write "response3"
 
 

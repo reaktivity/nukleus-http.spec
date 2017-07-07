@@ -15,48 +15,20 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property serverTransport "nukleus://target/streams/http#source"
 
-connect await ROUTED_SERVER 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+accept "http://localhost:8080/"
+  option http:transport ${serverTransport}
+  option nukleus:route  ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
+accepted
 connected
 
-write "GET /request1 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
+read http:version "HTTP/1.1"
 
-write "GET /request2 HTTP/1.1" "\r\n"
-write "Host:"
+write http:status "507" "Insufficient Storage"
+write http:version "HTTP/1.1"
 write flush
-
-write " localhost:8080" "\r\n"
-write "\r\n"
-write "GET /req"
-write flush
-
-write "uest3 HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
-
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 9\r\n"
-read "\r\n"
-read "response1"
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 9\r\n"
-read "\r\n"
-read "response2"
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 9\r\n"
-read "\r\n"
-read "response3"
-
-close 
-closed
 
 
