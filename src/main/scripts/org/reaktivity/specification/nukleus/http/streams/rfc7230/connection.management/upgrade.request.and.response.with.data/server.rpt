@@ -18,10 +18,11 @@ property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 property newServerConnectRef ${newClientAcceptRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
+property serverInitialWindow 8192
 
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
-       option nukleus:window 8192
+       option nukleus:window ${serverInitialWindow}
        option nukleus:transmission "duplex"
 accepted
 
@@ -37,7 +38,15 @@ write nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 
 connected
 
-write "initial data from server"
+write "data from server 1"
 write flush
+write "data from server 2"
+write flush
+write "data from server 3"
+write flush
+
+read "data from client 1"
+read "data from client 2"
+read "data from client 3"
 
 

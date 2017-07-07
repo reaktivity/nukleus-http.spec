@@ -25,40 +25,15 @@ accept ${serverTransport}
 accepted
 connected
 
-read "GET /request1 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
+read "GET / HTTP/1.1\r\n"
+read "Host: localhost:8080\r\n"
 read "\r\n"
 
-read notify REQUEST_ONE_RECEIVED
-write await WRITE_RESPONSE_ONE
-
+# Response headers are of length 64 bytes
 write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
+write "Content-Length: 11\r\n"
 write "\r\n"
-write "response1"
+write "hello world"
+write close
 
-
-read "GET /request2 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-read notify REQUEST_TWO_RECEIVED
-write await WRITE_RESPONSE_TWO
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
-write "\r\n"
-write "response2"
-
-read "GET /request3 HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-read notify REQUEST_THREE_RECEIVED
-write await WRITE_RESPONSE_THREE
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 9" "\r\n"
-write "\r\n"
-write "response3"
 

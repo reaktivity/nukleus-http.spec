@@ -30,8 +30,9 @@ write "\r\n"
 write notify REQUEST_ONE_WRITTEN
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 0" "\r\n"
+read "Content-Length: 9" "\r\n"
 read "\r\n"
+read "response1"
 
 connect await REQUEST_ONE_WRITTEN 
         "nukleus://http/streams/source"
@@ -47,8 +48,9 @@ write "\r\n"
 write notify REQUEST_TWO_WRITTEN
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 0" "\r\n"
+read "Content-Length: 9" "\r\n"
 read "\r\n"
+read "response2"
 
 connect await REQUEST_TWO_WRITTEN 
         "nukleus://http/streams/source"
@@ -63,6 +65,6 @@ write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 0" "\r\n"
+read "Content-Length: 9" "\r\n"
 read "\r\n"
-
+read "response3"

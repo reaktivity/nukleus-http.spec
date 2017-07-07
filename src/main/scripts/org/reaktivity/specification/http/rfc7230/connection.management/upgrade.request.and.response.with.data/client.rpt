@@ -15,12 +15,13 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property clientInitialWindow 8192
 
 connect await ROUTED_SERVER
         "http://localhost:8080/"
   option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
+  option nukleus:window ${clientInitialWindow}
   option nukleus:transmission "duplex"
 connected
 
@@ -32,4 +33,13 @@ write http:header "Connection" "upgrade"
 read http:status "101" /.*/
 read http:header "Upgrade" "WebSocket"
 
-read "initial data from server"
+write "data from client 1"
+write flush
+write "data from client 2"
+write flush
+write "data from client 3"
+write flush
+
+read "data from server 1"
+read "data from server 2"
+read "data from server 3"

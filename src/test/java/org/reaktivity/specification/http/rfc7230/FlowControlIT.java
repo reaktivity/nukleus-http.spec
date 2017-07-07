@@ -31,8 +31,7 @@ import org.reaktivity.specification.nukleus.NukleusRule;
 public class FlowControlIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("scripts", "org/reaktivity/specification/http/rfc7230/flow.control")
-        .addScriptRoot("messageFormat", "org/reaktivity/specification/http/rfc7230/message.format");
+        .addScriptRoot("scripts", "org/reaktivity/specification/http/rfc7230/flow.control");
 
     private final NukleusRule nukleus = new NukleusRule()
             .directory("target/nukleus-itests");
@@ -44,10 +43,22 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${scripts}/request.with.content.length.and.end.late.target.window/client",
-        "${scripts}/request.with.content.length.and.end.late.target.window/server"})
+        "${scripts}/multiple.requests.pipelined.fragmented/client",
+        "${scripts}/multiple.requests.pipelined.fragmented/server"})
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void shouldWaitForTargetWindowAndWriteDataBeforeProcessingSourceEnd() throws Exception
+    public void multipleRequestsPipelinedFragmented() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/client",
+        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void multipleRequestsWithContentLengthPipelinedFragmented() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -80,35 +91,10 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${scripts}/multiple.requests.pipelined.fragmented/client",
-        "${scripts}/multiple.requests.pipelined.fragmented/server"})
+        "${scripts}/request.with.content.length.and.transport.close/client",
+        "${scripts}/request.with.content.length.and.transport.close/server"})
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void multipleRequestsPipelinedFragmented() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/client",
-        "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void multipleRequestsWithContentLengthPipelinedFragmented() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${messageFormat}/request.with.content.length/client",
-        "${messageFormat}/request.with.content.length/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\"",
-                     "serverInitialWindow \"66\""})
-    public void shouldSplitRequestDataToRespectTargetWindow() throws Exception
+    public void shouldDeferEndProcessingUntilRequestProcessed() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -133,6 +119,54 @@ public class FlowControlIT
         "${scripts}/response.fragmented/server"})
     @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
     public void shouldProcessFragmentedResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.fragmented.with.content.length/client",
+        "${scripts}/response.fragmented.with.content.length/server"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldProcessFragmentedResponseWithContentLength() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.headers.too.long/client.response.reset",
+        "${scripts}/response.headers.too.long/server.response.reset"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldRejectNetworkResponseWithHeadersTooLong() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.headers.too.long/client.5xx.response",
+        "${scripts}/response.headers.too.long/server.5xx.response"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldRejectApplicationResponseWithHeadersTooLong() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.and.transport.close/client",
+        "${scripts}/response.with.content.length.and.transport.close/server"})
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldDeferEndProcessingUntilResponseProcessed() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
