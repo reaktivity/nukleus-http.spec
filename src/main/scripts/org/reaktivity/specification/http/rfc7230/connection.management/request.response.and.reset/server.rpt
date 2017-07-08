@@ -33,3 +33,4 @@ write "HTTP/1.1 200 OK\r\n"
 write "\r\n"
 
 abort
+aborted

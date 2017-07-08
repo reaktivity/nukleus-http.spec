@@ -27,3 +27,4 @@ connected
 
 read "GET /request1 HTTP/1.1" "\r\n"
 abort
+aborted
