@@ -131,6 +131,30 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.503.response/client",
+        "${scripts}/request.and.503.response/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAnd503Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.reset/client",
+        "${scripts}/request.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requesGetsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.upgrade.required.response/client",
         "${scripts}/request.and.upgrade.required.response/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
