@@ -34,7 +34,4 @@ read nukleus:begin.ext ${http:header("content-length", "11")}
 
 connected
 
-abort
-
-
-
+read abort

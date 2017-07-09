@@ -31,6 +31,6 @@ write "\r\n"
 read "HTTP/1.1 " /4\d\d/ /.*/ "\r\n"
 read "Connection: close\r\n\r\n"
 
-aborted
+write aborted
 
 

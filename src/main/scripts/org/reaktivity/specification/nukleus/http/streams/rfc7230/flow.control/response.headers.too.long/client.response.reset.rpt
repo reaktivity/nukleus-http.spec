@@ -33,5 +33,4 @@ read nukleus:begin.ext ${http:header("Custom-Header-2", "custom header 2 value")
 
 connected
 write close
-abort
-
+read abort

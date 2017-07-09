@@ -35,7 +35,7 @@ write "GET /request3 HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
 
-abort
+read abort
 read notify REPLAY_REQUESTS
 
 connect await REPLAY_REQUESTS

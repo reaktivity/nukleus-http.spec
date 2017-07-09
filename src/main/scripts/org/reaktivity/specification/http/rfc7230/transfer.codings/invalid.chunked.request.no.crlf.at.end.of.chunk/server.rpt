@@ -34,7 +34,6 @@ read "\r\n"
 read "7\r\n"
 read "Chunk A"
 read "0\r\n"
-read closed
 
-abort
+read abort
 
