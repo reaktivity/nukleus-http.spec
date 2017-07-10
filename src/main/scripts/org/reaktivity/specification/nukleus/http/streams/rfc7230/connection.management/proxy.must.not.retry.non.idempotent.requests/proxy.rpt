@@ -55,6 +55,5 @@ write nukleus:begin.ext ${http:header("content-length", "11")}
 connected
 
 write "This is some data"
-write close
 
-aborted
+write aborted

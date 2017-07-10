@@ -28,5 +28,4 @@ read "HTTP/1.1 501" /.*/ "\r\n"
 read "Connection: close\r\n"
 read "\r\n"
 
-aborted
-
+write aborted

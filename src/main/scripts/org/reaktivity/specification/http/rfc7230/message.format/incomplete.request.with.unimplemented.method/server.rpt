@@ -31,4 +31,4 @@ write "HTTP/1.1 501 Not Implemented\r\n"
 write "Connection: close\r\n"
 write "\r\n"
 
-abort
+read abort

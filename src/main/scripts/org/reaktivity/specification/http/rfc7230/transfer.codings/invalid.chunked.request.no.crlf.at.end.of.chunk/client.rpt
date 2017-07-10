@@ -33,8 +33,6 @@ write flush
 write "7\r\n"
 write "Chunk A"
 write "0\r\n"
-write close
+write flush
 
-aborted
-
-
+write aborted

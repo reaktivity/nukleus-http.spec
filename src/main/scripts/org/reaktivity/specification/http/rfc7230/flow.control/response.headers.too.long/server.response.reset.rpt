@@ -35,4 +35,4 @@ write "Custom-Header-2: custom header 2 value\r\n"
 write "\r\n"
 write flush
 
-aborted
+write aborted

@@ -28,7 +28,7 @@ connected
 read "GET /request1 HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
-abort
+read abort
 
 accepted
 connected
