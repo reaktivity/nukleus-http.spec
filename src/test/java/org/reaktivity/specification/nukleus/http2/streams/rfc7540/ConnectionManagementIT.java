@@ -18,6 +18,7 @@ package org.reaktivity.specification.nukleus.http2.streams.rfc7540;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
@@ -114,6 +115,116 @@ public class ConnectionManagementIT
             "${streams}/reset.http2.stream/server"
     })
     public void resetHttp2Stream() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Ignore("Doesn't trigger 'write aborted' in client.rpt")
+    @Test
+    @Specification({
+            "${streams}/client.sent.read.abort.on.open.request/client",
+            "${streams}/client.sent.read.abort.on.open.request/server"
+    })
+    public void clientSentReadAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.read.abort.on.closed.request/client",
+            "${streams}/client.sent.read.abort.on.closed.request/server"
+    })
+    public void clientSentReadAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.abort.on.open.request/client",
+            "${streams}/client.sent.write.abort.on.open.request/server"
+    })
+    public void clientSentWriteAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.abort.on.closed.request/client",
+            "${streams}/client.sent.write.abort.on.closed.request/server"
+    })
+    public void clientSentWriteAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.close/client",
+            "${streams}/client.sent.write.close/server"
+    })
+    public void clientSentWriteClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Ignore("client.rpt doesn't connect to server")
+    @Test
+    @Specification({
+            "${streams}/server.sent.read.abort.on.open.request/client",
+            "${streams}/server.sent.read.abort.on.open.request/server"
+    })
+    public void serverSentReadAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.abort.on.open.request/client",
+            "${streams}/server.sent.write.abort.on.open.request/server"
+    })
+    public void serverSentWriteAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.abort.on.closed.request/client",
+            "${streams}/server.sent.write.abort.on.closed.request/server"
+    })
+    public void serverSentWriteAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.close/client",
+            "${streams}/server.sent.write.close/server"
+    })
+    public void serverSentWriteClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
