@@ -25,5 +25,5 @@ connected
 
 # Request 1
 write "GET /request1 HTTP/1.1" "\r\n"
-aborted
-abort
+write aborted
+read abort

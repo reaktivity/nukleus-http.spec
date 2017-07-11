@@ -29,6 +29,6 @@ read "GET / HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
-abort
-aborted
+read abort
+write aborted
 

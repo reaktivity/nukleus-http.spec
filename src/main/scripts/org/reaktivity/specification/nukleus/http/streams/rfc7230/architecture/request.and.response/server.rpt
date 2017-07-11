@@ -33,4 +33,5 @@ read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 write nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
+write close
 

@@ -32,5 +32,5 @@ read "HTTP/1.1 200 OK\r\n"
 read "Content-Length: 11" "\r\n"
 read "\r\n"
 read "hello "
-aborted
+write aborted
 

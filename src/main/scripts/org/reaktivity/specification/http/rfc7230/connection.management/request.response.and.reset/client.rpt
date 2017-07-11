@@ -31,5 +31,7 @@ write "\r\n"
 read "HTTP/1.1 200 OK\r\n"
 read "\r\n"
 
-aborted
-abort
+read notify RESPONSE_RECEIVED
+
+write aborted
+read abort
