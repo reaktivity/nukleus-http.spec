@@ -77,5 +77,4 @@ read [0x00 0x00 0x59]                                      # length
 
 read abort
 
-
-
+write aborted
