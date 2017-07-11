@@ -75,31 +75,9 @@ write [0x00 0x00 0x59]                                      # length
       [0x0f 0x0d] [0x03] "113"                              # content-length
 write flush
 
-read [0x00 0x00 0x0c]                   # length = 12
-     [0x00]                             # HTTP2 DATA frame
-     [0x01]                             # END_STREAM
-     [0x00 0x00 0x00 0x01]              # stream_id = 1
-     "Hello, world"
-
-# connection-level flow control
-write [0x00 0x00 0x04]                                      # length
-      [0x08]                                                # WINDOW_UPDATE frame
-      [0x00]                                                # no flags
-      [0x00 0x00 0x00 0x00]                                 # stream_id=0
-      [0x00 0x00 0x00 0x0c]                                 # window size increment = 12
-# stream-level flow control
-write [0x00 0x00 0x04]                                      # length
-      [0x08]                                                # WINDOW_UPDATE frame
-      [0x00]                                                # no flags
-      [0x00 0x00 0x00 0x01]                                 # stream_id=1
-      [0x00 0x00 0x00 0x0c]                                 # window size increment = 12
-
-write [0x00 0x00 0x71]                  # length = 113
-      [0x00]                            # HTTP2 DATA frame
-      [0x00]                            # no flags
-      [0x00 0x00 0x00 0x01]             # stream_id=1
-      "<html>"
-      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-      "<body><script src=\"script.js\"></script></body>"
-      "</html>"
-write flush
+# server aborts http stream after the request is still open
+write [0x00 0x00 0x04]                           # length = 4
+      [0x03]                                     # HTTP2 RST_STREAM frame
+      [0x00]                                     # no flags
+      [0x00 0x00 0x00 0x01]                      # stream_id=1
+      [0x00 0x00 0x00 0x0a]                      # CONNECT_ERROR

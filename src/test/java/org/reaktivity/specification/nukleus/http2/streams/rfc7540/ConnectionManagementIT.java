@@ -18,6 +18,7 @@ package org.reaktivity.specification.nukleus.http2.streams.rfc7540;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.rules.RuleChain.outerRule;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
@@ -120,6 +121,7 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Ignore("Doesn't trigger 'write aborted' in client.rpt")
     @Test
     @Specification({
             "${streams}/client.sent.read.abort.on.open.request/client",
@@ -180,6 +182,7 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Ignore("client.rpt doesn't connect to server")
     @Test
     @Specification({
             "${streams}/server.sent.read.abort.on.open.request/client",

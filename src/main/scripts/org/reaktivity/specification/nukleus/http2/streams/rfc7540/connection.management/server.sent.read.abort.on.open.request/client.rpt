@@ -36,10 +36,4 @@ read nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
 
-write "Hello, world"
-write flush
-
-read "<html>"
-     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-     "<body><script src=\"script.js\"></script></body>"
-     "</html>"
+write aborted
