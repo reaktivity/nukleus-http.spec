@@ -206,18 +206,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${spec}/server.sent.read.abort.on.closed.request/client",
-            "${spec}/server.sent.read.abort.on.closed.request/server"
-    })
-    public void serverSentReadAbortOnClosedRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
             "${spec}/server.sent.write.abort.on.open.request/client",
             "${spec}/server.sent.write.abort.on.open.request/server"
     })
