@@ -120,4 +120,124 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${streams}/client.sent.read.abort.on.open.request/client",
+            "${streams}/client.sent.read.abort.on.open.request/server"
+    })
+    public void clientSentReadAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.read.abort.on.closed.request/client",
+            "${streams}/client.sent.read.abort.on.closed.request/server"
+    })
+    public void clientSentReadAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.abort.on.open.request/client",
+            "${streams}/client.sent.write.abort.on.open.request/server"
+    })
+    public void clientSentWriteAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.abort.on.closed.request/client",
+            "${streams}/client.sent.write.abort.on.closed.request/server"
+    })
+    public void clientSentWriteAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/client.sent.write.close/client",
+            "${streams}/client.sent.write.close/server"
+    })
+    public void clientSentWriteClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.read.abort.on.open.request/client",
+            "${streams}/server.sent.read.abort.on.open.request/server"
+    })
+    public void serverSentReadAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.read.abort.on.closed.request/client",
+            "${streams}/server.sent.read.abort.on.closed.request/server"
+    })
+    public void serverSentReadAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.abort.on.open.request/client",
+            "${streams}/server.sent.write.abort.on.open.request/server"
+    })
+    public void serverSentWriteAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.abort.on.closed.request/client",
+            "${streams}/server.sent.write.abort.on.closed.request/server"
+    })
+    public void serverSentWriteAbortOnClosedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${streams}/server.sent.write.close/client",
+            "${streams}/server.sent.write.close/server"
+    })
+    public void serverSentWriteClose() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
