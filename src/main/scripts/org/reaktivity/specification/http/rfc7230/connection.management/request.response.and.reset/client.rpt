@@ -23,7 +23,6 @@ connect await ROUTED_SERVER
   option nukleus:transmission "duplex"
 connected
 
-# Request 1
 write "GET / HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"

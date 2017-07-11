@@ -31,4 +31,3 @@ write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
 connected
 write aborted
-

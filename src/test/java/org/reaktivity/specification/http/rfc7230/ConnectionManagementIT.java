@@ -384,6 +384,18 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.is.reset/client",
+        "${scripts}/response.with.content.length.is.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthIsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
     // Proxy tests only have "cooked" versions
 
 }

@@ -147,7 +147,19 @@ public class ConnectionManagementIT
         "${scripts}/request.reset/client",
         "${scripts}/request.reset/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void requesGetsReset() throws Exception
+    public void requestIsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.is.reset/client",
+        "${scripts}/response.with.content.length.is.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthIsReset() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");

@@ -21,10 +21,9 @@ property serverTransport "nukleus://target/streams/http#source"
 accept ${serverTransport}
   option nukleus:route ${newClientConnectRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "simplex"
 accepted
 connected
 
-read "GET /request1 HTTP/1.1" "\r\n"
+read "GET / HTTP/1.1" "\r\n"
 read abort
-write aborted

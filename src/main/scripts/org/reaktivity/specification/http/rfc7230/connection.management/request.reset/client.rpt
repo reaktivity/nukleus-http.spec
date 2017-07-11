@@ -20,10 +20,8 @@ connect await ROUTED_SERVER
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "simplex"
 connected
 
-# Request 1
-write "GET /request1 HTTP/1.1" "\r\n"
+write "GET / HTTP/1.1" "\r\n"
 write aborted
-read abort
