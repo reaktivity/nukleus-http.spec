@@ -39,4 +39,4 @@ connected
 read "Hello, world"
 read closed
 
-read aborted
+write aborted
