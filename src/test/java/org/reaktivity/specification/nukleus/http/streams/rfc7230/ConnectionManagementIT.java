@@ -132,6 +132,92 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.503.response/client",
+        "${scripts}/request.and.503.response/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAnd503Response() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.twice/client",
+        "${scripts}/request.and.response.twice/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAndResponseTwice() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.twice.awaiting.barrier/client",
+        "${scripts}/request.and.response.twice.awaiting.barrier/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAndResponseTwiceAwaitingBarrier() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.notifyBarrier("ISSUE_SECOND_REQUEST");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.with.incomplete.data.and.end/client",
+        "${scripts}/request.and.response.with.incomplete.data.and.end/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthAndIncompleteDataAndEnd() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.with.incomplete.data.and.reset/client",
+        "${scripts}/request.and.response.with.incomplete.data.and.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthAndIncompleteDataAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+
+    @Test
+    @Specification({
+        "${scripts}/request.reset/client",
+        "${scripts}/request.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestIsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.is.reset/client",
+        "${scripts}/response.with.content.length.is.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthIsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.upgrade.required.response/client",
         "${scripts}/request.and.upgrade.required.response/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
