@@ -32,5 +32,7 @@ read nukleus:begin.ext ${http:header("content-length", "11")}
 
 connected
 
-read "hello "
+read "hello"
+read notify HELLO_RECEIVED
 read closed
+

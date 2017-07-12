@@ -14,21 +14,25 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 
-connect await ROUTED_SERVER 
+connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
-  option nukleus:transmission "duplex"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "duplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+
+read nukleus:begin.ext ${http:header(":status", "200")}
+read nukleus:begin.ext ${http:header("content-length", "11")}
+
 connected
 
-# Request 1
-write "GET / HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
-
-read "HTTP/1.1 200 OK\r\n"
-read "Content-Length: 11" "\r\n"
+read "hello"
+read notify HELLO_RECEIVED
 write aborted
 

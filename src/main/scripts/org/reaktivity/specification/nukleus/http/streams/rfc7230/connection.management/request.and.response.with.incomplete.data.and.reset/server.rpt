@@ -35,5 +35,6 @@ write nukleus:begin.ext ${http:header("content-length", "11")}
 
 connected
 
-write "hello "
-write close
+write "hello"
+read await HELLO_RECEIVED
+read abort

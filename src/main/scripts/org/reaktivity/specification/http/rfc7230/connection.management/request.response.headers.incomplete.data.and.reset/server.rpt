@@ -32,6 +32,7 @@ read "\r\n"
 write "HTTP/1.1 200 OK\r\n"
 write "Content-Length: 11" "\r\n"
 write "\r\n"
-write "hello "
+write "hello"
+read await HELLO_RECEIVED
 read abort
 

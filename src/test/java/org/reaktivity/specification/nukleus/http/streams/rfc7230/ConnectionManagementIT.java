@@ -144,15 +144,28 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/request.and.response.with.incomplete.data/client",
-        "${scripts}/request.and.response.with.incomplete.data/server" })
+        "${scripts}/request.and.response.with.incomplete.data.and.end/client",
+        "${scripts}/request.and.response.with.incomplete.data.and.end/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void responseWithContentLengthAndIncompleteData() throws Exception
+    public void responseWithContentLengthAndIncompleteDataAndEnd() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.with.incomplete.data.and.reset/client",
+        "${scripts}/request.and.response.with.incomplete.data.and.reset/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthAndIncompleteDataAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
 
     @Test
     @Specification({
