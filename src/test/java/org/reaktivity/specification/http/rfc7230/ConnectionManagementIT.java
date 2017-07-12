@@ -276,6 +276,126 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/request.incomplete.response.headers.and.end/client",
+        "${scripts}/request.incomplete.response.headers.and.end/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestAndEndBeforeResponseHeadersComplete() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.incomplete.response.headers.and.reset/client",
+        "${scripts}/request.incomplete.response.headers.and.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestAndResetBeforeResponseHeadersComplete() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.no.response.and.end/client",
+        "${scripts}/request.no.response.and.end/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestNoResponseAndEnd() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.no.response.and.reset/client",
+        "${scripts}/request.no.response.and.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestNoResponseAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.headers.incomplete.data.and.end/client",
+        "${scripts}/request.response.headers.incomplete.data.and.end/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestResponseHeadersIncompleteDataAndEnd() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.headers.incomplete.data.and.reset/client",
+        "${scripts}/request.response.headers.incomplete.data.and.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestResponseHeadersIncompleteDataAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.reset/client",
+        "${scripts}/request.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.and.end/client",
+        "${scripts}/request.response.and.end/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestResponseAndEnd() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.and.reset/client",
+        "${scripts}/request.response.and.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestResponseAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/response.with.content.length.is.reset/client",
+        "${scripts}/response.with.content.length.is.reset/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthIsReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
     // Proxy tests only have "cooked" versions
 
 }
