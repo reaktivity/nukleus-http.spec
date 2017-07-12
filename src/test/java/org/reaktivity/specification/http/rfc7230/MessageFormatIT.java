@@ -27,20 +27,16 @@ import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
-import org.reaktivity.specification.nukleus.NukleusRule;
 
 public class MessageFormatIT
 {
     private final K3poRule k3po = new K3poRule()
         .addScriptRoot("scripts", "org/reaktivity/specification/http/rfc7230/message.format");
 
-    private final NukleusRule nukleus = new NukleusRule()
-            .directory("target/nukleus-itests");
-
     private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     @Rule
-    public final TestRule chain = outerRule(k3po).around(nukleus).around(timeout);
+    public final TestRule chain = outerRule(k3po).around(timeout);
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-3">RFC 7230 section 3: Message Format</a>.
