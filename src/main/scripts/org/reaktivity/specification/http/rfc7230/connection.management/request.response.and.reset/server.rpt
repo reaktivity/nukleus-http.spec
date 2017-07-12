@@ -36,6 +36,8 @@ read await RESPONSE_DECODED
 
 read abort
 
+read notify CONNECTION_RESET
+
 # Check connection pool is not exhausted
 accepted
 connected

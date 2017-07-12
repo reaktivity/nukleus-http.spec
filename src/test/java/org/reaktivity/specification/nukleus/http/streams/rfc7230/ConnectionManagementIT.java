@@ -144,6 +144,31 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.response.twice/client",
+        "${scripts}/request.and.response.twice/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAndResponseTwice() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.and.response.twice.awaiting.barrier/client",
+        "${scripts}/request.and.response.twice.awaiting.barrier/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAndResponseTwiceAwaitingBarrier() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.notifyBarrier("ISSUE_SECOND_REQUEST");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.response.with.incomplete.data.and.end/client",
         "${scripts}/request.and.response.with.incomplete.data.and.end/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
