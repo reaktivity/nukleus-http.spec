@@ -34,3 +34,4 @@ write nukleus:begin.ext ${http:header(":status", "503")}
 
 connected
 
+write close

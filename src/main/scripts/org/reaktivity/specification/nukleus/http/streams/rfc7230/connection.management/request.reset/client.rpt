@@ -31,3 +31,19 @@ write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
 connected
 write aborted
+read notify FIRST_REQUEST_COMPLETED
+
+# Check connection pool is not exhausted
+connect await FIRST_REQUEST_COMPLETED
+        "nukleus://http/streams/source"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "simplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+
+connected
+

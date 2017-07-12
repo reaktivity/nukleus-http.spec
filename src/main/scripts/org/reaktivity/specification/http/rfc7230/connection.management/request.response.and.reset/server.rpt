@@ -32,7 +32,17 @@ read "\r\n"
 write "HTTP/1.1 200 OK\r\n"
 write "\r\n"
 
-read await RESPONSE_RECEIVED
+read await RESPONSE_DECODED
 
 read abort
-write aborted
+
+# Check connection pool is not exhausted
+accepted
+connected
+
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+
+write "HTTP/1.1 200 OK\r\n"
+write "\r\n"

@@ -27,3 +27,12 @@ connected
 
 read "GET / HTTP/1.1" "\r\n"
 read abort
+
+# Check connection pool is not exhausted
+accepted
+connected
+
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+

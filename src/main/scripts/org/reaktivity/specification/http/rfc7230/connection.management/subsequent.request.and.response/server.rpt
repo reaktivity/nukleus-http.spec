@@ -14,32 +14,12 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
-
-accept ${serverTransport}
-  option nukleus:route ${newClientConnectRef}
-  option nukleus:window 8192
-  option nukleus:transmission "duplex"
 accepted
 connected
 
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
+read http:version "HTTP/1.1"
 
-write close
+write http:status "200" "OK"
+write http:version "HTTP/1.1"
+write flush
 
-read closed
-
-# Check connection pool is not exhausted
-accepted
-connected
-
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-write "HTTP/1.1 200 OK\r\n"
-write "\r\n"

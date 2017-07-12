@@ -27,12 +27,13 @@ write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
-read nukleus:begin.ext ${http:header(":status", "503")}
+read nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
+read notify RESPONSE_DECODED
 
-read notify FIRST_REQUEST_COMPLETED
 read closed
+read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
 connect await FIRST_REQUEST_COMPLETED
@@ -49,5 +50,3 @@ write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
-
-

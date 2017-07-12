@@ -32,5 +32,5 @@ read nukleus:begin.ext ${http:header(":status", "200")}
 connected
 
 read closed
-read notify RESPONSE_RECEIVED
+read notify FIRST_REQUEST_COMPLETED
 

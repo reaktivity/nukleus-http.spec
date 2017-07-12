@@ -34,5 +34,22 @@ connected
 
 read "hello"
 read notify HELLO_RECEIVED
+read notify FIRST_REQUEST_COMPLETED
 read closed
 
+
+# Check connection pool is not exhausted
+connect await FIRST_REQUEST_COMPLETED
+        "nukleus://http/streams/source"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "duplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+
+read nukleus:begin.ext ${http:header(":status", "200")}
+
+connected

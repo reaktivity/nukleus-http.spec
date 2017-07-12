@@ -14,32 +14,24 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property newClientAcceptRef ${nuklei:newReferenceId()} 
+property newServerConnectRef ${newClientAcceptRef} # external scope
 
-accept ${serverTransport}
-  option nukleus:route ${newClientConnectRef}
-  option nukleus:window 8192
-  option nukleus:transmission "duplex"
+property serverConnect "nukleus://target/streams/http#source"
+       
+accept ${serverConnect}
+       option nukleus:route ${newServerConnectRef}
+       option nukleus:window 8192
+       option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+
+write nukleus:begin.ext ${http:header(":status", "200")}
+
 connected
-
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
 write close
 
-read closed
-
-# Check connection pool is not exhausted
-accepted
-connected
-
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
-
-write "HTTP/1.1 200 OK\r\n"
-write "\r\n"
