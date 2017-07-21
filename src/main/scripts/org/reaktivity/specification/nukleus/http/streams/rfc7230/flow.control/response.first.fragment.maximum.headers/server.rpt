@@ -32,6 +32,7 @@ read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
 write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-length", "11")}
+write nukleus:begin.ext ${http:header("custom-header", "value123")}
 
 connected
 

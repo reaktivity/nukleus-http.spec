@@ -34,7 +34,7 @@ public class ConnectionManagementIT
     private final K3poRule k3po = new K3poRule()
             .addScriptRoot("scripts", "org/reaktivity/specification/nukleus/http/streams/rfc7230/connection.management");
 
-    private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
+    private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     private final NukleusRule nukleus = new NukleusRule()
         .directory("target/nukleus-itests");

@@ -22,7 +22,7 @@ property serverConnect "nukleus://target/streams/http#source"
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window 8192
-       option nukleus:transmission "duplex"
+       option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
@@ -30,11 +30,25 @@ read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
+connected
+
 write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-length", "11")}
+write flush
+
+write "hello"
+
+read await HELLO_RECEIVED
+read abort
+
+accepted
+
+read nukleus:begin.ext ${http:header(":scheme", "http")}
+read nukleus:begin.ext ${http:header(":method", "GET")}
+read nukleus:begin.ext ${http:header(":path", "/")}
+read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 
 connected
 
-write "hello"
-read await HELLO_RECEIVED
-read abort
+write nukleus:begin.ext ${http:header(":status", "200")}
+write flush
