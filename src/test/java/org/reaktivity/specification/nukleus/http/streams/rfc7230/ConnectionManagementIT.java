@@ -27,20 +27,16 @@ import org.junit.rules.Timeout;
 import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
-import org.reaktivity.specification.nukleus.NukleusRule;
 
 public class ConnectionManagementIT
 {
     private final K3poRule k3po = new K3poRule()
             .addScriptRoot("scripts", "org/reaktivity/specification/nukleus/http/streams/rfc7230/connection.management");
 
-    private final TestRule timeout = new DisableOnDebug(new Timeout(5, SECONDS));
-
-    private final NukleusRule nukleus = new NukleusRule()
-        .directory("target/nukleus-itests");
+    private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
     @Rule
-    public final TestRule chain = outerRule(nukleus).around(k3po).around(timeout);
+    public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
     @Specification({
