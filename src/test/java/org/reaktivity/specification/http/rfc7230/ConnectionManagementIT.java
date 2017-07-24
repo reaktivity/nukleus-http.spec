@@ -274,6 +274,18 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.incomplete.response.headers.and.abort/client",
+        "${scripts}/request.incomplete.response.headers.and.abort/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestAndAbortBeforeResponseHeadersComplete() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.incomplete.response.headers.and.end/client",
         "${scripts}/request.incomplete.response.headers.and.end/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
@@ -314,6 +326,18 @@ public class ConnectionManagementIT
         "${scripts}/request.no.response.and.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void requestNoResponseAndReset() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.headers.incomplete.data.and.abort/client",
+        "${scripts}/request.response.headers.incomplete.data.and.abort/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void requestResponseHeadersIncompleteDataAndAbort() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");

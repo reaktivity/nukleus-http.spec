@@ -22,7 +22,7 @@ property serverConnect "nukleus://target/streams/http#source"
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window 8192
-       option nukleus:transmission "half-duplex"
+       option nukleus:transmission "duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
@@ -31,13 +31,11 @@ read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 read nukleus:begin.ext ${http:header("connection", "upgrade")}
-connected
-
-read closed
 
 write nukleus:begin.ext ${http:header(":status", "101")}
 write nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
-write close
+
+connected
 
 
 
