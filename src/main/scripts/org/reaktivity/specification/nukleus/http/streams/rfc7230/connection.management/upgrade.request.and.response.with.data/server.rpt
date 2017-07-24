@@ -23,7 +23,7 @@ property serverInitialWindow 8192
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window ${serverInitialWindow}
-       option nukleus:transmission "duplex"
+       option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
@@ -32,11 +32,17 @@ read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 read nukleus:begin.ext ${http:header("connection", "upgrade")}
+connected
+
+
+read "data from client 1"
+read "data from client 2"
+read "data from client 3"
+read closed
 
 write nukleus:begin.ext ${http:header(":status", "101")}
 write nukleus:begin.ext ${http:header("upgrade", "WebSocket")}
 
-connected
 
 write "data from server 1"
 write flush
@@ -45,8 +51,5 @@ write flush
 write "data from server 3"
 write flush
 
-read "data from client 1"
-read "data from client 2"
-read "data from client 3"
 
 

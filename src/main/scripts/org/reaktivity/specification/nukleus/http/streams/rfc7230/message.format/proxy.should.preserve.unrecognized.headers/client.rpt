@@ -21,13 +21,11 @@ connect await ROUTED_SERVER
   option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
-connected
+  option nukleus:transmission "half-duplex"
 
 write http:method "GET"
 write http:host
 write http:header "secret" "header"
-write close
 read http:status "200" "OK"
 read http:header "doubleSecret" "probation"
 

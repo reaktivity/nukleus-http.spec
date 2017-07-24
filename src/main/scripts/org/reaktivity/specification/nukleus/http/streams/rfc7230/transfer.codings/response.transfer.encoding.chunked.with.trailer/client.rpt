@@ -20,21 +20,22 @@ connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 write nukleus:begin.ext ${http:header("content-type", "text/plain")}
+connected
+
+write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
 read nukleus:begin.ext ${http:header("content-type", "text/plain")}
 read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
 read nukleus:begin.ext ${http:header("trailer", "Connection")}
 
-connected
-write close
 
 read "Chunk A"
 read "Chunk B"

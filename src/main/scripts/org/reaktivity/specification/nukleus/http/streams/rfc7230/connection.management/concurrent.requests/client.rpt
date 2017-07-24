@@ -20,55 +20,58 @@ connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
-    option nukleus:transmission "duplex"
+    option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/request1")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
 read nukleus:begin.ext ${http:header("content-length", "9")}
-connected
 
 read "response1"
 read closed
-write close
 
 connect await REQUEST_ONE_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
-    option nukleus:transmission "duplex"
+    option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/request2")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
 read nukleus:begin.ext ${http:header("content-length", "9")}
-connected
 
 read "response2"
 read closed
-write close
 
 connect await REQUEST_TWO_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
-    option nukleus:transmission "duplex"
+    option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/request3")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
 read nukleus:begin.ext ${http:header("content-length", "9")}
-connected
 
 read "response3"
 read closed
-write close

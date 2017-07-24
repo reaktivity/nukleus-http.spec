@@ -24,7 +24,7 @@ property serverInitialWindow 8192
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window ${serverInitialWindow}
-       option nukleus:transmission "duplex"
+       option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
@@ -32,10 +32,13 @@ read nukleus:begin.ext ${http:header(":method", "POST")}
 read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header("content-length", "11")}
-
-write nukleus:begin.ext ${http:header(":status", "200")}
-
 connected
 
 read "hello world"
+
 read closed
+
+write nukleus:begin.ext ${http:header(":status", "200")}
+write close
+
+
