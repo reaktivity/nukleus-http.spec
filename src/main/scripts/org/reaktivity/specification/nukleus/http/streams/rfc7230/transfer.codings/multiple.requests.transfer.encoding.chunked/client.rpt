@@ -30,13 +30,12 @@ write nukleus:begin.ext ${http:header("content-type", "text/plain")}
 write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
 connected
 
-read nukleus:begin.ext ${http:header("status", "200")}
-
-
 write "Chunk A"
 write "Chunk B"
 write "Chunk C"
+write close
 
+read nukleus:begin.ext ${http:header("status", "200")}
 read closed
 
 read notify RESPONSE_ONE_RECEIVED
@@ -55,12 +54,11 @@ write nukleus:begin.ext ${http:header("content-type", "text/plain")}
 write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
 connected
 
-read nukleus:begin.ext ${http:header("status", "200")}
-
-
 write "1"
 write "12"
 write "12345"
+write close
 
+read nukleus:begin.ext ${http:header("status", "200")}
 read closed
 

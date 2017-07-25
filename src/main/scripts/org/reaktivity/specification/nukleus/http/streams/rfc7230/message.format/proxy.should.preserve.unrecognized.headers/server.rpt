@@ -23,6 +23,7 @@ accept "http://localhost:8080/"
   option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 accepted
+connected
 
 read http:header "secret" "header"
 write http:status "200" "OK"

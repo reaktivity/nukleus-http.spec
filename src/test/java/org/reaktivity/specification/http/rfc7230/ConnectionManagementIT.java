@@ -61,7 +61,7 @@ public class ConnectionManagementIT
         "${scripts}/request.with.connection.close/client",
         "${scripts}/request.with.connection.close/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void clientAndServerMustCloseConnectionAfterRequestWithConnectionClose() throws Exception
+    public void shouldCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -87,7 +87,7 @@ public class ConnectionManagementIT
         "${scripts}response.with.connection.close/client",
         "${scripts}response.with.connection.close/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverMustCloseConnectionAfterResponseWithConnectionClose() throws Exception
+    public void shouldCloseConnectionAfterSendingResponseWithConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -106,7 +106,7 @@ public class ConnectionManagementIT
         "${scripts}/concurrent.requests.different.connections/client",
         "${scripts}/concurrent.requests.different.connections/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void concurrentRequestsDifferentConnections() throws Exception
+    public void shouldProcessConcurrentRequestsOnDifferentConnections() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -125,7 +125,7 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.same.connection/client",
         "${scripts}/multiple.requests.same.connection/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void multipleRequestsSameConnection() throws Exception
+    public void shouldProcessMultipleRequestsOnSameConnection() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -147,7 +147,7 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.pipelined/client",
         "${scripts}/multiple.requests.pipelined/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void multipleRequestsPipelined() throws Exception
+    public void shouldProcessMultipleRequestsPipelined() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -168,7 +168,7 @@ public class ConnectionManagementIT
         "${scripts}/multiple.requests.pipelined.with.retry/client",
         "${scripts}/multiple.requests.pipelined.with.retry/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void clientWithPipeliningMustNotRetryPipeliningImmediatelyAfterFailure() throws Exception
+    public void shouldNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -188,7 +188,7 @@ public class ConnectionManagementIT
         "${scripts}/first.pipelined.response.has.connection.close/client",
         "${scripts}/first.pipelined.response.has.connection.close/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void clientMustNotReuseConnectionWhenReceivesConnectionClose() throws Exception
+    public void shouldNotReuseConnectionAfterResponseWithConnectionClose() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -209,7 +209,7 @@ public class ConnectionManagementIT
         "${scripts}/upgrade.request.and.response/client",
         "${scripts}/upgrade.request.and.response/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverGettingUpgradeRequestMustRespondWithUpgradeHeader() throws Exception
+    public void shouldRespondWithUpgradeHeaderWhenActingAsServer() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -228,7 +228,7 @@ public class ConnectionManagementIT
         "${scripts}/request.and.upgrade.required.response/client",
         "${scripts}/request.and.upgrade.required.response/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverThatSendsUpgradeRequiredMustIncludeUpgradeHeader() throws Exception
+    public void shouldIncludeUpgradeHeaderWithUpgradeRequiredResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -249,7 +249,7 @@ public class ConnectionManagementIT
         "${scripts}/upgrade.request.and.response.with.data/client",
         "${scripts}/upgrade.request.and.response.with.data/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void serverThatIsUpgradingMustSendA101ResponseBeforeData() throws Exception
+    public void shouldSendA101ResponseBeforeData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -261,7 +261,7 @@ public class ConnectionManagementIT
         "${scripts}/concurrent.upgrade.requests.and.responses.with.data/client",
         "${scripts}/concurrent.upgrade.requests.and.responses.with.data/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void concurrentUpgradeRequestsandResponsesWithData() throws Exception
+    public void shouldHandleConcurrentUpgradeRequestsandResponsesWithData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -277,7 +277,7 @@ public class ConnectionManagementIT
         "${scripts}/request.incomplete.response.headers.and.abort/client",
         "${scripts}/request.incomplete.response.headers.and.abort/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestAndAbortBeforeResponseHeadersComplete() throws Exception
+    public void shouldReportResponseAbortedBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -289,7 +289,7 @@ public class ConnectionManagementIT
         "${scripts}/request.incomplete.response.headers.and.end/client",
         "${scripts}/request.incomplete.response.headers.and.end/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestAndEndBeforeResponseHeadersComplete() throws Exception
+    public void shouldReportResponseEndedBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -301,7 +301,7 @@ public class ConnectionManagementIT
         "${scripts}/request.incomplete.response.headers.and.reset/client",
         "${scripts}/request.incomplete.response.headers.and.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestAndResetBeforeResponseHeadersComplete() throws Exception
+    public void shouldReportConnectStreamResetBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -313,7 +313,7 @@ public class ConnectionManagementIT
         "${scripts}/request.no.response.and.end/client",
         "${scripts}/request.no.response.and.end/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestNoResponseAndEnd() throws Exception
+    public void shouldHandleConnectReplyStreamEndedWithNoResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -325,7 +325,7 @@ public class ConnectionManagementIT
         "${scripts}/request.no.response.and.reset/client",
         "${scripts}/request.no.response.and.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestNoResponseAndReset() throws Exception
+    public void shouldHandleConnectStreamResetWithNoResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -337,7 +337,7 @@ public class ConnectionManagementIT
         "${scripts}/request.response.headers.incomplete.data.and.abort/client",
         "${scripts}/request.response.headers.incomplete.data.and.abort/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestResponseHeadersIncompleteDataAndAbort() throws Exception
+    public void shouldReportResponseAbortedWithIncompleteData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -349,7 +349,7 @@ public class ConnectionManagementIT
         "${scripts}/request.response.headers.incomplete.data.and.end/client",
         "${scripts}/request.response.headers.incomplete.data.and.end/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestResponseHeadersIncompleteDataAndEnd() throws Exception
+    public void shouldReportResponseEndedWithIncompleteData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -361,7 +361,7 @@ public class ConnectionManagementIT
         "${scripts}/request.response.headers.incomplete.data.and.reset/client",
         "${scripts}/request.response.headers.incomplete.data.and.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestResponseHeadersIncompleteDataAndReset() throws Exception
+    public void shouldReportConnectStreamResetWhenResponseHasIncompleteData() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -373,7 +373,7 @@ public class ConnectionManagementIT
         "${scripts}/request.reset/client",
         "${scripts}/request.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestReset() throws Exception
+    public void shouldReportRequestReset() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -385,7 +385,7 @@ public class ConnectionManagementIT
         "${scripts}/request.response.and.end/client",
         "${scripts}/request.response.and.end/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestResponseAndEnd() throws Exception
+    public void shouldProcessRequestResponseAndEnd() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -397,7 +397,7 @@ public class ConnectionManagementIT
         "${scripts}/request.response.and.reset/client",
         "${scripts}/request.response.and.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void requestResponseAndReset() throws Exception
+    public void shouldProcessRequestResponseAndReset() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -409,7 +409,7 @@ public class ConnectionManagementIT
         "${scripts}/response.with.content.length.is.reset/client",
         "${scripts}/response.with.content.length.is.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void responseWithContentLengthIsReset() throws Exception
+    public void  shouldReportWhenResponseWithContentLengthIsReset() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");

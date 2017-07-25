@@ -22,6 +22,7 @@ connect await ROUTED_SERVER
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
   option nukleus:transmission "half-duplex"
+connected
 
 write http:method "GET"
 write http:host

@@ -39,3 +39,4 @@ write nukleus:end.ext ${http:header("connection", "close")}
 write close
 
 read nukleus:begin.ext ${http:header("status", "200")}
+read closed

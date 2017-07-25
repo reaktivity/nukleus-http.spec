@@ -67,7 +67,7 @@ public class ConnectionManagementIT
         "${scripts}/concurrent.requests/client",
         "${scripts}/concurrent.requests/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void concurrentRequests() throws Exception
+    public void shouldProcessConcurrentRequests() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");

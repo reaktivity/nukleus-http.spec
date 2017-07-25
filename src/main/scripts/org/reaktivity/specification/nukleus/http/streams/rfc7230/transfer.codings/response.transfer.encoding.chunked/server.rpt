@@ -39,7 +39,6 @@ write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-type", "text/plain")}
 write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
 
-
 write "Chunk A;"
 write "Chunk B;"
 write "Chunk C;"
