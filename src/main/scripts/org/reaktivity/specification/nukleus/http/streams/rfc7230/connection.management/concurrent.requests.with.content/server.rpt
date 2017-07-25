@@ -23,20 +23,21 @@ property source "http"
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window 8192
-       option nukleus:transmission "duplex"
+       option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/request1")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-length", "9")}
 
-connected
 
-read closed
 write "response1"
 write close
 
@@ -46,13 +47,14 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/request2")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-length", "9")}
 
-connected
 
-read closed
 write "response2"
 write close
        
@@ -62,12 +64,13 @@ read nukleus:begin.ext ${http:header(":scheme", "http")}
 read nukleus:begin.ext ${http:header(":method", "GET")}
 read nukleus:begin.ext ${http:header(":path", "/request3")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+read closed
 
 write nukleus:begin.ext ${http:header(":status", "200")}
 write nukleus:begin.ext ${http:header("content-length", "9")}
 
-connected
 
-read closed
 write "response3"
 write close

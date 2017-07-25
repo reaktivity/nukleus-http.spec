@@ -30,8 +30,8 @@ write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 write nukleus:begin.ext ${http:header("content-type", "text/plain")}
 write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
-
 connected
+
 
 write "Chunk A"
 

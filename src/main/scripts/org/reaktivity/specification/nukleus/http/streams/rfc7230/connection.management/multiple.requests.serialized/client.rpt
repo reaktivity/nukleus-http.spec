@@ -26,8 +26,9 @@ write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/request1")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-
 connected
+
+
 
 write close
 
@@ -51,6 +52,7 @@ write nukleus:begin.ext ${http:header(":path", "/request2")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 connected
 
+
 write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
@@ -71,6 +73,7 @@ write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/request3")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 connected
+
 
 write close
 
