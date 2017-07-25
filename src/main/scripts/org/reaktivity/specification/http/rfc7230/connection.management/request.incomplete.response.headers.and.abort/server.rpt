@@ -15,18 +15,32 @@
 #
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
+property newClientConnectRef ${newServerAcceptRef} # external scope
+property serverTransport "nukleus://target/streams/http#source"
 
-connect await ROUTED_SERVER
-        "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+accept ${serverTransport}
+  option nukleus:route ${newClientConnectRef}
   option nukleus:window 8192
-  option nukleus:transmission "half-duplex"
+  option nukleus:transmission "duplex"
+accepted
 connected
 
-write http:method "GET"
-write http:host
-write http:header "secret" "header"
-read http:status "200" "OK"
-read http:header "doubleSecret" "probation"
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+
+write "HTTP/1.1 200 OK\r\n"
+write "Content-Length: 11" "\r\n"
+write abort
+
+# Check connection pool is not exhausted
+accepted
+connected
+
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
+
+write "HTTP/1.1 200 OK\r\n"
+write "\r\n"
 

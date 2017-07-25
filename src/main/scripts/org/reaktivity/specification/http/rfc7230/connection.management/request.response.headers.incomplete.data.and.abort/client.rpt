@@ -16,17 +16,36 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-connect await ROUTED_SERVER
-        "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
+connect await ROUTED_SERVER 
+        "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "half-duplex"
+  option nukleus:transmission "duplex"
 connected
 
-write http:method "GET"
-write http:host
-write http:header "secret" "header"
-read http:status "200" "OK"
-read http:header "doubleSecret" "probation"
+write "GET / HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
+read "HTTP/1.1 200 OK\r\n"
+read "Content-Length: 11" "\r\n"
+read "\r\n"
+read "hello"
+read notify HELLO_RECEIVED
+read aborted
+read notify FIRST_REQUEST_COMPLETED
+
+# Check connection pool is not exhausted
+connect await FIRST_REQUEST_COMPLETED 
+        "nukleus://http/streams/source"
+  option nukleus:route ${newServerAcceptRef}
+  option nukleus:window 8192
+  option nukleus:transmission "duplex"
+connected
+
+write "GET / HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
+read "HTTP/1.1 200 OK\r\n"
 

@@ -23,7 +23,7 @@ accept ${serverConnect}
   option http:transport ${serverConnect}
   option nukleus:route  ${newServerConnectRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:header(":scheme", "http")}
@@ -32,16 +32,15 @@ read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header("content-type", "text/plain")}
 read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
-
-write nukleus:begin.ext ${http:header("status", "200")}
-
 connected
 
 read "Chunk A"
 read "Chunk B"
 read "Chunk C"
+
 read closed
 
+write nukleus:begin.ext ${http:header("status", "200")}
 write close
 
 accepted
@@ -52,15 +51,14 @@ read nukleus:begin.ext ${http:header(":path", "/")}
 read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 read nukleus:begin.ext ${http:header("content-type", "text/plain")}
 read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
-
-write nukleus:begin.ext ${http:header("status", "200")}
-
 connected
 
 read "1"
 read "12"
 read "12345"
+
 read closed
 
+write nukleus:begin.ext ${http:header("status", "200")}
 write close
 

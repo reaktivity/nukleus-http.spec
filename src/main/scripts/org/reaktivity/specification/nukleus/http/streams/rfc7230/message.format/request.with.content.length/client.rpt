@@ -22,27 +22,19 @@ connect await ROUTED_CLIENT
     option nukleus:route ${newClientAcceptRef}
     option nukleus:correlation ${newCorrelationId}
     option nukleus:window 8192
-    option nukleus:transmission "simplex"
+    option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "POST")}
 write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 write nukleus:begin.ext ${http:header("content-length", "11")}
-
 connected
 
 write "hello world"
+
 write close
 
-
-accept await ROUTED_CLIENT
-       "nukleus://source/streams/http"
-    option nukleus:route 0L
-    option nukleus:window 8192
-    option nukleus:transmission "simplex"
-accepted  
-
 read nukleus:begin.ext ${http:header(":status", "200")}
+read closed
 
-connected

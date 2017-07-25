@@ -67,7 +67,7 @@ public class ConnectionManagementIT
         "${scripts}/concurrent.requests/client",
         "${scripts}/concurrent.requests/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void concurrentRequests() throws Exception
+    public void shouldProcessConcurrentRequests() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
@@ -165,6 +165,20 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.response.with.incomplete.data.and.abort/client",
+        "${scripts}/request.and.response.with.incomplete.data.and.abort/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    // No separate scripts for case where transport output stream is reset
+    // because expected high-level behavior is the same
+    public void responseWithContentLengthAndIncompleteDataAndAbort() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.response.with.incomplete.data.and.end/client",
         "${scripts}/request.and.response.with.incomplete.data.and.end/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
@@ -174,19 +188,6 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
-
-    @Test
-    @Specification({
-        "${scripts}/request.and.response.with.incomplete.data.and.reset/client",
-        "${scripts}/request.and.response.with.incomplete.data.and.reset/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void responseWithContentLengthAndIncompleteDataAndReset() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_CLIENT");
-        k3po.finish();
-    }
-
 
     @Test
     @Specification({

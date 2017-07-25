@@ -21,12 +21,11 @@ accept "http://localhost:8080/"
   option http:transport ${serverTransport}
   option nukleus:route  ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "half-duplex"
 accepted
 connected
 
 read http:header "secret" "header"
-read closed
 write http:status "200" "OK"
 write http:header "doubleSecret" "probation"
 write http:content-length
