@@ -74,6 +74,18 @@ public class MessageFormatIT
 
     @Test
     @Specification({
+            "${spec}/max.nukleus.data.frame.size/client",
+            "${spec}/max.nukleus.data.frame.size/server",
+    })
+    public void maxNukleusDataFrameSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${spec}/connection.headers/client",
             "${spec}/connection.headers/server",
     })
