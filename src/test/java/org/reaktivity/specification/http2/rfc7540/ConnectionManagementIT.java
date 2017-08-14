@@ -62,6 +62,18 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+            "${spec}/http.unknown.authority/client",
+            "${spec}/http.unknown.authority/server",
+    })
+    public void httpUnknownAuthority() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${spec}/http.post.exchange/client",
             "${spec}/http.post.exchange/server",
     })
