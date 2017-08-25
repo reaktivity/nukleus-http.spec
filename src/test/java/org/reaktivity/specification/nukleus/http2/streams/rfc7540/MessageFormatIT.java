@@ -95,4 +95,16 @@ public class MessageFormatIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+            "${nukleus}/stream.id.order/client",
+            "${nukleus}/stream.id.order/server"
+    })
+    public void streamIdOrder() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
