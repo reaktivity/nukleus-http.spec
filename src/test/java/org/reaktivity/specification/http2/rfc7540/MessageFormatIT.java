@@ -96,4 +96,16 @@ public class MessageFormatIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${spec}/stream.id.order/client",
+            "${spec}/stream.id.order/server",
+    })
+    public void streamIdOrder() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
