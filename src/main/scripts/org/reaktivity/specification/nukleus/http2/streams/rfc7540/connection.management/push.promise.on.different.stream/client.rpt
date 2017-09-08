@@ -19,7 +19,7 @@ property newServerConnectRef ${nuklei:newReferenceId()} # external scope
 #
 # First client-initiated stream
 #
-connect await ROUTED_SERVER
+connect await ROUTED_CLIENT
         "nukleus://target/streams/http2"
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
@@ -63,7 +63,7 @@ read "<html>"
 #
 # Second client-initiated stream
 #
-connect await ROUTED_SERVER
+connect await ROUTED_CLIENT
         "nukleus://target/streams/http2"
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
