@@ -16,7 +16,7 @@
 
 property newServerAcceptRef ${nukleus:newRouteRef()} # external
 
-accept await ROUTED_SERVER
+accept
        "nukleus://http2/streams/source"
        option nukleus:route ${newServerAcceptRef}
        option nukleus:window 8192
