@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
@@ -38,6 +39,7 @@ public class ConnectionManagementIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/http.get.exchange/client",
             "${streams}/http.get.exchange/server"
@@ -45,11 +47,12 @@ public class ConnectionManagementIT
     public void httpGetExchange() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/http.post.exchange/client",
             "${streams}/http.post.exchange/server"
@@ -57,11 +60,12 @@ public class ConnectionManagementIT
     public void httpPostExchange() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/multiple.data.frames/client",
             "${streams}/multiple.data.frames/server"
@@ -69,11 +73,12 @@ public class ConnectionManagementIT
     public void multipleDataFrames() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/connection.has.two.streams/client",
             "${streams}/connection.has.two.streams/server"
@@ -81,11 +86,12 @@ public class ConnectionManagementIT
     public void connectionHasTwoStreams() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/http.push.promise/client",
             "${streams}/http.push.promise/server"
@@ -93,11 +99,12 @@ public class ConnectionManagementIT
     public void pushResources() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/push.promise.on.different.stream/client",
             "${streams}/push.promise.on.different.stream/server"
@@ -105,11 +112,12 @@ public class ConnectionManagementIT
     public void pushPromiseOnDifferentStream() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/reset.http2.stream/client",
             "${streams}/reset.http2.stream/server"
@@ -117,12 +125,13 @@ public class ConnectionManagementIT
     public void resetHttp2Stream() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Ignore("Doesn't trigger 'write aborted' in client.rpt")
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/client.sent.read.abort.on.open.request/client",
             "${streams}/client.sent.read.abort.on.open.request/server"
@@ -130,11 +139,12 @@ public class ConnectionManagementIT
     public void clientSentReadAbortOnOpenRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/client.sent.read.abort.on.closed.request/client",
             "${streams}/client.sent.read.abort.on.closed.request/server"
@@ -142,11 +152,12 @@ public class ConnectionManagementIT
     public void clientSentReadAbortOnClosedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/client.sent.write.abort.on.open.request/client",
             "${streams}/client.sent.write.abort.on.open.request/server"
@@ -154,11 +165,12 @@ public class ConnectionManagementIT
     public void clientSentWriteAbortOnOpenRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/client.sent.write.abort.on.closed.request/client",
             "${streams}/client.sent.write.abort.on.closed.request/server"
@@ -166,11 +178,12 @@ public class ConnectionManagementIT
     public void clientSentWriteAbortOnClosedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/client.sent.write.close/client",
             "${streams}/client.sent.write.close/server"
@@ -178,12 +191,13 @@ public class ConnectionManagementIT
     public void clientSentWriteClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Ignore("client.rpt doesn't connect to server")
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/server.sent.read.abort.on.open.request/client",
             "${streams}/server.sent.read.abort.on.open.request/server"
@@ -191,11 +205,12 @@ public class ConnectionManagementIT
     public void serverSentReadAbortOnOpenRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/server.sent.write.abort.on.open.request/client",
             "${streams}/server.sent.write.abort.on.open.request/server"
@@ -203,11 +218,12 @@ public class ConnectionManagementIT
     public void serverSentWriteAbortOnOpenRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/server.sent.write.abort.on.closed.request/client",
             "${streams}/server.sent.write.abort.on.closed.request/server"
@@ -215,11 +231,12 @@ public class ConnectionManagementIT
     public void serverSentWriteAbortOnClosedRequest() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${streams}/server.sent.write.close/client",
             "${streams}/server.sent.write.close/server"
@@ -227,7 +244,7 @@ public class ConnectionManagementIT
     public void serverSentWriteClose() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 

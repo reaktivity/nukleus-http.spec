@@ -16,8 +16,9 @@
 
 property newServerAcceptRef ${nukleus:newRouteRef()} # external
 
-accept await ROUTED_SERVER
-       "nukleus://http2/streams/source"
+property serverTransport "nukleus://target/streams/http2#source"
+
+accept ${serverTransport}
        option nukleus:route ${newServerAcceptRef}
        option nukleus:window 8192
        option nukleus:transmission "duplex"

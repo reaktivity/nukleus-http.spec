@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
@@ -37,6 +38,7 @@ public class FlowControlIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/stream.flow/client",
             "${nukleus}/stream.flow/server"
@@ -44,7 +46,7 @@ public class FlowControlIT
     public void streamFlow() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 

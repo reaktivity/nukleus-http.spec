@@ -18,9 +18,9 @@ property newServerAcceptRef ${nukleus:newRouteRef()} # external
 property data20k ${http2:randomBytes(20000)}
 property data15k ${http2:randomBytes(15000)}
 
+property serverTransport "nukleus://target/streams/http2#source"
 
-accept await ROUTED_SERVER
-       "nukleus://http2/streams/source"
+accept ${serverTransport}
        option nukleus:route ${newServerAcceptRef}
        option nukleus:window 60000
        option nukleus:transmission "duplex"

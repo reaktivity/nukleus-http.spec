@@ -15,9 +15,10 @@
 #
 
 property newServerConnectRef ${nuklei:newReferenceId()} # external scope
+property clientTransport "nukleus://http2/streams/source"
 
 connect await ROUTED_CLIENT
-        "nukleus://target/streams/http2"
+        ${clientTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
@@ -39,7 +40,7 @@ connected
 
 
 connect await ROUTED_CLIENT
-        "nukleus://target/streams/http2"
+        ${clientTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
@@ -61,7 +62,7 @@ connected
 
 
 connect await ROUTED_CLIENT
-        "nukleus://target/streams/http2"
+        ${clientTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "duplex"
