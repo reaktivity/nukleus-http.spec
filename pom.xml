@@ -48,8 +48,8 @@
     <k3po.version>3.0.0-alpha-79</k3po.version>
     <k3po.nukleus.ext.version>0.8.2</k3po.nukleus.ext.version>
 
-    <nukleus.http.spec.version>0.30</nukleus.http.spec.version>
-    <nukleus.plugin.version>0.10</nukleus.plugin.version>
+    <nukleus.http.spec.version>0.34</nukleus.http.spec.version>
+    <nukleus.plugin.version>0.12</nukleus.plugin.version>
   </properties>
 
   <dependencies>
