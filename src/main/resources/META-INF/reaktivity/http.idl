@@ -17,7 +17,7 @@ scope http
 {
     struct HttpHeader
     {
-        int8 representation;
+        int8 representation = 0;
         string name;
         string16 value;
     }
