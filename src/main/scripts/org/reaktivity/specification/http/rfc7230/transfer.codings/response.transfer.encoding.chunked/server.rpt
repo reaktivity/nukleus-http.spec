@@ -27,11 +27,9 @@ accepted
 connected
 
 read http:method "GET"
-read http:header "Content-Type" "text/plain"
 read closed
 
 write http:status "200" "OK"
-write http:header "Content-Type" "text/plain"
 write http:header "Transfer-Encoding" "chunked"
 write "Chunk A;"
 write "Chunk B;"
