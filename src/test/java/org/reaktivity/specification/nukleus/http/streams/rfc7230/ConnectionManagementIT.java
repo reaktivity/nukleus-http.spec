@@ -165,11 +165,21 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.response.with.incomplete.data/client",
+        "${scripts}/request.and.response.with.incomplete.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthAndIncompleteData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.response.with.incomplete.data.and.abort/client",
         "${scripts}/request.and.response.with.incomplete.data.and.abort/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    // No separate scripts for case where transport output stream is reset
-    // because expected high-level behavior is the same
     public void responseWithContentLengthAndIncompleteDataAndAbort() throws Exception
     {
         k3po.start();
