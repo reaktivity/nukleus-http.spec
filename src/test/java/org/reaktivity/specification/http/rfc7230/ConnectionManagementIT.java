@@ -370,8 +370,33 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/request.reset/client",
-        "${scripts}/request.reset/server" })
+        "${scripts}/request.and.abort/client",
+        "${scripts}/request.and.abort/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldAbortRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/pending.request.second.request.and.abort/client",
+        "${scripts}/pending.request.second.request.and.abort/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldAbortEnqueuedRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("SEND_FIRST_RESPONSE");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/partial.request.receive.reset/client",
+        "${scripts}/partial.request.receive.reset/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
     public void shouldReportRequestReset() throws Exception
     {
