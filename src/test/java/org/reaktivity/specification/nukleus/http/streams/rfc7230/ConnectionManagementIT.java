@@ -165,11 +165,21 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.and.response.with.incomplete.data/client",
+        "${scripts}/request.and.response.with.incomplete.data/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void responseWithContentLengthAndIncompleteData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.and.response.with.incomplete.data.and.abort/client",
         "${scripts}/request.and.response.with.incomplete.data.and.abort/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    // No separate scripts for case where transport output stream is reset
-    // because expected high-level behavior is the same
     public void responseWithContentLengthAndIncompleteDataAndAbort() throws Exception
     {
         k3po.start();
@@ -191,8 +201,32 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/request.reset/client",
-        "${scripts}/request.reset/server" })
+        "${scripts}/request.and.abort/client",
+        "${scripts}/request.and.abort/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessAbortFromClient() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/pending.request.second.request.and.abort/client",
+        "${scripts}/pending.request.second.request.and.abort/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessAbortFromClientWithPendingRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/request.receive.reset/client",
+        "${scripts}/request.receive.reset/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void requestIsReset() throws Exception
     {
