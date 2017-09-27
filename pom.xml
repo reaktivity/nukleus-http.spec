@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.reaktivity</groupId>
   <artifactId>nukleus-http2.spec</artifactId>
-  <version>develop-SNAPSHOT</version>
+  <version>0.26</version>
   <name>HTTP/2 Nukleus Specification</name>
   <description>HTTP/2 Nukleus Specification</description>
   <url>https://github.com/reaktivity/nukleus-http2.spec</url>
