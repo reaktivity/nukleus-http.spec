@@ -16,25 +16,32 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-property clientInitialWindow 8192
+connect await ROUTED_SERVER
+        "http://localhost:8080/"
+  option http:transport "nukleus://http/streams/source"
+  option nukleus:route ${newServerAcceptRef}
+  option nukleus:window 8192
+  option nukleus:transmission "half-duplex"
+connected
+
+write http:method "GET"
+write http:version "HTTP/1.1"
+write http:host
+
+read http:version "HTTP/1.1"
+read http:status "200" "OK"
 
 connect await ROUTED_SERVER
         "http://localhost:8080/"
   option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window ${clientInitialWindow}
-  option nukleus:transmission "duplex"
+  option nukleus:window 8192
+  option nukleus:transmission "half-duplex"
 connected
 
 write http:method "GET"
+write http:version "HTTP/1.1"
 write http:host
-write http:content-length
-write close
 
+read http:version "HTTP/1.1"
 read http:status "200" "OK"
-read http:header "Transfer-Encoding" "chunked"
-read "Chunk A;"
-read "Chunk B;"
-read "Chunk C;"
-read closed
-

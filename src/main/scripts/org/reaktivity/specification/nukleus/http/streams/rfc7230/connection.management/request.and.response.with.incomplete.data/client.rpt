@@ -14,29 +14,41 @@
 # under the License.
 #
 
-property newClientAcceptRef  ${nuklei:newReferenceId()} # external
-property clientInitialWindow 8192
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
-  option nukleus:route ${newClientAcceptRef}
-  option nukleus:window ${clientInitialWindow}
-  option nukleus:transmission "half-duplex"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-write nukleus:begin.ext ${http:header("content-length", "0")}
 connected
 
 write close
 
 read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+read nukleus:begin.ext ${http:header("content-length", "11")}
 
-read "Chunk A;"
-read "Chunk B;"
-read "Chunk C;"
-read closed
+read "hello"
+read notify HELLO_RECEIVED
 
+# Check connection pool is not exhausted
+connect await HELLO_RECEIVED
+        "nukleus://http/streams/source"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
+write close
+
+read nukleus:begin.ext ${http:header(":status", "200")}

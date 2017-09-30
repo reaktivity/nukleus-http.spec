@@ -14,25 +14,30 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
+property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
 property serverTransport "nukleus://target/streams/http#source"
 
-accept "http://localhost:8080/"
-  option http:transport ${serverTransport}
-  option nukleus:route  ${newClientConnectRef}
+accept ${serverTransport}
+  option nukleus:route ${newClientConnectRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "simplex"
 accepted
 connected
 
-read http:method "GET"
-read closed
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
 
-write http:status "200" "OK"
-write http:header "Transfer-Encoding" "chunked"
-write "Chunk A;"
-write "Chunk B;"
-write "Chunk C;"
-write close
+read notify FIRST_REQUEST_RECEIVED
+
+read aborted
+
+# Check connection pool is not exhausted
+accepted
+connected
+
+read "GET / HTTP/1.1" "\r\n"
+read "Host: localhost:8080" "\r\n"
+read "\r\n"
 

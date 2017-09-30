@@ -15,28 +15,36 @@
 #
 
 property newClientAcceptRef  ${nuklei:newReferenceId()} # external
-property clientInitialWindow 8192
+property newCorrelationId ${nukleus:newCorrelationId()}
 
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
-  option nukleus:window ${clientInitialWindow}
+  option nukleus:correlation ${newCorrelationId}
+  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:header(":scheme", "http")}
 write nukleus:begin.ext ${http:header(":method", "GET")}
 write nukleus:begin.ext ${http:header(":path", "/")}
 write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-write nukleus:begin.ext ${http:header("content-length", "0")}
 connected
 
-write close
+write await FIRST_REQUEST_RECEIVED
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+write abort
 
-read "Chunk A;"
-read "Chunk B;"
-read "Chunk C;"
-read closed
+# Check connection pool is not exhausted
+connect await FIRST_REQUEST_RECEIVED
+        "nukleus://http/streams/source"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "simplex"
+
+write nukleus:begin.ext ${http:header(":scheme", "http")}
+write nukleus:begin.ext ${http:header(":method", "GET")}
+write nukleus:begin.ext ${http:header(":path", "/")}
+write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+connected
+
 
