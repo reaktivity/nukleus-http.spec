@@ -21,7 +21,7 @@ property nukleiUR020001C ${nuklei:directory("target/nukleus-itests").controlCapa
 
 property controlUR020001C ${nukleiUR020001C.control("http2")}
 
-property routeAuthorization [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00] # external
+property routeAuthorization 0x0000_000000000000L # external
 
 connect await ROUTED_SERVER
         "agrona://stream/bidirectional"

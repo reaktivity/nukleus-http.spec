@@ -20,7 +20,7 @@ property nukleiRG010001C ${nuklei:directory("target/nukleus-itests").controlCapa
 
 property controlRG010001C ${nukleiRG010001C.control("http2")}
 
-property routeAuthorization [0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00]
+property routeAuthorization 0x0000_000000000000L
 
 connect "agrona://stream/bidirectional"
         option agrona:reader ${agrona:broadcastReceiver(controlRG010001C.controller)}
