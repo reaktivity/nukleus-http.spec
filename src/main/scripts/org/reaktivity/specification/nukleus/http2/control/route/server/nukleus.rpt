@@ -25,12 +25,13 @@ connect "agrona://stream/bidirectional"
 connected
 
 read 0x00000001
-read ([0..8]:correlationIdRG010001N)
+read (long:correlationIdRG010001N)
 read [0x00]
 read [0x06] "source"
 read 0L
 read [0x06] "target"
-read ([0..8]:serverConnectRefRG010001N)
+read (long:serverConnectRefRG010001N)
+read [0..8] # authorization
 read ${http:header(":authority", "localhost:8080")}
 
 write 0x40000001
