@@ -14,14 +14,14 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} 
-property newServerConnectRef ${newClientAcceptRef} # external scope
+property newServerConnectRef ${nuklei:newReferenceId()} # external scope
+property data ${http2:randomBytes(55000)}
 
-property serverTransport "nukleus://target/streams/http2#source"
-
-accept ${serverTransport}
+accept await ROUTED_SERVER
+        "nukleus://target/streams/http2"
         option nukleus:route ${newServerConnectRef}
-        option nukleus:window 8192
+        option nukleus:window 0
+        option nukleus:update "none"            # So that some request body gets buffered
         option nukleus:transmission "duplex"
 accepted
 
@@ -38,6 +38,8 @@ write nukleus:begin.ext ${http:header(":status", "200")}
 
 connected
 
-read "Hello, world"
+write ${data}
 
 read aborted
+
+write aborted

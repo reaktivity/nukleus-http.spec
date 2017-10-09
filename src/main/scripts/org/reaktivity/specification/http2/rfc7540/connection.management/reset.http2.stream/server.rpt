@@ -95,7 +95,7 @@ write flush
 
 read [0x00 0x00 0x0c]                   # length = 12
      [0x00]                             # HTTP2 DATA frame
-     [0x01]                             # END_STREAM
+     [0x00]                             # no flags
      [0x00 0x00 0x00 0x01]              # stream_id = 1
      "Hello, world"
 
