@@ -147,6 +147,18 @@ public class FlowControlIT
 
     @Test
     @Specification({
+            "${scripts}/response.headers.with.padding/client",
+            "${scripts}/response.headers.with.padding/server"})
+    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    public void shouldProcessResponseHeadersFragmentedByPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/response.headers.too.long/client.5xx.response",
         "${scripts}/response.headers.too.long/server.5xx.response"})
     @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
