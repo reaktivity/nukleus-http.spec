@@ -14,14 +14,15 @@
 # under the License.
 #
 
-property newServerConnectRef ${nuklei:newReferenceId()} # external scope
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property clientTransport "nukleus://http2/streams/source"
 
 #
 # HTTP connection-1
 #
-connect await ROUTED_SERVER
-        "nukleus://target/streams/http2"
-        option nukleus:route ${newServerConnectRef}
+connect await ROUTED_CLIENT
+        ${clientTransport}
+        option nukleus:route ${newClientAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 write nukleus:begin.ext ${http:header(":method", "GET")}
@@ -47,9 +48,9 @@ read nukleus:data.ext ${http:header(":method", "GET")}
 #
 # HTTP connection-2
 #
-connect await ROUTED_SERVER
-        "nukleus://target/streams/http2"
-        option nukleus:route ${newServerConnectRef}
+connect await ROUTED_CLIENT
+        ${clientTransport}
+        option nukleus:route ${newClientAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 write nukleus:begin.ext ${http:header(":method", "GET")}
@@ -75,9 +76,9 @@ read nukleus:data.ext ${http:header(":method", "GET")}
 #
 # HTTP connection-3
 #
-connect await ROUTED_SERVER
-        "nukleus://target/streams/http2"
-        option nukleus:route ${newServerConnectRef}
+connect await ROUTED_CLIENT
+        ${clientTransport}
+        option nukleus:route ${newClientAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 write nukleus:begin.ext ${http:header(":method", "GET")}

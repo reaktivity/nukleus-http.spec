@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
@@ -37,6 +38,7 @@ public class MessageFormatIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/continuation.frames/client",
             "${nukleus}/continuation.frames/server"
@@ -44,11 +46,12 @@ public class MessageFormatIT
     public void continuationFrames() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/dynamic.table.requests/client",
             "${nukleus}/dynamic.table.requests/server"
@@ -56,11 +59,12 @@ public class MessageFormatIT
     public void dynamicTableRequests() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/max.frame.size/client",
             "${nukleus}/max.frame.size/server"
@@ -68,11 +72,12 @@ public class MessageFormatIT
     public void maxFrameSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/max.nukleus.data.frame.size/client",
             "${nukleus}/max.nukleus.data.frame.size/server"
@@ -80,11 +85,12 @@ public class MessageFormatIT
     public void maxNukleusDataFrameSize() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/connection.headers/client",
             "${nukleus}/connection.headers/server"
@@ -92,11 +98,12 @@ public class MessageFormatIT
     public void connectionHeaders() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${nukleus}/stream.id.order/client",
             "${nukleus}/stream.id.order/server"
@@ -104,7 +111,7 @@ public class MessageFormatIT
     public void streamIdOrder() throws Exception
     {
         k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
 }

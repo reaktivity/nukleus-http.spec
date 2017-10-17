@@ -38,10 +38,11 @@ read [0x00 0x00 0x0c]                   # length = 12
      [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
      [0x00 0x04 0x00 0x00 0x00 0x00]    # SETTINGS_INITIAL_WINDOW_SIZE(0x03) = 0
 
-write [0x00 0x00 0x06]                   # length = 6
+write [0x00 0x00 0x0c]                   # length = 12
       [0x04]                             # HTTP2 SETTINGS frame
       [0x00]                             # flags = 0x00
       [0x00 0x00 0x00 0x00]              # stream_id = 0
+      [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
       [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
 write flush
 
@@ -49,12 +50,6 @@ read [0x00 0x00 0x00]                   # length = 0
      [0x04]                             # HTTP2 SETTINGS frame
      [0x01]                             # ACK
      [0x00 0x00 0x00 0x00]              # stream_id = 0
-
-write [0x00 0x00 0x00]                  # length = 0
-      [0x04]                            # HTTP2 SETTINGS frame
-      [0x01]                            # ACK
-      [0x00 0x00 0x00 0x00]             # stream_id = 0
-write flush
 
 write [0x00 0x00 0x13]                  # length = 19
       [0x01]                            # HEADERS frame
@@ -64,6 +59,12 @@ write [0x00 0x00 0x13]                  # length = 19
       [0x86]                            # :scheme: http
       [0x84]                            # :path: /
       [0x01] [0x0e] "localhost:8081"    # :authority: localhost:8081
+write flush
+
+write [0x00 0x00 0x00]                  # length = 0
+      [0x04]                            # HTTP2 SETTINGS frame
+      [0x01]                            # ACK
+      [0x00 0x00 0x00 0x00]             # stream_id = 0
 write flush
 
 read [0x00 0x00 0x01]                                      # length

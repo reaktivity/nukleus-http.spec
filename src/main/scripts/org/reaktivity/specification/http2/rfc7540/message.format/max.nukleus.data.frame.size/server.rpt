@@ -14,12 +14,14 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nukleus:newRouteRef()} # external
+property newServerAcceptRef ${nuklei:newReferenceId()} # external
+property newClientConnectRef ${newServerAcceptRef}
 property data ${http2:randomBytes(65527)}
 
-accept await ROUTED_SERVER
-       "nukleus://http2/streams/source"
-       option nukleus:route ${newServerAcceptRef}
+property serverTransport "nukleus://target/streams/http2#source"
+
+accept ${serverTransport}
+       option nukleus:route ${newClientConnectRef}
        option nukleus:window 65536
        option nukleus:transmission "duplex"
 accepted
