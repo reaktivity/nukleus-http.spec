@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
@@ -37,6 +38,7 @@ public class MessageFormatIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/continuation.frames/client",
             "${spec}/continuation.frames/server",
@@ -49,6 +51,7 @@ public class MessageFormatIT
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/dynamic.table.requests/client",
             "${spec}/dynamic.table.requests/server",
@@ -61,6 +64,7 @@ public class MessageFormatIT
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/max.frame.size/client",
             "${spec}/max.frame.size/server",
@@ -73,6 +77,7 @@ public class MessageFormatIT
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/max.nukleus.data.frame.size/client",
             "${spec}/max.nukleus.data.frame.size/server",
@@ -85,6 +90,7 @@ public class MessageFormatIT
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/connection.headers/client",
             "${spec}/connection.headers/server",
@@ -97,6 +103,7 @@ public class MessageFormatIT
     }
 
     @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
             "${spec}/stream.id.order/client",
             "${spec}/stream.id.order/server",
