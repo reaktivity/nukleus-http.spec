@@ -85,4 +85,16 @@ public class FlowControlIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${scripts}/response.headers.with.padding/client",
+            "${scripts}/response.headers.with.padding/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessResponseHeadersFragmentedByPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
 }
