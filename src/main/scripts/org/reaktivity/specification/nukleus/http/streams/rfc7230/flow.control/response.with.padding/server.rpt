@@ -33,9 +33,8 @@ read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
 connected
 
 write nukleus:begin.ext ${http:header(":status", "200")}
-write nukleus:begin.ext ${http:header("Custom-Header-1", "custom header 1 value")}
-write nukleus:begin.ext ${http:header("Custom-Header-2", "custom header 2 value")}
+write nukleus:begin.ext ${http:header("content-length", "16")}
 
 write "Server sent data"
 
-write flush
+write close
