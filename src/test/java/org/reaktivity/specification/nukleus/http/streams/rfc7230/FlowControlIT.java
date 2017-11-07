@@ -63,6 +63,18 @@ public class FlowControlIT
 
     @Test
     @Specification({
+        "${scripts}/response.chunked.with.extensions.filling.maximum.headers/client",
+        "${scripts}/response.chunked.with.extensions.filling.maximum.headers/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessResponseWhenFirstChunkMetadataFillsMaxHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/response.headers.too.long/client.no.response",
         "${scripts}/response.headers.too.long/server.no.response"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
@@ -99,10 +111,34 @@ public class FlowControlIT
 
     @Test
     @Specification({
+            "${scripts}/response.with.content.exceeding.window/client",
+            "${scripts}/response.with.content.exceeding.window/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldHandleResponseWithContentViolatingWindow() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/response.fragmented.with.padding/client",
+            "${scripts}/response.fragmented.with.padding/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessResponseFragmentedByPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
             "${scripts}/response.with.padding/client",
             "${scripts}/response.with.padding/server"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldProcessResponseFragmentedByPadding() throws Exception
+    public void shouldProcessResponseWithPadding() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
