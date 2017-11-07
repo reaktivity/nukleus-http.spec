@@ -63,6 +63,18 @@ public class FlowControlIT
 
     @Test
     @Specification({
+        "${scripts}/response.chunked.with.extensions.filling.maximum.headers/client",
+        "${scripts}/response.chunked.with.extensions.filling.maximum.headers/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessResponseWhenFirstChunkMetadataFillsMaxHeaders() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/response.headers.too.long/client.no.response",
         "${scripts}/response.headers.too.long/server.no.response"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
@@ -91,6 +103,18 @@ public class FlowControlIT
             "${scripts}/response.headers.with.padding/server"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldProcessResponseHeadersFragmentedByPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/response.with.content.exceeding.window/client",
+            "${scripts}/response.with.content.exceeding.window/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldHandleResponseWithContentViolatingWindow() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
