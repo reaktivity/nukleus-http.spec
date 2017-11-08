@@ -35,6 +35,7 @@ write "\r\n"
 read await RESPONSE_DECODED
 
 read abort
+write aborted
 
 read notify CONNECTION_RESET
 
