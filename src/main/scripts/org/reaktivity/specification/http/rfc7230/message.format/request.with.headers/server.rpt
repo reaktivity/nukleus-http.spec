@@ -22,7 +22,7 @@ accept "http://localhost:8080/"
   option http:transport ${serverTransport}
   option nukleus:route ${newClientConnectRef}
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "half-duplex"
 accepted
 connected
 
