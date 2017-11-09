@@ -170,6 +170,19 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
+            "${spec}/rst.stream.last.frame/client",
+            "${spec}/rst.stream.last.frame/server"
+    })
+    public void rstStreamLastFrame() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
             "${spec}/client.sent.read.abort.on.closed.request/client",
             "${spec}/client.sent.read.abort.on.closed.request/server"
     })
