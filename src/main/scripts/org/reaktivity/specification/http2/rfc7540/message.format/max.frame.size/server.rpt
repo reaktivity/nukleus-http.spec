@@ -18,7 +18,8 @@ property newServerAcceptRef ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef}
 
 property data20k ${http2:randomBytes(20000)}
-property data15k ${http2:randomBytes(15000)}
+property data9k ${http2:randomBytes(9000)}
+property data1k ${http2:randomBytes(1000)}
 
 property serverTransport "nukleus://target/streams/http2#source"
 
@@ -49,7 +50,7 @@ read [0x00 0x00 0x12]                   # length = 18
      [0x00]                             # flags = 0x00
      [0x00 0x00 0x00 0x00]              # stream_id = 0
      [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
-     [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
+     [0x00 0x04 0x00 0x00 0x75 0x30]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 30000
      [0x00 0x05 0x00 0x00 0x4e 0x20]    # SETTINGS_MAX_FRAME_SIZE(0x05) = 20000
 
 write [0x00 0x00 0x00]                   # length = 0
@@ -86,7 +87,7 @@ write [0x00 0x00 0x5b]                                      # length
       [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
       [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
-      [0x0f 0x0d] [0x05] "55000"                            # content-length
+      [0x0f 0x0d] [0x05] "30000"                            # content-length
 write flush
 
 #
@@ -100,22 +101,26 @@ write ${data20k}
 write flush
 
 #
-# response DATA frame
+# response DATA frame 9000 = (30000 - 20000 - padding:1000)
 #
-write [0x00 0x4e 0x20]                          # length = 20000
+write [0x00 0x23 0x28]                          # length = 9000
       [0x00]                                    # HTTP2 DATA frame
       [0x00]                                    # no flags
       [0x00 0x00 0x00 0x01]                     # stream_id=1
-write ${data20k}
+write ${data9k}
 write flush
 
-#
-# response DATA frame
-#
-write [0x00 0x3a 0x98]                          # length = 15000
+# stream-level flow control
+read [0x00 0x00 0x04]                           # length
+     [0x08]                                     # WINDOW_UPDATE frame
+     [0x00]                                     # no flags
+     [0x00 0x00 0x00 0x01]                      # stream_id=1
+     [0x00 0x00 0x03 0xe8]                      # window size increment = 1000
+
+write [0x00 0x03 0xe8]                          # length = 1000
       [0x00]                                    # HTTP2 DATA frame
       [0x00]                                    # no flags
-      [0x00 0x00 0x00 0x01]                     # stream_id=1
-write ${data15k}
+     [ 0x00 0x00 0x00 0x01]                     # stream_id=1
+write ${data1k}
 write flush
 
