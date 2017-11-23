@@ -16,7 +16,7 @@
 
 property newClientAcceptRef ${nuklei:newReferenceId()} 
 property newServerConnectRef ${newClientAcceptRef} # external scope
-property data ${http2:randomBytes(55000)}
+property data ${http2:randomBytes(30000)}
 
 property serverTransport "nukleus://target/streams/http2#source"
 
@@ -35,7 +35,7 @@ write nukleus:begin.ext ${http:header(":status", "200")}
                         ${http:header("server", "CERN/3.0 libwww/2.17")}
                         ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
                         ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "55000")}
+                        ${http:header("content-length", "30000")}
 
 connected
 
