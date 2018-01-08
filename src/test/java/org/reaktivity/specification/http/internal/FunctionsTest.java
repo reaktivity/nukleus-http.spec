@@ -50,7 +50,7 @@ public class FunctionsTest
         String expressionText = "${http:randomInvalidVersion()}";
         ValueExpression expression = factory.createValueExpression(ctx, expressionText, String.class);
         String randomBytes = (String) expression.getValue(ctx);
-        System.out.println(randomBytes);
+        Assert.assertNotNull(randomBytes);
     }
 
     @Test
