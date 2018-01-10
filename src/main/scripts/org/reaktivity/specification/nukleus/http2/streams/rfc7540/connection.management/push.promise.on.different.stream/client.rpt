@@ -26,32 +26,40 @@ connect await ROUTED_CLIENT
         option nukleus:transmission "duplex"
 
 
-write nukleus:begin.ext ${http:header(":method", "POST")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "POST")
+                              .item(":scheme", "http")
+                              .item(":path", "/")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("server", "CERN/3.0 libwww/2.17")}
-                       ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                       ${http:header("content-type", "text/html; charset=UTF-8")}
-                       ${http:header("content-length", "113")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("server", "CERN/3.0 libwww/2.17")
+                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .item("content-type", "text/html; charset=UTF-8")
+                             .item("content-length", "113")
+                             .build()}
 
 connected
 
 
 # First push promise
-read nukleus:data.ext ${http:header(":method", "GET")}
-                      ${http:header(":scheme", "http")}
-                      ${http:header(":path", "/style.css")}
-                      ${http:header(":authority", "localhost:8080")}
+read nukleus:data.ext ${http:headers()
+                            .item(":method", "GET")
+                            .item(":scheme", "http")
+                            .item(":path", "/style.css")
+                            .item(":authority", "localhost:8080")
+                            .build()}
 read notify FIRST_PUSH_PROMISE_RECEIVED
 
 # Second push promise
-read nukleus:data.ext ${http:header(":method", "GET")}
-                      ${http:header(":scheme", "http")}
-                      ${http:header(":path", "/script.js")}
-                      ${http:header(":authority", "localhost:8080")}
+read nukleus:data.ext ${http:headers()
+                            .item(":method", "GET")
+                            .item(":scheme", "http")
+                            .item(":path", "/script.js")
+                            .item(":authority", "localhost:8080")
+                            .build()}
 read notify SECOND_PUSH_PROMISE_RECEIVED
 
 read "<html>"
@@ -69,14 +77,18 @@ connect await ROUTED_CLIENT
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 
-write nukleus:begin.ext ${http:header(":method", "GET")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/push")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "GET")
+                              .item(":scheme", "http")
+                              .item(":path", "/push")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("server", "CERN/3.0 libwww/2.17")}
-                       ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("server", "CERN/3.0 libwww/2.17")
+                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .build()}
 
 connected
 
@@ -91,23 +103,29 @@ connect await FIRST_PUSH_PROMISE_RECEIVED
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 
-write nukleus:begin.ext ${http:header(":method", "GET")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/style.css")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "GET")
+                              .item(":scheme", "http")
+                              .item(":path", "/style.css")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("server", "CERN/3.0 libwww/2.17")}
-                       ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                       ${http:header("content-type", "text/css")}
-                       ${http:header("content-length", "31")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("server", "CERN/3.0 libwww/2.17")
+                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .item("content-type", "text/css")
+                             .item("content-length", "31")
+                             .build()}
 
 connected
 
-read nukleus:data.ext ${http:header(":method", "GET")}
-                      ${http:header(":scheme", "http")}
-                      ${http:header(":path", "/widget.css")}
-                      ${http:header(":authority", "localhost:8080")}
+read nukleus:data.ext ${http:headers()
+                            .item(":method", "GET")
+                            .item(":scheme", "http")
+                            .item(":path", "/widget.css")
+                            .item(":authority", "localhost:8080")
+                            .build()}
 
 read "h1 {"
      "    color: blue;"
@@ -123,16 +141,20 @@ connect await SECOND_PUSH_PROMISE_RECEIVED
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 
-write nukleus:begin.ext ${http:header(":method", "GET")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/script.js")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "GET")
+                              .item(":scheme", "http")
+                              .item(":path", "/script.js")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("server", "CERN/3.0 libwww/2.17")}
-                       ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                       ${http:header("content-type", "text/javascript")}
-                       ${http:header("content-length", "15")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("server", "CERN/3.0 libwww/2.17")
+                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .item("content-type", "text/javascript")
+                             .item("content-length", "15")
+                             .build()}
 
 connected
 

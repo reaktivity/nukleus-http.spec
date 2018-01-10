@@ -25,33 +25,41 @@ accept ${serverTransport}
         option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":method", "POST")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "POST")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 
 connected
 
 read "Hello, world"
 
 # First push promise
-write nukleus:data.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/style.css")}
-                       ${http:header(":authority", "localhost:8080")}
+write nukleus:data.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/style.css")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 write flush
 
 # Second push promise
-write nukleus:data.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/script.js")}
-                       ${http:header(":authority", "localhost:8080")}
+write nukleus:data.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/script.js")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 write flush
 
 write "<html>"
@@ -66,16 +74,20 @@ write flush
 #
 accepted
 
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/style.css")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/style.css")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/css")}
-                        ${http:header("content-length", "31")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/css")
+                              .item("content-length", "31")
+                              .build()}
 
 connected
 
@@ -90,19 +102,24 @@ write flush
 #
 accepted
 
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/script.js")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/script.js")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/javascript")}
-                        ${http:header("content-length", "15")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/javascript")
+                              .item("content-length", "15")
+                              .build()}
 
 connected
 
 write "function f() {"
       "}"
 write flush
+

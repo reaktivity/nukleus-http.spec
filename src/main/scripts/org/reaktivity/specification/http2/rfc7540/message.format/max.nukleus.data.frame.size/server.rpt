@@ -96,4 +96,3 @@ write [0x00 0xff 0xf7]                          # length = 65527
 write ${data}
 write flush
 
-

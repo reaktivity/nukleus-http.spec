@@ -28,16 +28,20 @@ accept ${serverTransport}
 accepted
 
 # C.3.1.  First Request
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 connected
 
 
@@ -46,16 +50,20 @@ connected
 accepted
 
 # C.3.2.  Second Request
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 connected
 
 
@@ -64,16 +72,21 @@ connected
 accepted
 
 # C.3.3.  Third Request
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "https")}
-                       ${http:header(":path", "/index.html")}
-                       ${http:header(":authority", "localhost:8080")}
-                       ${http:header("custom-key", "custom-value")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "https")
+                             .item(":path", "/index.html")
+                             .item(":authority", "localhost:8080")
+                             .item("custom-key", "custom-value")
+                             .build()}
 
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 connected
+

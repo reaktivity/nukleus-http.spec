@@ -28,29 +28,35 @@ accept ${serverTransport}
 # HTTP connection-1
 #
 accepted
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 write flush
 
 write notify CONNECTION_1_RECEIVED
 write await SEND_PUSH_PROMISE
 
 # First push promise
-write nukleus:data.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/push")}
-                       ${http:header(":authority", "localhost:8080")}
+write nukleus:data.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/push")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 write flush
 
 
@@ -59,29 +65,35 @@ write flush
 # HTTP connection-2
 #
 accepted
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 write flush
 
 write notify CONNECTION_2_RECEIVED
 write await SEND_PUSH_PROMISE
 
 # First push promise
-write nukleus:data.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/push")}
-                       ${http:header(":authority", "localhost:8080")}
+write nukleus:data.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/push")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 write flush
 
 
@@ -90,19 +102,23 @@ write flush
 # HTTP connection-3
 #
 accepted
-read nukleus:begin.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-                        ${http:header("server", "CERN/3.0 libwww/2.17")}
-                        ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                        ${http:header("content-type", "text/html; charset=UTF-8")}
-                        ${http:header("content-length", "113")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("server", "CERN/3.0 libwww/2.17")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 write flush
 
 write await CONNECTION_1_RECEIVED
@@ -110,8 +126,11 @@ write await CONNECTION_2_RECEIVED
 write notify SEND_PUSH_PROMISE
 
 # First push promise
-write nukleus:data.ext ${http:header(":method", "GET")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/push")}
-                       ${http:header(":authority", "localhost:8080")}
+write nukleus:data.ext ${http:headers()
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/push")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 write flush
+
