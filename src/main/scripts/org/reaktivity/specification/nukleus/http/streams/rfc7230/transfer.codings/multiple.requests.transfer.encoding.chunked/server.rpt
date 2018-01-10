@@ -26,12 +26,14 @@ accept ${serverConnect}
   option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
-read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("content-type", "text/plain")}
-read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "POST")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .item("content-type", "text/plain")
+                             .item("transfer-encoding", "chunked")
+                             .build()}
 connected
 
 read "Chunk A"
@@ -40,17 +42,21 @@ read "Chunk C"
 
 read closed
 
-write nukleus:begin.ext ${http:header("status", "200")}
+write nukleus:begin.ext ${http:headers()
+                              .item("status", "200")
+                              .build()}
 write close
 
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
-read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("content-type", "text/plain")}
-read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "POST")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .item("content-type", "text/plain")
+                             .item("transfer-encoding", "chunked")
+                             .build()}
 connected
 
 read "1"
@@ -59,6 +65,8 @@ read "12345"
 
 read closed
 
-write nukleus:begin.ext ${http:header("status", "200")}
+write nukleus:begin.ext ${http:headers()
+                              .item("status", "200")
+                              .build()}
 write close
 

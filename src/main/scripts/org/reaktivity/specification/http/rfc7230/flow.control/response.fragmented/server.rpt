@@ -41,4 +41,3 @@ write "e: header\r\n"
 write "\r\n"
 write flush
 
-

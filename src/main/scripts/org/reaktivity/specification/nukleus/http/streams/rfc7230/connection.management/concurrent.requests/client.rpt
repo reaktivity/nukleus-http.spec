@@ -22,16 +22,20 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "GET")}
-write nukleus:begin.ext ${http:header(":path", "/request1")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/request1")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("content-length", "9")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "9")
+                             .build()}
 
 read "response1"
 read closed
@@ -42,16 +46,20 @@ connect await REQUEST_ONE_RECEIVED
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "GET")}
-write nukleus:begin.ext ${http:header(":path", "/request2")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/request2")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("content-length", "9")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "9")
+                             .build()}
 
 read "response2"
 read closed
@@ -62,16 +70,21 @@ connect await REQUEST_TWO_RECEIVED
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "GET")}
-write nukleus:begin.ext ${http:header(":path", "/request3")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/request3")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("content-length", "9")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "9")
+                             .build()}
 
 read "response3"
 read closed
+

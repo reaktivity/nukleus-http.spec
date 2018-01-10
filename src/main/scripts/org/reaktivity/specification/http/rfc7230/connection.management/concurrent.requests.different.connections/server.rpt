@@ -64,4 +64,3 @@ write "Content-Length: 9" "\r\n"
 write "\r\n"
 write "response3"
 
-

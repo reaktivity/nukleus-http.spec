@@ -27,7 +27,6 @@ connected
 write http:method "GET"
 write http:host
 write http:header "Content-Type" "text/plain"
-write http:content-length
 write close
 
 read http:status "200" "OK"
