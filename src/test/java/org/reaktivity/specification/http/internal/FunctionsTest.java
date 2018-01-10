@@ -16,7 +16,7 @@
 package org.reaktivity.specification.http.internal;
 
 import static org.kaazing.k3po.lang.internal.el.ExpressionFactoryUtils.newExpressionFactory;
-import static org.reaktivity.specification.http.internal.Functions.header;
+import static org.reaktivity.specification.http.internal.Functions.headers;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
 import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
+import org.reaktivity.specification.http.internal.types.ListFW;
 
 public class FunctionsTest
 {
@@ -50,17 +51,21 @@ public class FunctionsTest
         String expressionText = "${http:randomInvalidVersion()}";
         ValueExpression expression = factory.createValueExpression(ctx, expressionText, String.class);
         String randomBytes = (String) expression.getValue(ctx);
-        System.out.println(randomBytes);
+        Assert.assertNotNull(randomBytes);
     }
 
     @Test
     public void headerTest()
     {
-        DirectBuffer buffer = new UnsafeBuffer(header("name", "value"));
-        HttpHeaderFW header = new HttpHeaderFW().wrap(buffer, 0, buffer.capacity());
-        Assert.assertEquals(header.representation(), 0x00);
-        Assert.assertEquals(header.name().asString(), "name");
-        Assert.assertEquals(header.value().asString(), "value");
+        byte[] build = headers().item("name", "value").build();
+        DirectBuffer buffer = new UnsafeBuffer(build);
+        ListFW<HttpHeaderFW> headers = new ListFW<HttpHeaderFW>(new HttpHeaderFW()).wrap(buffer, 0, buffer.capacity());
+        headers.forEach(onlyHeader ->
+        {
+            Assert.assertEquals("name", onlyHeader.name().asString());
+            Assert.assertEquals("value", onlyHeader.value().asString());
+        });
+        Assert.assertTrue(headers.sizeof() > 0);
     }
 
 }
