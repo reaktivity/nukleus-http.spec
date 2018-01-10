@@ -26,13 +26,17 @@ accept "nukleus://http/streams/source"
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
-read nukleus:begin.ext ${http:header(":path", "/intermediary")}
-read nukleus:begin.ext ${http:header(":authority", "proxy:8080")}
-read nukleus:begin.ext ${http:header("content-length", "11")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "POST")
+                             .item(":path", "/intermediary")
+                             .item(":authority", "proxy:8080")
+                             .item("content-length", "11")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "502")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "502")
+                              .build()}
 
 connected
 
@@ -46,14 +50,17 @@ connect ${serverConnect}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "POST")}
-write nukleus:begin.ext ${http:header(":path", "/intermediary")}
-write nukleus:begin.ext ${http:header(":authority", "proxy:8080")}
-write nukleus:begin.ext ${http:header("content-length", "11")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "POST")
+                              .item(":path", "/intermediary")
+                              .item(":authority", "proxy:8080")
+                              .item("content-length", "11")
+                              .build()}
 
 connected
 
 write "This is some data"
 
 write aborted
+

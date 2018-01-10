@@ -26,18 +26,21 @@ accept ${serverConnect}
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "GET")}
-read nukleus:begin.ext ${http:header(":path", "/index.html")}
-read nukleus:begin.ext ${http:header(":authority", "backend:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/index.html")
+                             .item(":authority", "backend:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-write nukleus:begin.ext ${http:header("content-length", "24")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "24")
+                              .build()}
 
 connected
 
 write "<html><body>Hello World!</body></html>"
 write close
 read closed
-
 

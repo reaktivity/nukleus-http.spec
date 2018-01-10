@@ -22,12 +22,14 @@ connect await ROUTED_CLIENT
   option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "POST")}
-write nukleus:begin.ext ${http:header(":path", "/")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-write nukleus:begin.ext ${http:header("content-type", "text/plain")}
-write nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "POST")
+                              .item(":path", "/")
+                              .item(":authority", "localhost:8080")
+                              .item("content-type", "text/plain")
+                              .item("transfer-encoding", "chunked")
+                              .build()}
 connected
 
 write "Chunk A;"
@@ -35,5 +37,8 @@ write "Chunk B;"
 write "Chunk C;"
 write close
 
-read nukleus:begin.ext ${http:header("status", "200")}
+read nukleus:begin.ext ${http:headers()
+                             .item("status", "200")
+                             .build()}
 read closed
+
