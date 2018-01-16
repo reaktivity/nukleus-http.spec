@@ -75,8 +75,8 @@ public class FlowControlIT
 
     @Test
     @Specification({
-        "${scripts}/response.headers.too.long/client.no.response",
-        "${scripts}/response.headers.too.long/server.no.response"})
+        "${scripts}/response.headers.too.long/client.502.response",
+        "${scripts}/response.headers.too.long/server.502.response"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldRejectNetworkResponseWithHeadersTooLong() throws Exception
     {
@@ -139,6 +139,18 @@ public class FlowControlIT
             "${scripts}/response.with.padding/server"})
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void shouldProcessResponseWithPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+            "${scripts}/response.with.unknown.transfer.encoding/client",
+            "${scripts}/response.with.unknown.transfer.encoding/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldRejectResponseWithUnknownTransferEncoding() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
