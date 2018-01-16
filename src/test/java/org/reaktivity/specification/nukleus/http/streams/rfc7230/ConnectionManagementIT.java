@@ -128,10 +128,10 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/request.and.503.response/client",
-        "${scripts}/request.and.503.response/server" })
+        "${scripts}/request.and.502.response/client",
+        "${scripts}/request.and.502.response/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void requestAnd503Response() throws Exception
+    public void requestAnd502Response() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
