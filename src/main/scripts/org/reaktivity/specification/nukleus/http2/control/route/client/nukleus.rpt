@@ -32,7 +32,6 @@ read 0L
 read [0x06] "target"
 read (long:clientConnectRefRG010101N)
 read [0..8] # authorization
-read 25
 read ${http:headers()
            .item(":authority", "localhost:8080")
            .build()}

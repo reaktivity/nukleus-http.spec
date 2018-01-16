@@ -55,6 +55,7 @@ write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":path", "/")
                               .item(":authority", "localhost:8080")
+                              .item("cache-control", "no-cache")
                               .build()}
 
 read nukleus:begin.ext ${http:headers()

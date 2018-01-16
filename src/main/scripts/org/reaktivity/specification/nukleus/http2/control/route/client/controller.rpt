@@ -34,7 +34,6 @@ write 0L
 write [0x06] "target"
 write ${newClientConnectRef}
 write 0L
-write 25
 write ${http:headers()
             .item(":authority", "localhost:8080")
             .build()}
