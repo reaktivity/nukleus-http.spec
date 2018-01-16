@@ -32,7 +32,7 @@ connected
 
 write close
 
-read nukleus:begin.ext ${http:header(":status", "503")}
+read nukleus:begin.ext ${http:header(":status", "502")}
 
 read notify FIRST_REQUEST_COMPLETED
 read closed
