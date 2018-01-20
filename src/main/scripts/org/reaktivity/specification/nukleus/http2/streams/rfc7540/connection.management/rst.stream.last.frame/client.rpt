@@ -22,8 +22,11 @@ connect await ROUTED_CLIENT
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":method", "POST")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "POST")
+                              .item(":scheme", "http")
+                              .item(":path", "/")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 connected
+

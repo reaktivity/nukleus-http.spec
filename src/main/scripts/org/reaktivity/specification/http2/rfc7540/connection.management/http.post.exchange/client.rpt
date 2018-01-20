@@ -106,4 +106,3 @@ read [0x00 0x00 0x71]                          # length = 113
      "<body><script src=\"script.js\"></script></body>"
      "</html>"
 
-

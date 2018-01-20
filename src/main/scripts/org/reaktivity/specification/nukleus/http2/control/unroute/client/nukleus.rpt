@@ -33,7 +33,9 @@ read (long:clientAcceptRefUR020101N)
 read [0x06] "target"
 read (long:clientConnectRefRG010101N)
 read [0..8] # authorization
-read ${http:header(":authority", "localhost:8080")}
+read ${http:headers()
+           .item(":authority", "localhost:8080")
+           .build()}
 
 write 0x40000002
 write ${correlationIdUR020101N}
@@ -41,3 +43,4 @@ write flush
 
 close
 closed
+
