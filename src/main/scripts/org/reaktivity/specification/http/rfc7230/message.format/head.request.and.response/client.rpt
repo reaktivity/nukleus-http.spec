@@ -28,5 +28,6 @@ write http:method "HEAD"
 write close
 
 read http:status "100" "Continue"
+read http:header "Content-Length" "0"
 read closed
 

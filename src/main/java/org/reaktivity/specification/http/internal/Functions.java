@@ -24,6 +24,8 @@ import org.agrona.concurrent.UnsafeBuffer;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
 import org.reaktivity.specification.http.internal.types.HttpHeaderFW;
+import org.reaktivity.specification.http.internal.types.HttpHeaderFW.Builder;
+import org.reaktivity.specification.http.internal.types.ListFW;
 
 public final class Functions
 {
@@ -37,19 +39,44 @@ public final class Functions
         return bytesToString(Base64.encode(bytes));
     }
 
-    @Function
-    public static byte[] header(String name, String value)
+    public static class HeaderBuilder
     {
-        MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[1024]);
-        HttpHeaderFW header = new HttpHeaderFW.Builder()
-                .wrap(writeBuffer, 0, writeBuffer.capacity())
-                .representation((byte) 0)
-                .name(name)
-                .value(value)
-                .build();
-        byte[] headerBytes = new byte[header.sizeof()];
-        header.buffer().getBytes(0, headerBytes);
-        return headerBytes;
+        private static final int MAX_HEADER_SIZE = 1024 * 8;
+        private org.reaktivity.specification.http.internal.types.ListFW.Builder<Builder, HttpHeaderFW> headersRW;
+
+        public HeaderBuilder()
+        {
+            MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[MAX_HEADER_SIZE]);
+            this.headersRW = new ListFW.Builder<HttpHeaderFW.Builder, HttpHeaderFW>(
+                                new HttpHeaderFW.Builder(),
+                                new HttpHeaderFW());
+
+            headersRW.wrap(writeBuffer, 0, writeBuffer.capacity());
+        }
+
+        public HeaderBuilder item(
+            String name,
+            String value)
+        {
+            headersRW.item(b -> b.name(name)
+                                 .value(value));
+            return this;
+        }
+
+        public byte[] build()
+        {
+            final ListFW<HttpHeaderFW> headersRO = headersRW.build();
+            final int totalSize = headersRO.buffer().getInt(0) + Integer.BYTES;
+            final byte[] result = new byte[totalSize];
+            headersRO.buffer().getBytes(0, result);
+            return result;
+        }
+    }
+
+    @Function
+    public static HeaderBuilder headers()
+    {
+        return new HeaderBuilder();
     }
 
     @Function

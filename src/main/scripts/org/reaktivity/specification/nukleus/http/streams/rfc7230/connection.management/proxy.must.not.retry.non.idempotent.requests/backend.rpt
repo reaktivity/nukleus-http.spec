@@ -26,12 +26,15 @@ accept ${serverConnect}
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
-read nukleus:begin.ext ${http:header(":path", "/intermediary")}
-read nukleus:begin.ext ${http:header(":authority", "proxy:8080")}
-read nukleus:begin.ext ${http:header("content-length", "11")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "POST")
+                             .item(":path", "/intermediary")
+                             .item(":authority", "proxy:8080")
+                             .item("content-length", "11")
+                             .build()}
 
 connected
 
 read abort
+
