@@ -51,7 +51,7 @@
     <k3po.nukleus.ext.version>develop-SNAPSHOT</k3po.nukleus.ext.version>
 
     <nukleus.http.spec.version>develop-SNAPSHOT</nukleus.http.spec.version>
-    <nukleus.plugin.version>develop-SNAPSHOT</nukleus.plugin.version>
+    <nukleus.plugin.version>0.24</nukleus.plugin.version>
   </properties>
 
   <dependencies>
