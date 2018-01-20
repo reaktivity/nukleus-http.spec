@@ -94,3 +94,4 @@ write [0x00 0x00 0x59]                                      # length
 write flush
 
 read closed
+

@@ -25,8 +25,11 @@ accept ${serverTransport}
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":method", "POST")}
-                       ${http:header(":scheme", "http")}
-                       ${http:header(":path", "/")}
-                       ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":method", "POST")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 connected
+

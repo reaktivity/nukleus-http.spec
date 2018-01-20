@@ -36,7 +36,9 @@ write ${newClientAcceptRef}
 write [0x06] "target"
 write ${newClientConnectRef}
 write 0L
-write ${http:header(":authority", "localhost:8080")}
+write ${http:headers()
+            .item(":authority", "localhost:8080")
+            .build()}
 write flush
 
 read 0x40000002
@@ -44,3 +46,4 @@ read ${controlUR020101C.correlationId()}
 
 close
 closed
+
