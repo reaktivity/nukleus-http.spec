@@ -23,19 +23,24 @@ connect await ROUTED_CLIENT
         option nukleus:transmission "duplex"
 
 
-write nukleus:begin.ext ${http:header(":method", "POST")}
-                        ${http:header(":scheme", "http")}
-                        ${http:header(":path", "/")}
-                        ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":method", "POST")
+                              .item(":scheme", "http")
+                              .item(":path", "/")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-                       ${http:header("server", "CERN/3.0 libwww/2.17")}
-                       ${http:header("date", "Wed, 01 Feb 2017 19:12:46 GMT")}
-                       ${http:header("content-type", "text/html; charset=UTF-8")}
-                       ${http:header("content-length", "113")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("server", "CERN/3.0 libwww/2.17")
+                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .item("content-type", "text/html; charset=UTF-8")
+                             .item("content-length", "113")
+                             .build()}
 
 connected
 
 read aborted
 
 write abort
+

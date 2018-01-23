@@ -133,3 +133,4 @@ write [0x00 0x00 0x59]                                      # length
       [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
       [0x0f 0x0d] [0x03] "113"                              # content-length
 write flush
+

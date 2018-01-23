@@ -118,3 +118,4 @@ read [0x00 0x00 0x04]                          # length = 4
      [0x00]                                    # no flags
      [0x00 0x00 0x00 0x01]                     # stream_id=1
      [0x00 0x00 0x00 0x01]                     # PROTOCOL_ERROR
+

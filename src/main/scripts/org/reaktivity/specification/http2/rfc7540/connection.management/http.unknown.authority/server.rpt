@@ -74,3 +74,4 @@ write [0x00 0x00 0x01]                                      # length
       [0x00 0x00 0x00 0x01]                                 # stream_id=1
       [0x8d]                                                # :status: 404
 write flush
+
