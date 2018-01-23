@@ -25,15 +25,20 @@ accept ${serverConnect}
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "GET")}
-read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .build()}
 
-write nukleus:begin.ext ${http:header(":status", "200")}
-write nukleus:begin.ext ${http:header("Custom-Header-1", "custom header 1 value")}
-write nukleus:begin.ext ${http:header("Custom-Header-2", "custom header 2 value")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("Custom-Header-1", "custom header 1 value")
+                              .item("Custom-Header-2", "custom header 2 value")
+                              .build()}
 
 connected
 read closed
 write aborted
+

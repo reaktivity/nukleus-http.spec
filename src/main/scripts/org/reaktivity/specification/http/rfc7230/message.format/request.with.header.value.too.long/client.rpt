@@ -33,4 +33,3 @@ read "Connection: close\r\n\r\n"
 
 write aborted
 
-
