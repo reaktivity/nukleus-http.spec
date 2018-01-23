@@ -43,17 +43,6 @@
     <checkstyle.config.location>src/conf/checkstyle/configuration.xml</checkstyle.config.location>
     <checkstyle.suppressions.location>src/conf/checkstyle/suppressions.xml</checkstyle.suppressions.location>
     <jacoco.coverage.ratio>0.06</jacoco.coverage.ratio>
-<<<<<<< HEAD
-    <jacoco.missed.count>80</jacoco.missed.count>
-
-    <junit.version>4.12</junit.version>
-
-    <k3po.version>3.0.0-alpha-84</k3po.version>
-    <k3po.nukleus.ext.version>develop-SNAPSHOT</k3po.nukleus.ext.version>
-
-    <nukleus.plugin.version>0.23</nukleus.plugin.version>
-    <nukleus.spec.version>develop-SNAPSHOT</nukleus.spec.version>
-=======
     <jacoco.missed.count>86</jacoco.missed.count>
 
     <junit.version>4.12</junit.version>
@@ -61,9 +50,8 @@
     <k3po.version>3.0.0-alpha-88</k3po.version>
     <k3po.nukleus.ext.version>develop-SNAPSHOT</k3po.nukleus.ext.version>
 
-    <nukleus.plugin.version>0.23</nukleus.plugin.version>
+    <nukleus.plugin.version>develop-SNAPSHOT</nukleus.plugin.version>
     <nukleus.spec.version>develop-SNAPSHOT</nukleus.spec.version>
->>>>>>> dcd025ea79250d1c6bee7788793dd0017249aca8
   </properties>
 
   <dependencies>
