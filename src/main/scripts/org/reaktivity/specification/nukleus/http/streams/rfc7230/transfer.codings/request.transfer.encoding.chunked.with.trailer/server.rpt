@@ -22,7 +22,6 @@ property serverConnect "nukleus://target/streams/http#source"
 accept ${serverConnect}
   option http:transport ${serverConnect}
   option nukleus:route  ${newServerConnectRef}
-  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 accepted
 
@@ -41,7 +40,7 @@ read "Chunk A"
 read "Chunk B"
 read "Chunk C"
 
-read nukleus:end.ext ${http:headers()
+read nukleus:transfer.ext ${http:headers()
                            .item("connection", "close")
                            .build()}
 read closed

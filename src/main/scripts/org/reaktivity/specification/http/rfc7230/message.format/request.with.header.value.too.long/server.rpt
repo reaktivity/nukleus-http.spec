@@ -21,7 +21,6 @@ property headerSize 8001
 
 accept ${serverTransport}
   option nukleus:route ${newClientConnectRef}
-  option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
 connected

@@ -21,7 +21,6 @@ property serverTransport "nukleus://target/streams/http#source"
 accept "http://localhost:8080/"
   option http:transport ${serverTransport}
   option nukleus:route  ${newClientConnectRef}
-  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 accepted
 connected

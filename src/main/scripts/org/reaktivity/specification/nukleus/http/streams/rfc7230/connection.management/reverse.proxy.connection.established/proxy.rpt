@@ -22,7 +22,6 @@ property source "http"
 
 accept "nukleus://http/streams/source"
        option nukleus:route ${newServerAcceptRef}
-       option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
 
@@ -46,7 +45,6 @@ read closed
 
 connect ${serverConnect}
     option nukleus:route ${newClientConnectRef}
-    option nukleus:window 8192
     option nukleus:transmission "duplex"
 
 write nukleus:begin.ext ${http:headers()

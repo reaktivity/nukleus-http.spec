@@ -22,7 +22,6 @@ property serverConnect "nukleus://target/streams/http#source"
 accept ${serverConnect}
   option http:transport ${serverConnect}
   option nukleus:route  ${newServerConnectRef}
-  option nukleus:window 8192
   option nukleus:transmission "simplex"
 accepted
 

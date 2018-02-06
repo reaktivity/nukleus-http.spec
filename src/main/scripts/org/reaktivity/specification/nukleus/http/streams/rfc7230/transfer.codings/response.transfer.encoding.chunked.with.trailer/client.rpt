@@ -19,7 +19,6 @@ property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
-  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()
@@ -44,7 +43,7 @@ read nukleus:begin.ext ${http:headers()
 read "Chunk A"
 read "Chunk B"
 read "Chunk C"
-read nukleus:end.ext ${http:headers()
+read nukleus:transfer.ext ${http:headers()
                            .item("connection", "close")
                            .build()}
 read closed

@@ -22,7 +22,6 @@ property serverInitialWindow 8192
 accept "http://localhost:8080/"
   option http:transport ${serverTransport}
   option nukleus:route  ${newClientConnectRef}
-  option nukleus:window ${serverInitialWindow}
   option nukleus:transmission "duplex"
 accepted
 connected

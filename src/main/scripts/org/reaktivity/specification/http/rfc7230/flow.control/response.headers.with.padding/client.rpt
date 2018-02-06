@@ -19,10 +19,8 @@ property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 connect await ROUTED_SERVER
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 99
 
   option nukleus:transmission "duplex"
-  option nukleus:padding 7
 
 connected
 

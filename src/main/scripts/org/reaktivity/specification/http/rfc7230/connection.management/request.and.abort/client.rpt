@@ -19,7 +19,6 @@ property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 connect await ROUTED_SERVER 
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
   option nukleus:transmission "simplex"
 connected
 
@@ -34,7 +33,6 @@ read notify FIRST_REQUEST_COMPLETED
 connect await FIRST_REQUEST_COMPLETED 
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window 8192
   option nukleus:transmission "simplex"
 connected
 

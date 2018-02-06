@@ -20,7 +20,6 @@ property clientInitialWindow 8192
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
-  option nukleus:window ${clientInitialWindow}
   option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()

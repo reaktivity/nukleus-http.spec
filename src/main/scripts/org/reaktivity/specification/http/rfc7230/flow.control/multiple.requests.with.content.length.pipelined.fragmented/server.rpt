@@ -20,7 +20,6 @@ property serverTransport "nukleus://target/streams/http#source"
 
 accept ${serverTransport}
   option nukleus:route ${newClientConnectRef}
-  option nukleus:window 101
   option nukleus:transmission "duplex"
 accepted
 connected

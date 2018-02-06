@@ -19,7 +19,6 @@ property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
-  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()
@@ -47,7 +46,6 @@ read notify RESPONSE_ONE_RECEIVED
 connect await RESPONSE_ONE_RECEIVED
         "nukleus://http/streams/source"
   option nukleus:route ${newClientAcceptRef}
-  option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
 write nukleus:begin.ext ${http:headers()

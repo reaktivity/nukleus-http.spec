@@ -22,7 +22,6 @@ property serverInitialWindow 8192
        
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
-       option nukleus:window ${serverInitialWindow}
        option nukleus:transmission "half-duplex"
 accepted
 

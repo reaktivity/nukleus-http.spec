@@ -21,7 +21,6 @@ property serverConnect "nukleus://target/streams/http#source"
        
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
-       option nukleus:window 8192
 accepted
 
 read nukleus:begin.ext ${http:headers()
