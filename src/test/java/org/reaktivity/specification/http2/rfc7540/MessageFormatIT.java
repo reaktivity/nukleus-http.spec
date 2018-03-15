@@ -115,4 +115,17 @@ public class MessageFormatIT
         k3po.finish();
     }
 
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${spec}/invalid.hpack.index/client",
+            "${spec}/invalid.hpack.index/server",
+    })
+    public void invalidHpackIndex() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
