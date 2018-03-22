@@ -47,11 +47,8 @@ public final class Functions
         public HeaderBuilder()
         {
             MutableDirectBuffer writeBuffer = new UnsafeBuffer(new byte[MAX_HEADER_SIZE]);
-            this.headersRW = new ListFW.Builder<HttpHeaderFW.Builder, HttpHeaderFW>(
-                                new HttpHeaderFW.Builder(),
-                                new HttpHeaderFW());
-
-            headersRW.wrap(writeBuffer, 0, writeBuffer.capacity());
+            this.headersRW = new ListFW.Builder<>(new HttpHeaderFW.Builder(), new HttpHeaderFW())
+                                    .wrap(writeBuffer, 0, writeBuffer.capacity());
         }
 
         public HeaderBuilder item(
