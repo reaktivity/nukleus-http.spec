@@ -32,3 +32,4 @@ write "Connection: close\r\n"
 write "\r\n"
 
 read abort
+

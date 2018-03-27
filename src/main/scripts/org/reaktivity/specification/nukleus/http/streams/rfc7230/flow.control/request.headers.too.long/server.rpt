@@ -24,10 +24,15 @@ accept ${serverConnect}
        option nukleus:window 8192
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "GET")}
-read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .item("Custom-Header-1", "custom header 1 value")
+                             .item("Custom-Header-2", "custom header 2 value")
+                             .build()}
 connected
 
 read abort
+

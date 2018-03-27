@@ -26,15 +26,16 @@ accept ${serverConnect}
   option nukleus:transmission "simplex"
 accepted
 
-read nukleus:begin.ext ${http:header(":scheme", "http")}
-read nukleus:begin.ext ${http:header(":method", "POST")}
-read nukleus:begin.ext ${http:header(":path", "/")}
-read nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
-read nukleus:begin.ext ${http:header("content-type", "text/plain")}
-read nukleus:begin.ext ${http:header("transfer-encoding", "chunked")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "POST")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
+                             .item("content-type", "text/plain")
+                             .item("transfer-encoding", "chunked")
+                             .build()}
 connected
 
 
 read "Chunk A"
-
 

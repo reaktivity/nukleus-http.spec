@@ -22,13 +22,18 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:header(":scheme", "http")}
-write nukleus:begin.ext ${http:header(":method", "GET")}
-write nukleus:begin.ext ${http:header(":path", "/")}
-write nukleus:begin.ext ${http:header(":authority", "localhost:8080")}
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/")
+                              .item(":authority", "localhost:8080")
+                              .build()}
 
 connected
 
-read nukleus:begin.ext ${http:header(":status", "200")}
-read nukleus:begin.ext ${http:header("Custom-Header-1", "custom header 1 value")}
-read nukleus:begin.ext ${http:header("Custom-Header-2", "custom header 2 value")}
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("Custom-Header-1", "custom header 1 value")
+                             .item("Custom-Header-2", "custom header 2 value")
+                             .build()}
+
