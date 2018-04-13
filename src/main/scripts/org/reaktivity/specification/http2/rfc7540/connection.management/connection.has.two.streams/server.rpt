@@ -108,19 +108,6 @@ write [0x00 0x00 0x0f]                  # length = 15
       "}"
 write flush
 
-# connection-level flow control
-write [0x00 0x00 0x04]                                      # length
-      [0x08]                                                # WINDOW_UPDATE frame
-      [0x00]                                                # no flags
-      [0x00 0x00 0x00 0x00]                                 # stream_id=0
-      [0x00 0x00 0x1f 0xed]                                 # window size increment = 8173
-# stream-level flow control
-write [0x00 0x00 0x04]                                      # length
-      [0x08]                                                # WINDOW_UPDATE frame
-      [0x00]                                                # no flags
-      [0x00 0x00 0x00 0x03]                                 # stream_id=3
-      [0x00 0x00 0x1f 0xed]                                 # window size increment = 8173
-
 write [0x00 0x00 0x58]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
       [0x04]                                                # END_HEADERS
