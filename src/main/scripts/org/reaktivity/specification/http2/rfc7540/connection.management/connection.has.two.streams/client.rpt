@@ -62,24 +62,12 @@ write [0x00 0x00 0x1e]                  # length = 30
       [0x01] [0x0e] "localhost:8080"    # :authority: localhost:8080
 write flush
 
-write [0x00 0x00 0x00]                  # length = 0
-      [0x04]                            # HTTP2 SETTINGS frame
-      [0x01]                            # ACK
-      [0x00 0x00 0x00 0x00]             # stream_id = 0
+write [0x00 0x00 0x0c]                  # length = 12
+      [0x00]                            # HTTP2 DATA frame
+      [0x01]                            # END_STREAM
+      [0x00 0x00 0x00 0x01]             # stream_id = 1
+      "Hello, world"
 write flush
-
-# connection-level flow control
-read [0x00 0x00 0x04]                                      # length
-     [0x08]                                                # WINDOW_UPDATE frame
-     [0x00]                                                # no flags
-     [0x00 0x00 0x00 0x00]                                 # stream_id=0
-     [0x00 0x00 0x20 0x00]                                 # window size increment = 8192
-# stream-level flow control
-read [0x00 0x00 0x04]                                      # length
-     [0x08]                                                # WINDOW_UPDATE frame
-     [0x00]                                                # no flags
-     [0x00 0x00 0x00 0x01]                                 # stream_id=1
-     [0x00 0x00 0x20 0x00]                                 # window size increment = 8192
 
 # first response HEADERS stream_id = 1
 read [0x00 0x00 0x58]                                      # length
@@ -103,19 +91,39 @@ write [0x00 0x00 0x1e]                  # length = 30
       [0x01] [0x0e] "localhost:8080"    # :authority: localhost:8080
 write flush
 
+write [0x00 0x00 0x13]                  # length = 28
+      [0x00]                            # HTTP2 DATA frame
+      [0x01]                            # END_STREAM
+      [0x00 0x00 0x00 0x03]             # stream_id = 3
+      "Hello, world, again"
+write flush
+
+write [0x00 0x00 0x00]                  # length = 0
+      [0x04]                            # HTTP2 SETTINGS frame
+      [0x01]                            # ACK
+      [0x00 0x00 0x00 0x00]             # stream_id = 0
+write flush
+
+# first response DATA stream_id = 1
+read [0x00 0x00 0x0f]                          # length = 15
+     [0x00]                                    # HTTP2 DATA frame
+     [0x00]                                    # no flags
+     [0x00 0x00 0x00 0x01]                     # stream_id=1
+     "function f() {"
+     "}"
+
 # connection-level flow control
 read [0x00 0x00 0x04]                                      # length
      [0x08]                                                # WINDOW_UPDATE frame
      [0x00]                                                # no flags
      [0x00 0x00 0x00 0x00]                                 # stream_id=0
-     [0x00 0x00 0x20 0x00]                                 # window size increment = 8192
+     [0x00 0x00 0x1f 0xed]                                 # window size increment = 8192
 # stream-level flow control
 read [0x00 0x00 0x04]                                      # length
      [0x08]                                                # WINDOW_UPDATE frame
      [0x00]                                                # no flags
      [0x00 0x00 0x00 0x03]                                 # stream_id=3
-     [0x00 0x00 0x20 0x00]                                 # window size increment = 8192
-
+     [0x00 0x00 0x1f 0xed]                                 # window size increment = 8192
 
 # second response HEADERS stream_id = 3
 read [0x00 0x00 0x58]                                      # length
@@ -128,32 +136,6 @@ read [0x00 0x00 0x58]                                      # length
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
      [0x0f 0x0d] [0x02] "31"                               # content-length
 
-
-
-write [0x00 0x00 0x0c]                  # length = 12
-      [0x00]                            # HTTP2 DATA frame
-      [0x01]                            # END_STREAM
-      [0x00 0x00 0x00 0x01]             # stream_id = 1
-      "Hello, world"
-write flush
-
-# first response DATA stream_id = 1
-read [0x00 0x00 0x0f]                          # length = 15
-     [0x00]                                    # HTTP2 DATA frame
-     [0x00]                                    # no flags
-     [0x00 0x00 0x00 0x01]                     # stream_id=1
-     "function f() {"
-     "}"
-
-
-
-write [0x00 0x00 0x13]                  # length = 28
-      [0x00]                            # HTTP2 DATA frame
-      [0x01]                            # END_STREAM
-      [0x00 0x00 0x00 0x03]             # stream_id = 3
-      "Hello, world, again"
-write flush
-
 # second response DATA on stream_id = 3
 read [0x00 0x00 0x15]                          # length = 31
      [0x00]                                    # HTTP2 DATA frame
@@ -162,4 +144,3 @@ read [0x00 0x00 0x15]                          # length = 31
      "h1 {"
      "    color: blue;"
      "}"
-

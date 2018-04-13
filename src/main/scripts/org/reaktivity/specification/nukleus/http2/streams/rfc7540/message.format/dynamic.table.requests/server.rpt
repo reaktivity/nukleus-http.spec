@@ -22,7 +22,7 @@ property serverTransport "nukleus://target/streams/http2#source"
 accept ${serverTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
-        option nukleus:transmission "duplex"
+        option nukleus:transmission "half-duplex"
 
 
 accepted
@@ -34,6 +34,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -42,9 +43,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/html; charset=UTF-8")
                               .item("content-length", "113")
                               .build()}
-connected
-
-
+write flush
 
 
 accepted
@@ -57,6 +56,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":authority", "localhost:8080")
                              .item("cache-control", "no-cache")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -65,8 +65,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/html; charset=UTF-8")
                               .item("content-length", "113")
                               .build()}
-connected
-
+write flush
 
 
 
@@ -80,7 +79,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":authority", "localhost:8080")
                              .item("custom-key", "custom-value")
                              .build()}
-
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -89,5 +88,4 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/html; charset=UTF-8")
                               .item("content-length", "113")
                               .build()}
-connected
-
+write flush

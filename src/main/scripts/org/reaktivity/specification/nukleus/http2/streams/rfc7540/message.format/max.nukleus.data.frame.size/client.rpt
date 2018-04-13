@@ -20,7 +20,7 @@ connect await ROUTED_CLIENT
         "nukleus://http2/streams/source"
         option nukleus:route ${newClientAcceptRef}
         option nukleus:window 65536
-        option nukleus:transmission "duplex"
+        option nukleus:transmission "half-duplex"
 
 
 write nukleus:begin.ext ${http:headers()
@@ -30,6 +30,11 @@ write nukleus:begin.ext ${http:headers()
                               .item(":authority", "localhost:8080")
                               .build()}
 
+connected
+
+write "Hello, world"
+write flush
+
 read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .item("server", "CERN/3.0 libwww/2.17")
@@ -37,11 +42,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-type", "text/html; charset=UTF-8")
                              .item("content-length", "65527")
                              .build()}
-
-connected
-
-write "Hello, world"
-write flush
 
 read [0..65527]
 
