@@ -79,13 +79,13 @@ write [0x00 0x00 0x04]                                      # length
       [0x08]                                                # WINDOW_UPDATE frame
       [0x00]                                                # no flags
       [0x00 0x00 0x00 0x00]                                 # stream_id=0
-      [0x00 0x00 0x1f 0xf4]                                 # window size increment = 8180
+      [0x00 0x00 0x1f 0xf4]                                 # window size increment = 8192 - 12
 # stream-level flow control
 write [0x00 0x00 0x04]                                      # length
       [0x08]                                                # WINDOW_UPDATE frame
       [0x00]                                                # no flags
       [0x00 0x00 0x00 0x01]                                 # stream_id=1
-      [0x00 0x00 0x1f 0xf4]                                 # window size increment = 8180
+      [0x00 0x00 0x1f 0xf4]                                 # window size increment = 8192 - 12
 write flush
 
 write [0x00 0x00 0x59]                                      # length
