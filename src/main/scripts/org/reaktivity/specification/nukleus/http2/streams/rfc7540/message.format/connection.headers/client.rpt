@@ -20,7 +20,7 @@ connect await ROUTED_CLIENT
         "nukleus://http2/streams/source"
         option nukleus:route ${newClientAcceptRef}
         option nukleus:window 40000
-        option nukleus:transmission "duplex"
+        option nukleus:transmission "half-duplex"
 
 
 write nukleus:begin.ext ${http:headers()
@@ -29,6 +29,8 @@ write nukleus:begin.ext ${http:headers()
                               .item(":path", "/")
                               .item(":authority", "localhost:8080")
                               .build()}
+
+connected
 
 read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
@@ -42,8 +44,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("keep-alive", "timeout=5, max=100")
                              .item("proxy-connection", "localhost:7070")
                              .build()}
-
-connected
 
 read "Hello, World"
 

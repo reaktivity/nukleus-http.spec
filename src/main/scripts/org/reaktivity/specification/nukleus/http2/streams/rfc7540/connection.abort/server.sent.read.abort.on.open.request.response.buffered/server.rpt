@@ -22,7 +22,7 @@ accept await ROUTED_SERVER
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 0
         option nukleus:update "none"            # So that some request body gets buffered
-        option nukleus:transmission "duplex"
+        option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:headers()
@@ -32,6 +32,8 @@ read nukleus:begin.ext ${http:headers()
                              .item(":authority", "localhost:8080")
                              .build()}
 
+connected
+
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("server", "CERN/3.0 libwww/2.17")
@@ -40,9 +42,8 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "113")
                               .build()}
 
-connected
-
 write ${data}
+write flush
 
 read abort
 

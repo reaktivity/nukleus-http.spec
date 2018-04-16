@@ -21,8 +21,9 @@ property serverTransport "nukleus://target/streams/http2#source"
 
 accept ${serverTransport}
         option nukleus:route ${newServerConnectRef}
-        option nukleus:window 8192
-        option nukleus:transmission "duplex"
+        option nukleus:window 12
+        option nukleus:transmission "half-duplex"
+        option nukleus:update "none"
 accepted
 
 read nukleus:begin.ext ${http:headers()
@@ -31,6 +32,9 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
+
+read "Hello, world"
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -39,10 +43,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/html; charset=UTF-8")
                               .item("content-length", "113")
                               .build()}
-
-connected
-
-read "Hello, world"
+write flush
 
 # First push promise
 write nukleus:data.ext ${http:headers()
@@ -80,6 +81,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/style.css")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -88,9 +90,6 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/css")
                               .item("content-length", "31")
                               .build()}
-
-connected
-
 write "h1 {"
       "    color: blue;"
       "}"
@@ -108,6 +107,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/script.js")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -116,9 +116,6 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/javascript")
                               .item("content-length", "15")
                               .build()}
-
-connected
-
 write "function f() {"
       "}"
 write flush
