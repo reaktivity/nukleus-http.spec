@@ -22,7 +22,7 @@ property serverTransport "nukleus://target/streams/http2#source"
 accept ${serverTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
-        option nukleus:transmission "duplex"
+        option nukleus:transmission "half-duplex"
 
 #
 # First client-initiated stream
@@ -35,6 +35,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -43,8 +44,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/html; charset=UTF-8")
                               .item("content-length", "113")
                               .build()}
-
-connected
+write flush
 
 write await SECOND_REQUEST_RECEIVED
 
@@ -72,8 +72,6 @@ write "<html>"
       "</html>"
 write flush
 
-
-
 #
 # Second client-initiated stream
 #
@@ -85,14 +83,14 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/push")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .item("server", "CERN/3.0 libwww/2.17")
                               .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
                               .build()}
-
-connected
+write flush
 
 read notify SECOND_REQUEST_RECEIVED
 
@@ -109,6 +107,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/style.css")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -117,8 +116,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/css")
                               .item("content-length", "31")
                               .build()}
-
-connected
+write flush
 
 # Third push promise
 write nukleus:data.ext ${http:headers()
@@ -147,6 +145,7 @@ read nukleus:begin.ext ${http:headers()
                              .item(":path", "/script.js")
                              .item(":authority", "localhost:8080")
                              .build()}
+connected
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
@@ -155,8 +154,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-type", "text/javascript")
                               .item("content-length", "15")
                               .build()}
-
-connected
+write flush
 
 write await FIRST_PROMISED_RESPONSE
 write "function f() {"
