@@ -65,7 +65,7 @@ write nukleus:begin.ext ${http:headers()
                               .build()}
 connected
 
-write "Hello, world, again"
+write "Hello, world"
 write flush
 
 read nukleus:begin.ext ${http:headers()
