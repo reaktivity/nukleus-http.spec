@@ -79,6 +79,19 @@ public class MessageFormatIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
+            "${nukleus}/max.frame.size.error/client",
+            "${nukleus}/max.frame.size.error/server"
+    })
+    public void maxFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
             "${nukleus}/max.nukleus.data.frame.size/client",
             "${nukleus}/max.nukleus.data.frame.size/server"
     })
