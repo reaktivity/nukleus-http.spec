@@ -30,6 +30,9 @@ read http:method "GET"
 read http:header "Upgrade" /(?<upgradeHeader>.*)/
 read http:header "Connection" "upgrade"
 
-write http:status "101" "Some Upgrade Protocol"
+write http:status "101" "Switching Protocols"
 write http:header "Upgrade" ${upgradeHeader}
 write flush
+
+read aborted
+write abort
