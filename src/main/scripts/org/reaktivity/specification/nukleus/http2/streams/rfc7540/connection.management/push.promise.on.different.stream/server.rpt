@@ -119,6 +119,7 @@ write nukleus:begin.ext ${http:headers()
 write flush
 
 # Third push promise
+write await SECOND_PROMISED_RESPONSE_HEADERS_SENT
 write nukleus:data.ext ${http:headers()
                              .item(":method", "GET")
                              .item(":scheme", "http")
@@ -155,6 +156,7 @@ write nukleus:begin.ext ${http:headers()
                               .item("content-length", "15")
                               .build()}
 write flush
+write notify SECOND_PROMISED_RESPONSE_HEADERS_SENT
 
 write await FIRST_PROMISED_RESPONSE
 write "function f() {"
