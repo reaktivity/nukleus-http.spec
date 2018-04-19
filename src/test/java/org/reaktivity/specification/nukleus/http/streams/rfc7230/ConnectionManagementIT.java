@@ -352,8 +352,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${scripts}/upgrade.request.and.abort/client",
-            "${scripts}/upgrade.request.and.abort/server" })
+        "${scripts}/upgrade.request.and.abort/client",
+        "${scripts}/upgrade.request.and.abort/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
     public void serverGettingAbortShouldPropagateAbortOnAllDirections() throws Exception
     {

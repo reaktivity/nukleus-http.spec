@@ -16,24 +16,20 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 
-property clientInitialWindow 8192
-
 connect await ROUTED_SERVER
-        "nukleus://http/streams/source"
+        "http://localhost:8080/"
+  option http:transport "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
-  option nukleus:window ${clientInitialWindow}
+  option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
 
+write http:method "GET"
+write http:header "Host" "localhost:8080"
+write http:header "Upgrade" "WebSocket"
+write http:header "Connection" "upgrade"
 
-write "GET / HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "Upgrade: WebSocket" "\r\n"
-write "Connection: upgrade" "\r\n"
-write "\r\n"
-
-read "HTTP/1.1 101 Switching Protocols" "\r\n"
-read "Upgrade: WebSocket" "\r\n"
-read "\r\n"
+read http:status "101" /.*/
+read http:header "Upgrade" "WebSocket"
 
 read closed
