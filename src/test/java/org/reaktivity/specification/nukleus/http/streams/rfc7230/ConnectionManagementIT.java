@@ -337,4 +337,28 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/send.end.after.upgrade.request.completed/client",
+        "${scripts}/send.end.after.upgrade.request.completed/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldSendEndWhenEndReceivedAfterUpgradeRequestCompleted() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "${scripts}/upgrade.request.and.abort/client",
+        "${scripts}/upgrade.request.and.abort/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void serverGettingAbortShouldPropagateAbortOnAllDirections() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }

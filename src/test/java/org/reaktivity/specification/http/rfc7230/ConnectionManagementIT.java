@@ -429,12 +429,13 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+
     @Test
     @Specification({
-        "${scripts}/response.with.content.length.is.reset/client",
-        "${scripts}/response.with.content.length.is.reset/server" })
+        "${scripts}/send.end.after.upgrade.request.completed/client",
+        "${scripts}/send.end.after.upgrade.request.completed/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void  shouldReportWhenResponseWithContentLengthIsReset() throws Exception
+    public void  shouldSendEndWhenEndReceivedAfterUpgradeRequestCompleted() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
