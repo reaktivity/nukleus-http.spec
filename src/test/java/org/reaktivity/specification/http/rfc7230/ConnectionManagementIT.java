@@ -444,4 +444,15 @@ public class ConnectionManagementIT
 
     // Proxy tests only have "cooked" versions
 
+    @Test
+    @Specification({
+        "${scripts}/request.response.and.abort/client",
+        "${scripts}/request.response.and.abort/server" })
+    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    public void shouldFreeConnectionWhenAbortReceivedAfterCompleteResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }

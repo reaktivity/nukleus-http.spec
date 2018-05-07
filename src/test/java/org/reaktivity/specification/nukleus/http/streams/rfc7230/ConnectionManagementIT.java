@@ -361,4 +361,16 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response/client",
+        "${scripts}/request.response/server" })
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void requestAndResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }
