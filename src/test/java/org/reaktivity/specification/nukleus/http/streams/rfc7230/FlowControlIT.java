@@ -145,4 +145,16 @@ public class FlowControlIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+            "${scripts}/request.with.padding/client",
+            "${scripts}/request.with.padding/server"})
+    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    public void shouldProcessRequestWithPadding() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
 }
