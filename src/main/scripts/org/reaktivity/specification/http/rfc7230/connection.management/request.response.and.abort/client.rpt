@@ -33,6 +33,8 @@ read "content-length: 8" "\r\n"
 read "\r\n"
 read "response"
 
+read notify RESPONSE_DECODED
+
 read aborted
 write abort
 

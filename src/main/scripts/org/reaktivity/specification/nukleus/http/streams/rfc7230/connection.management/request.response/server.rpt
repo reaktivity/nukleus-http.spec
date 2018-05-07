@@ -42,5 +42,8 @@ write nukleus:begin.ext ${http:headers()
 write flush
 
 write "response"
+
+read await RESPONSE_DECODED
+
 write close
 

@@ -35,6 +35,8 @@ write "\r\n"
 write "response"
 write flush
 
+read await RESPONSE_DECODED
+
 write abort
 read aborted
 

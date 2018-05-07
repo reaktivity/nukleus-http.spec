@@ -39,4 +39,7 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "8")
                              .build()}
 read "response"
+
+read notify RESPONSE_DECODED
+
 read closed
