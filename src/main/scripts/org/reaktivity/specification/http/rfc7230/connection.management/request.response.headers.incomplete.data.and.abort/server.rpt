@@ -35,6 +35,7 @@ write "\r\n"
 write "hello"
 read await HELLO_RECEIVED
 write abort
+read aborted
 
 # Check connection pool is not exhausted
 accepted
