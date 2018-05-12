@@ -33,6 +33,7 @@ read "\r\n"
 read "hello"
 read notify HELLO_RECEIVED
 read aborted
+write abort
 read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
