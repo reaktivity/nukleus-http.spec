@@ -25,25 +25,23 @@ connect await ROUTED_CLIENT
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":method", "GET")
-                              .item(":path", "/")
+                              .item(":path", "/request1")
                               .item(":authority", "localhost:8080")
-                              .item("upgrade", "WebSocket")
-                              .item("connection", "upgrade")
                               .build()}
 connected
 
 write close
 
 read nukleus:begin.ext ${http:headers()
-                             .item(":status", "101")
-                             .item("upgrade", "WebSocket")
+                             .item(":status", "200")
+                             .item("content-length", "9")
                              .build()}
 
+read "response1"
+read closed
+read notify REQUEST_ONE_DONE
 
-read "request one data from server"
-read notify REQUEST_ONE_UPGRADED
-
-connect await REQUEST_ONE_UPGRADED
+connect await REQUEST_ONE_DONE
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
@@ -52,20 +50,43 @@ connect await REQUEST_ONE_UPGRADED
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":method", "GET")
-                              .item(":path", "/")
+                              .item(":path", "/request2")
                               .item(":authority", "localhost:8080")
-                              .item("upgrade", "WebSocket")
-                              .item("connection", "upgrade")
                               .build()}
 connected
 
 write close
 
 read nukleus:begin.ext ${http:headers()
-                             .item(":status", "101")
-                             .item("upgrade", "WebSocket")
+                             .item(":status", "200")
+                             .item("content-length", "9")
                              .build()}
 
+read "response2"
+read closed
+read notify REQUEST_TWO_DONE
 
-read "request two data from server"
+connect await REQUEST_TWO_DONE
+        "nukleus://http/streams/source"
+    option nukleus:route ${newClientAcceptRef}
+    option nukleus:window 8192
+    option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":scheme", "http")
+                              .item(":method", "GET")
+                              .item(":path", "/request3")
+                              .item(":authority", "localhost:8080")
+                              .build()}
+connected
+
+write close
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":status", "200")
+                             .item("content-length", "9")
+                             .build()}
+
+read "response3"
+read closed
 

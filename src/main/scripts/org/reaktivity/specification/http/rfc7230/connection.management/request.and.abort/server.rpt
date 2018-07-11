@@ -33,6 +33,8 @@ read notify FIRST_REQUEST_RECEIVED
 
 read aborted
 
+read notify FIRST_REQUEST_ABORTED
+
 # Check connection pool is not exhausted
 accepted
 connected

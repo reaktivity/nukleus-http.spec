@@ -258,22 +258,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/client",
-        "${scripts}/concurrent.upgrade.requests.and.responses.with.data/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void shouldHandleConcurrentUpgradeRequestsandResponsesWithData() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.awaitBarrier("REQUEST_ONE_RECEIVED");
-        k3po.awaitBarrier("REQUEST_TWO_RECEIVED");
-        k3po.notifyBarrier("WRITE_DATA_REQUEST_ONE");
-        k3po.notifyBarrier("WRITE_DATA_REQUEST_TWO");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${scripts}/request.incomplete.response.headers.and.abort/client",
         "${scripts}/request.incomplete.response.headers.and.abort/server" })
     @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
@@ -377,19 +361,6 @@ public class ConnectionManagementIT
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
-        "${scripts}/pending.request.second.request.and.abort/client",
-        "${scripts}/pending.request.second.request.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
-    public void shouldAbortEnqueuedRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.notifyBarrier("SEND_FIRST_RESPONSE");
         k3po.finish();
     }
 

@@ -41,7 +41,6 @@ read nukleus:begin.ext ${http:headers()
                              .build()}
 
 read abort
-read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
 connect await FIRST_REQUEST_COMPLETED
