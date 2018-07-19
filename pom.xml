@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.reaktivity</groupId>
   <artifactId>nukleus-http.spec</artifactId>
-  <version>0.54</version>
+  <version>0.55</version>
   <name>HTTP Nukleus Specification</name>
   <description>HTTP Nukleus Specification</description>
   <url>https://github.com/reaktivity/nukleus-http.spec</url>
@@ -47,10 +47,10 @@
 
     <junit.version>4.12</junit.version>
 
-    <k3po.version>3.0.0-alpha-92</k3po.version>
-    <k3po.nukleus.ext.version>0.23</k3po.nukleus.ext.version>
+    <k3po.version>3.0.0-alpha-96</k3po.version>
+    <k3po.nukleus.ext.version>0.25</k3po.nukleus.ext.version>
 
-    <nukleus.spec.version>0.21</nukleus.spec.version>
+    <nukleus.spec.version>0.23</nukleus.spec.version>
     <nukleus.plugin.version>0.28</nukleus.plugin.version>
   </properties>
 

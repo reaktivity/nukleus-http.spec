@@ -37,7 +37,7 @@ write await FIRST_REQUEST_RECEIVED
 write abort
 
 # Check connection pool is not exhausted
-connect await FIRST_REQUEST_RECEIVED
+connect await FIRST_REQUEST_ABORTED
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192

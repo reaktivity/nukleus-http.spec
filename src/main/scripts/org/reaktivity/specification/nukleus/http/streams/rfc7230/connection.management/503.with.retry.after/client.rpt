@@ -14,8 +14,7 @@
 # under the License.
 #
 
-property newClientAcceptRef  ${nuklei:newReferenceId()} # external
-property newCorrelationId ${nukleus:newCorrelationId()}
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 
 connect await ROUTED_CLIENT
         "nukleus://http/streams/source"
@@ -26,43 +25,17 @@ connect await ROUTED_CLIENT
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":method", "GET")
-                              .item(":path", "/")
+                              .item(":path", "/request1")
                               .item(":authority", "localhost:8080")
                               .build()}
 connected
 
 write close
 
-write notify FIRST_REQUEST_PENDING
-
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .build()}
-
-read notify FIRST_RESPONSE_RECEIVED
 
 
-connect await FIRST_REQUEST_PENDING
-        "nukleus://http/streams/source"
-  option nukleus:route ${newClientAcceptRef}
-  option nukleus:correlation ${newCorrelationId}
-  option nukleus:window 8192
-  option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .build()}
-connected
-
-write abort
-
-write notify SEND_FIRST_RESPONSE
-
-# Check connection pool is not exhausted
-connect await FIRST_RESPONSE_RECEIVED
+connect await REQUEST_ONE_RECEIVED
         "nukleus://http/streams/source"
     option nukleus:route ${newClientAcceptRef}
     option nukleus:window 8192
@@ -71,14 +44,19 @@ connect await FIRST_RESPONSE_RECEIVED
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")
                               .item(":method", "GET")
-                              .item(":path", "/")
+                              .item(":path", "/request2")
                               .item(":authority", "localhost:8080")
                               .build()}
 connected
 
+
 write close
 
 read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
+                             .item(":status", "503")
+                             .item("retry-after", "0")
                              .build()}
+
+read closed
+
 
