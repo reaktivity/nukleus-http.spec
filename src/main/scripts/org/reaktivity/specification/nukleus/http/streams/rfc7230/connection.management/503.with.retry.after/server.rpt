@@ -14,23 +14,22 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} 
+property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 property newServerConnectRef ${newClientAcceptRef} # external scope
 
 property serverConnect "nukleus://target/streams/http#source"
-property serverInitialWindow 8192
-       
+property source "http"
+
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
-       option nukleus:window ${serverInitialWindow}
+       option nukleus:window 8192
        option nukleus:transmission "half-duplex"
-
 accepted
 
 read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
-                             .item(":path", "/")
+                             .item(":path", "/request1")
                              .item(":authority", "localhost:8080")
                              .build()}
 connected
@@ -41,19 +40,19 @@ read closed
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
-                              .item("content-length", "11")
+                              .item("content-length", "9")
                               .build()}
 write flush
 
-write aborted
-write notify FIRST_REQUEST_COMPLETED
+write "response1"
+write close
 
 accepted
 
 read nukleus:begin.ext ${http:headers()
                              .item(":scheme", "http")
                              .item(":method", "GET")
-                             .item(":path", "/")
+                             .item(":path", "/request2")
                              .item(":authority", "localhost:8080")
                              .build()}
 connected
@@ -64,6 +63,33 @@ read closed
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
+                              .item("content-length", "9")
                               .build()}
 write flush
+
+write "response2"
+write close
+
+accepted
+
+read nukleus:begin.ext ${http:headers()
+                             .item(":scheme", "http")
+                             .item(":method", "GET")
+                             .item(":path", "/request3")
+                             .item(":authority", "localhost:8080")
+                             .build()}
+connected
+
+
+
+read closed
+
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("content-length", "9")
+                              .build()}
+write flush
+
+write "response3"
+write close
 

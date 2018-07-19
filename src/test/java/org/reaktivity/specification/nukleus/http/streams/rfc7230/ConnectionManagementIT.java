@@ -213,18 +213,6 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-        "${scripts}/pending.request.second.request.and.abort/client",
-        "${scripts}/pending.request.second.request.and.abort/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
-    public void shouldProcessAbortFromClientWithPendingRequest() throws Exception
-    {
-        k3po.start();
-        k3po.notifyBarrier("ROUTED_CLIENT");
-        k3po.finish();
-    }
-
-    @Test
-    @Specification({
         "${scripts}/request.receive.reset/client",
         "${scripts}/request.receive.reset/server" })
     @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
