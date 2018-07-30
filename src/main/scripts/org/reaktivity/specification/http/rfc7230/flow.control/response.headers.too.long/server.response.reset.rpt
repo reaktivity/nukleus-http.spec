@@ -33,7 +33,6 @@ write "HTTP/1.1 200 OK\r\n"
 write "Custom-Header-1: custom header 1 value\r\n"
 write "Custom-Header-2: custom header 2 value\r\n"
 write "\r\n"
-write flush
 
 write aborted
 
