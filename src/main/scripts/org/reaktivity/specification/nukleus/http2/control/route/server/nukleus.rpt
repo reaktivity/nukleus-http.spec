@@ -39,6 +39,7 @@ read ${http:headers()
 write 0x40000001
 write ${correlationIdRG010001N}
 write ${nuklei:newReferenceId()}
+write ${serverConnectRefRG010001N}
 write flush
 
 close
