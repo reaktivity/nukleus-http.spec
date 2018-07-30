@@ -21,7 +21,7 @@ property serverTransport "nukleus://target/streams/http2#source"
 
 accept ${serverTransport}
         option nukleus:route ${newServerConnectRef}
-        option nukleus:window 12
+        option nukleus:window 19
         option nukleus:transmission "half-duplex"
         option nukleus:update "none"
 
