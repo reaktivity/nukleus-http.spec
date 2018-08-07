@@ -32,7 +32,8 @@ read "Content-Length: 11\r\n"
 read "\r\n"
 
 read abort
-read notify FIRST_REQUEST_COMPLETED
+write abort
+write notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
 connect await FIRST_REQUEST_COMPLETED 
