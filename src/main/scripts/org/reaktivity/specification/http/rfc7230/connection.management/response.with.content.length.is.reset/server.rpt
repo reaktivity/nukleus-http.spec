@@ -34,7 +34,9 @@ write "Content-Length: 11\r\n"
 write "\r\n"
 
 write aborted
-write notify FIRST_REQUEST_COMPLETED
+read aborted
+
+read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
 accepted
