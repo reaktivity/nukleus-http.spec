@@ -39,6 +39,7 @@ read closed
 
 write nukleus:begin.ext ${http:headers()
                               .item(":status", "503")
+                              .item("retry-after", "0")
                               .build()}
 write close
 
