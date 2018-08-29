@@ -92,6 +92,71 @@ public class MessageFormatIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
+            "${spec}/ping.frame.size.error/client",
+            "${spec}/ping.frame.size.error/server"
+    })
+    public void pingFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${spec}/connection.window.frame.size.error/client",
+            "${spec}/connection.window.frame.size.error/server"
+    })
+    public void connectionWindowFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${spec}/window.frame.size.error/client",
+            "${spec}/window.frame.size.error/server"
+    })
+    public void windowFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${spec}/rst.stream.frame.size.error/client",
+            "${spec}/rst.stream.frame.size.error/server"
+    })
+    public void rstStreanFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${spec}/priority.frame.size.error/client",
+            "${spec}/priority.frame.size.error/server"
+    })
+    public void priorityFrameSizeError() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
             "${spec}/max.nukleus.data.frame.size/client",
             "${spec}/max.nukleus.data.frame.size/server",
     })
