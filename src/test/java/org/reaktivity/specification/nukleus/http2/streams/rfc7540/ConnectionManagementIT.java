@@ -225,6 +225,19 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
+            "${streams}/server.sent.read.abort.before.correlated/client",
+            "${streams}/server.sent.read.abort.before.correlated/server"
+    })
+    public void serverSentReadAbortBeforeCorrelated() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
             "${streams}/server.sent.write.abort.on.open.request/client",
             "${streams}/server.sent.write.abort.on.open.request/server"
     })
