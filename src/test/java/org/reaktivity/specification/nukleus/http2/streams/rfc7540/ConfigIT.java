@@ -13,14 +13,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package org.reaktivity.specification.http2.rfc7540;
+package org.reaktivity.specification.nukleus.http2.streams.rfc7540;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.DisableOnDebug;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
-import org.kaazing.k3po.junit.annotation.ScriptProperty;
 import org.kaazing.k3po.junit.annotation.Specification;
 import org.kaazing.k3po.junit.rules.K3poRule;
 
@@ -30,7 +29,7 @@ import static org.junit.rules.RuleChain.outerRule;
 public class ConfigIT
 {
     private final K3poRule k3po = new K3poRule()
-        .addScriptRoot("spec", "org/reaktivity/specification/http2/rfc7540/config");
+            .addScriptRoot("streams", "org/reaktivity/specification/nukleus/http2/streams/rfc7540/config");
 
     private final TestRule timeout = new DisableOnDebug(new Timeout(10, SECONDS));
 
@@ -38,12 +37,11 @@ public class ConfigIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
-            "${spec}/access.control.allow.origin/client",
-            "${spec}/access.control.allow.origin/server",
+        "${streams}/access.control.allow.origin/client",
+        "${streams}/access.control.allow.origin/server"
     })
-    public void accessControlAllowLoging() throws Exception
+    public void accessControlAllowOrigin() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -51,10 +49,9 @@ public class ConfigIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
     @Specification({
-        "${spec}/server.header/client",
-        "${spec}/server.header/server",
+        "${streams}/server.header/client",
+        "${streams}/server.header/server"
     })
     public void serverHeader() throws Exception
     {

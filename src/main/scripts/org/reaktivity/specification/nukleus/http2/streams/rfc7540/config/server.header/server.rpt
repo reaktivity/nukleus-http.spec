@@ -16,33 +16,35 @@
 
 property newServerConnectRef ${nuklei:newReferenceId()} # external scope
 
-connect await ROUTED_SERVER
-        "nukleus://target/streams/http2"
+property serverTransport "nukleus://target/streams/http2"
+
+accept await ROUTED_SERVER
+        ${serverTransport}
         option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-
-
-write nukleus:begin.ext ${http:headers()
-                              .item(":method", "GET")
-                              .item(":scheme", "http")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .build()}
-connected
+accepted
 
 read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("server", "CERN/3.0 libwww/2.17")
-                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                             .item("content-type", "text/html; charset=UTF-8")
-                             .item("content-length", "113")
+                             .item(":method", "GET")
+                             .item(":scheme", "http")
+                             .item(":path", "/")
+                             .item(":authority", "localhost:8080")
                              .build()}
+connected
 
-read "<html>"
-     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-     "<body><script src=\"script.js\"></script></body>"
-     "</html>"
+write nukleus:begin.ext ${http:headers()
+                              .item(":status", "200")
+                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .item("content-type", "text/html; charset=UTF-8")
+                              .item("content-length", "113")
+                              .build()}
 
-read closed
+write "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
+write flush
+
+write close
 
