@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2017 The Reaktivity Project
+ * Copyright 2016-2018 The Reaktivity Project
  *
  * The Reaktivity Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -44,6 +44,19 @@ public class ConfigIT
             "${spec}/access.control.allow.origin/server",
     })
     public void accessControlAllowLoging() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+        "${spec}/server.header/client",
+        "${spec}/server.header/server",
+    })
+    public void serverHeader() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");

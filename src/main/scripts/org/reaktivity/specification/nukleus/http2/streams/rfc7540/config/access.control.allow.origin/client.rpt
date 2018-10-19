@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2017 The Reaktivity Project
+# Copyright 2016-2018 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,11 +14,11 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
+property newServerConnectRef ${nuklei:newReferenceId()} # external scope
 
-connect await ROUTED_CLIENT
-        "nukleus://http2/streams/source"
-        option nukleus:route ${newClientAcceptRef}
+connect await ROUTED_SERVER
+        "nukleus://target/streams/http2"
+        option nukleus:route ${newServerConnectRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
