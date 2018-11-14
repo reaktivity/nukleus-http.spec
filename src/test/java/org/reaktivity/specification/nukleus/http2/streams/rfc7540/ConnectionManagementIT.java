@@ -129,6 +129,19 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @Specification({
+            "${streams}/ignore.rst.stream/client",
+            "${streams}/ignore.rst.stream/server"
+    })
+    public void ignoreRstStream() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
     @Ignore("Doesn't trigger 'write aborted' in client.rpt")
     @Test
     @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
