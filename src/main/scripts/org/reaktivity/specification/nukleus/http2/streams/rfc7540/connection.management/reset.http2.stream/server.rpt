@@ -45,5 +45,5 @@ write nukleus:begin.ext ${http:headers()
                               .build()}
 write flush
 
-read aborted
+write aborted
 
