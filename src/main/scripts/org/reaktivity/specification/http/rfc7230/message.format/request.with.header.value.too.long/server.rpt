@@ -35,7 +35,5 @@ read "\r\n"
 write "HTTP/1.1 400 Bad Request\r\n"
 write "Connection: close\r\n"
 write "\r\n"
-write flush
 
-read abort
-
+write close

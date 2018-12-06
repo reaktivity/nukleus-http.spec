@@ -22,7 +22,7 @@ connect await ROUTED_CLIENT
   option nukleus:route ${newClientAcceptRef}
   option nukleus:correlation ${newCorrelationId}
   option nukleus:window 8192
-  option nukleus:transmission "half-duplex"
+  option nukleus:transmission "simplex"
 
 write nukleus:begin.ext ${http:headers()
                               .item(":scheme", "http")

@@ -23,7 +23,7 @@ property source "http"
 accept ${serverConnect}
        option nukleus:route ${newServerConnectRef}
        option nukleus:window 8192
-       option nukleus:transmission "duplex"
+       option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:headers()

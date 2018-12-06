@@ -16,7 +16,7 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property serverTransport "nukleus://target/streams/http"
 
 accept ${serverTransport}
   option nukleus:route ${newClientConnectRef}
@@ -30,9 +30,9 @@ read "Host: localhost:8080\r\n"
 read "\r\n"
 
 write "HTTP/1.1 200 OK\r\n"
-write "Custom-Header-1: custom header 1 value\r\n"
-write "Custom-Header-2: custom header 2 value\r\n"
-write "\r\n"
+      "Custom-Header-1: custom header 1 value\r\n"
+      "Custom-Header-2: custom header 2 value\r\n"
+      "\r\n"
 
 write aborted
 

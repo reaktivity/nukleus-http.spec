@@ -49,6 +49,7 @@ read nukleus:begin.ext ${http:headers()
 connected
 
 read aborted
+write abort
 
 accepted
 read nukleus:begin.ext ${http:headers()

@@ -20,11 +20,12 @@ connect await ROUTED_SERVER
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "simplex"
+  option nukleus:transmission "duplex"
 connected
 
 write "GET / HTTP/1.1" "\r\n"
 write aborted
+read aborted
 read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
@@ -32,7 +33,7 @@ connect await FIRST_REQUEST_COMPLETED
         "nukleus://http/streams/source"
   option nukleus:route ${newServerAcceptRef}
   option nukleus:window 8192
-  option nukleus:transmission "simplex"
+  option nukleus:transmission "duplex"
 connected
 
 write "GET / HTTP/1.1" "\r\n"
