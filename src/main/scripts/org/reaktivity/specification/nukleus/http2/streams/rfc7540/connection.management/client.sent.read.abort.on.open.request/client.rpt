@@ -39,7 +39,6 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "113")
                              .build()}
 
-write abort
-
 read abort
 
+write abort

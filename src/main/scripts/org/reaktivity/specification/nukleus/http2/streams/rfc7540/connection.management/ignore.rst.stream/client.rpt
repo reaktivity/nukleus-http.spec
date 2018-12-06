@@ -42,8 +42,8 @@ read nukleus:begin.ext ${http:headers()
                              .item("content-length", "113")
                              .build()}
 
-write abort
-write notify SECOND_CONNECTION
+read abort
+read notify SECOND_CONNECTION
 
 
 

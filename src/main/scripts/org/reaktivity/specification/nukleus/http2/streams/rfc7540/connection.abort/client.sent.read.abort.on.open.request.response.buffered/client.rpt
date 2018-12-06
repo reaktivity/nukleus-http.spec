@@ -41,7 +41,6 @@ read nukleus:begin.ext ${http:headers()
 
 read ${data}
 
-write abort
-
 read abort
 
+write abort
