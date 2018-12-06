@@ -30,7 +30,7 @@ write "\r\n"
 
 read "HTTP/1.1 200 OK\r\n"
 read "Content-Length: 11" "\r\n"
-write aborted
+read aborted
 read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted

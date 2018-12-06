@@ -26,5 +26,5 @@ connected
 write "GET http://localhost:8080/" ${http:randomAscii(9001)} " HTTP/1.1" "\r\n"
 write "Host: localhost:8080" "\r\n"
 write "\r\n"
-read "HTTP/1.1 414"
 
+read "HTTP/1.1 414"

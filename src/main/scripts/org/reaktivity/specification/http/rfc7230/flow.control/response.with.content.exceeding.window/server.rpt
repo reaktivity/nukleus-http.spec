@@ -16,7 +16,7 @@
 
 property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property serverTransport "nukleus://target/streams/http"
 property serverInitialWindow 8192
 
 accept ${serverTransport}
@@ -41,3 +41,4 @@ write "this string is more than 64 characters in length, really and truly"
 write flush
 write close
 
+read abort

@@ -199,6 +199,7 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Ignore("Requires connect aborted, see k3po/k3po#454")
     @Test
     @Specification({
         "${scripts}/request.and.abort/client",
@@ -325,7 +326,6 @@ public class ConnectionManagementIT
      *
      * @throws Exception when K3PO is not started
      */
-    @Ignore("BEGIN vs RESET read order not yet guaranteed to match write order")
     @Test
     @Specification({
         "${scripts}/proxy.must.not.retry.non.idempotent.requests/client",
