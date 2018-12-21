@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 property newCorrelationId ${nukleus:newCorrelationId()}
 
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-  option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:correlation ${newCorrelationId}
   option nukleus:window 8192
   option nukleus:transmission "simplex"
@@ -37,8 +35,7 @@ read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
 connect await FIRST_REQUEST_COMPLETED
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "simplex"
 
@@ -49,4 +46,3 @@ write nukleus:begin.ext ${http:headers()
                               .item(":authority", "localhost:8080")
                               .build()}
 connected
-

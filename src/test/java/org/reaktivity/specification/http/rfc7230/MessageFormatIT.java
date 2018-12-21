@@ -52,7 +52,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.headers/client",
             "${scripts}/request.with.headers/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithHeaders() throws Exception
     {
         k3po.start();
@@ -69,7 +69,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.content.length/client",
             "${scripts}/request.with.content.length/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithContentLength() throws Exception
     {
         k3po.start();
@@ -91,7 +91,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/response.with.headers/client",
             "${scripts}/response.with.headers/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void responseWithHeaders() throws Exception
     {
         k3po.start();
@@ -108,7 +108,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/response.with.content.length/client",
             "${scripts}/response.with.content.length/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void responseWithContentLength() throws Exception
     {
         k3po.start();
@@ -131,7 +131,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/invalid.request.whitespace.after.start.line/client",
             "${scripts}/invalid.request.whitespace.after.start.line/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void invalidRequestWhitespaceAfterStartLine() throws Exception
     {
         // As per RFC, alternatively could process everything before whitespace,
@@ -150,7 +150,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/invalid.request.missing.target/client",
             "${scripts}/invalid.request.missing.target/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void invalidRequestMissingTarget() throws Exception
     {
         k3po.start();
@@ -167,7 +167,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/invalid.request.not.http/client",
             "${scripts}/invalid.request.not.http/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void invalidRequestNotHttp() throws Exception
     {
         k3po.start();
@@ -184,7 +184,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.unimplemented.method/client",
             "${scripts}/request.with.unimplemented.method/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithUnimplementedMethod() throws Exception
     {
         k3po.start();
@@ -201,7 +201,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/incomplete.request.with.unimplemented.method/client",
             "${scripts}/incomplete.request.with.unimplemented.method/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void incompleteRequestWithUnimplementedMethod() throws Exception
     {
         k3po.start();
@@ -221,7 +221,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.extra.CRLF.before.request.line/client",
             "${scripts}/request.with.extra.CRLF.before.request.line/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void robustServerShouldAllowExtraCRLFBeforeRequestLine() throws Exception
     {
         k3po.start();
@@ -238,7 +238,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.start.line.too.long/client",
             "${scripts}/request.with.start.line.too.long/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithStartLineTooLong() throws Exception
     {
         k3po.start();
@@ -261,7 +261,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/invalid.request.space.before.colon.in.header/client",
             "${scripts}/invalid.request.space.before.colon.in.header/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void invalidRequestSpaceBeforeColonInHeader() throws Exception
     {
         k3po.start();
@@ -284,7 +284,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.obsolete.line.folding/client",
             "${scripts}/request.with.obsolete.line.folding/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithObsoleteLineFolding() throws Exception
     {
         k3po.start();
@@ -301,7 +301,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.header.value.too.long/client",
             "${scripts}/request.with.header.value.too.long/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithHeaderValueTooLong() throws Exception
     {
         k3po.start();
@@ -318,7 +318,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/request.with.unknown.transfer.encoding/client",
             "${scripts}/request.with.unknown.transfer.encoding/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestWithUnknownTransferEncoding() throws Exception
     {
         k3po.start();
@@ -335,7 +335,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/post.request.with.no.content/client",
             "${scripts}/post.request.with.no.content/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void postRequestWithNoContent() throws Exception
     {
         k3po.start();
@@ -359,7 +359,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/head.request.and.response/client",
             "${scripts}/head.request.and.response/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void headRequestAndResponse() throws Exception
     {
         k3po.start();
@@ -383,7 +383,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/head.request.and.response.with.content.length/client",
             "${scripts}/head.request.and.response.with.content.length/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void headRequestAndResponseWithContentLength() throws Exception
     {
         k3po.start();
@@ -408,7 +408,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/invalid.request.multiple.content.lengths/client",
             "${scripts}/invalid.request.multiple.content.lengths/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void invalidRequestMultipleContentLengths() throws Exception
     {
         k3po.start();
@@ -434,7 +434,7 @@ public class MessageFormatIT
             "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/client",
             "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/gateway",
             "${scripts}/gateway.must.reject.request.with.multiple.different.content.length/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     @Ignore("proxy tests not tests implemented")
     public void gatewayMustRejectResponseWithMultipleDifferentContentLength() throws Exception
     {
@@ -459,7 +459,7 @@ public class MessageFormatIT
             "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/client",
             "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/server",
             "${scripts}/on.response.proxy.must.remove.space.in.header.with.space.between.header.name.and.colon/proxy" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     @Ignore("proxy tests not tests implemented")
     public void onResponseProxyMustRemoveSpaceInHeaderWithSpaceBetweenHeaderNameAndColon() throws Exception
     {
@@ -482,7 +482,7 @@ public class MessageFormatIT
     @Specification({
             "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/client",
             "${scripts}/proxy.or.gateway.must.reject.obs.in.header.value/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     @Ignore("proxy tests not tests implemented")
     public void proxyOrGatewayMustRejectOBSInHeaderValue() throws Exception
     {
@@ -501,7 +501,7 @@ public class MessageFormatIT
             "${scripts}/proxy.should.preserve.unrecognized.headers/client",
             "${scripts}/proxy.should.preserve.unrecognized.headers/server",
             "${scripts}/proxy.should.preserve.unrecognized.headers/proxy" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     @Ignore("proxy tests not tests implemented")
     public void proxyShouldPreserveUnrecognizedHeaders() throws Exception
     {

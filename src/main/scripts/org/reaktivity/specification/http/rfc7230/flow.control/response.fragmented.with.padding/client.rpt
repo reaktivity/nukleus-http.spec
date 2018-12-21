@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 99
   option nukleus:transmission "duplex"
   option nukleus:padding 7
@@ -35,4 +32,3 @@ read "content-length: 32\r\n"
 read "\r\n"
 
 read "12345678901234567890123456789012"
-

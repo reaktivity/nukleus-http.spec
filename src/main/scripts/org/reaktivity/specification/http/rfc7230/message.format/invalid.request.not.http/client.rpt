@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -26,4 +23,3 @@ connected
 write "asdf;lqwerpoiuZX<cvmn 123-4908asdvnzl,xcnkv asf10239480192385 "
 
 read "HTTP/1.1 400"
-

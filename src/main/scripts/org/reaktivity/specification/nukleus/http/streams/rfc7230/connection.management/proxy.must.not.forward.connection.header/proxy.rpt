@@ -14,14 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef ${newClientAcceptRef} # external scope
-property newClientConnectRef ${nuklei:newReferenceId()} # external scope
+property serverConnect "nukleus://streams/target#0"
 
-property serverConnect "nukleus://target/streams/http#source"
-property source "http"
-
-accept "nukleus://http/streams/source"
-       option nukleus:route ${newServerAcceptRef}
+accept "nukleus://streams/http#0"
        option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
@@ -46,7 +41,6 @@ write close
 read closed
 
 connect ${serverConnect}
-    option nukleus:route ${newClientConnectRef}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
@@ -65,4 +59,3 @@ connected
 
 write close
 read closed
-

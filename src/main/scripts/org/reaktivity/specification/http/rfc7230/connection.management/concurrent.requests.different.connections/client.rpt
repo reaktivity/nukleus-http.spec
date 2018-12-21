@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -35,8 +32,7 @@ read "\r\n"
 read "response1"
 
 connect await REQUEST_ONE_WRITTEN 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -53,8 +49,7 @@ read "\r\n"
 read "response2"
 
 connect await REQUEST_TWO_WRITTEN 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -68,4 +63,3 @@ read "HTTP/1.1 200 OK\r\n"
 read "Content-Length: 9" "\r\n"
 read "\r\n"
 read "response3"
-

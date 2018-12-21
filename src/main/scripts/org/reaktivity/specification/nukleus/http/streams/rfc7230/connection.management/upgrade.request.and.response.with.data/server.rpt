@@ -14,14 +14,10 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-property newServerConnectRef ${newClientAcceptRef} # external scope
-
-property serverConnect "nukleus://target/streams/http#source"
+property serverConnect "nukleus://streams/target#0"
 property serverInitialWindow 8192
 
 accept ${serverConnect}
-       option nukleus:route ${newServerConnectRef}
        option nukleus:window ${serverInitialWindow}
        option nukleus:transmission "duplex"
 accepted
@@ -52,4 +48,3 @@ write flush
 read "data from client 1"
 read "data from client 2"
 read "data from client 3"
-

@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8192
 
 write nukleus:begin.ext ${http:headers()
@@ -32,4 +29,3 @@ write nukleus:begin.ext ${http:headers()
 connected
 
 write aborted
-

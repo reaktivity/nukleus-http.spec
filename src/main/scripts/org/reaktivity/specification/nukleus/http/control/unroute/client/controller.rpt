@@ -14,8 +14,7 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-property newClientConnectRef ${nuklei:newReferenceId()} # external scope
+property newClientRouteId ${nukleus:newClientRouteId("http#0", "target#0")} # external
 
 property nukleiUR020101C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
@@ -30,15 +29,8 @@ connected
 
 write 0x00000002
 write ${controlUR020101C.nextCorrelationId()}
-write [0x01]
-write [0x06] "source"
-write ${newClientAcceptRef}
-write [0x06] "target"
-write ${newClientConnectRef}
-write 0L
-write ${http:headers()
-            .item(":authority", "localhost:8080")
-            .build()}
+write ${core:string("http")}
+write ${newClientRouteId}
 write flush
 
 read 0x40000002

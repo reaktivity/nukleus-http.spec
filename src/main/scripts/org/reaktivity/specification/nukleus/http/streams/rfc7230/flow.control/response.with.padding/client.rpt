@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8
     option nukleus:padding 7
     option nukleus:transmission "half-duplex"
@@ -39,4 +36,3 @@ read nukleus:begin.ext ${http:headers()
 
 # reads 1 byte(window=8 - padding=7) at a time
 read "Server sent data"
-

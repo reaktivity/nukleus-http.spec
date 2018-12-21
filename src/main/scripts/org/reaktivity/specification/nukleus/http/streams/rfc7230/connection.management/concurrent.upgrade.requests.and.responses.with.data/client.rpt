@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
@@ -44,8 +41,7 @@ read "request one data from server"
 read notify REQUEST_ONE_UPGRADED
 
 connect await REQUEST_ONE_UPGRADED
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
