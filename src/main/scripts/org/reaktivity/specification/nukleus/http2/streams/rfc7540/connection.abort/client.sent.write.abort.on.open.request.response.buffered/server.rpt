@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newServerConnectRef ${nuklei:newReferenceId()} # external scope
 property data ${http2:randomBytes(55000)}
 
 accept await ROUTED_SERVER
-        "nukleus://target/streams/http2"
-        option nukleus:route ${newServerConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 0
         option nukleus:update "none"            # So that some request body gets buffered
         option nukleus:transmission "half-duplex"
@@ -49,4 +47,3 @@ write flush
 read aborted
 
 write aborted
-

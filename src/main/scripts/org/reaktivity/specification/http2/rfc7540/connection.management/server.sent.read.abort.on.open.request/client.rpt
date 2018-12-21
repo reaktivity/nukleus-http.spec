@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nukleus:newRouteRef()} # external
-
 connect await ROUTED_SERVER
-        "nukleus://http2/streams/source"
-        option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http2#0"
         option nukleus:window 8192
         option nukleus:transmission "duplex"
 connected
@@ -83,4 +80,3 @@ read [0x00 0x00 0x04]                          # length = 4
      [0x00]                                    # no flags
      [0x00 0x00 0x00 0x01]                     # stream_id=1
      [0x00 0x00 0x00 0x0a]                     # CONNECT_ERROR
-

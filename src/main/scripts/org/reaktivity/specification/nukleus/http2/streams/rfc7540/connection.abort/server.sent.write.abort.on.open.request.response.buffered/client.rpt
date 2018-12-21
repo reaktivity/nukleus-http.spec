@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerConnectRef ${nuklei:newReferenceId()} # external scope
-
 connect await ROUTED_SERVER
-        "nukleus://target/streams/http2"
-        option nukleus:route ${newServerConnectRef}
+        "nukleus://streams/target#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -45,4 +42,3 @@ read [0..55000]
 read abort
 
 write abort
-

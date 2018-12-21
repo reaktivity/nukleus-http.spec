@@ -38,7 +38,7 @@ public class FlowControlIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${spec}/stream.flow/client",
             "${spec}/stream.flow/server",

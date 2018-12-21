@@ -38,7 +38,7 @@ public class ConnectionManagementIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/http.get.exchange/client",
             "${streams}/http.get.exchange/server"
@@ -51,7 +51,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/http.post.exchange/client",
             "${streams}/http.post.exchange/server"
@@ -64,7 +64,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/multiple.data.frames/client",
             "${streams}/multiple.data.frames/server"
@@ -77,7 +77,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/connection.has.two.streams/client",
             "${streams}/connection.has.two.streams/server"
@@ -90,7 +90,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/http.push.promise/client",
             "${streams}/http.push.promise/server"
@@ -103,7 +103,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/push.promise.on.different.stream/client",
             "${streams}/push.promise.on.different.stream/server"
@@ -116,7 +116,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/reset.http2.stream/client",
             "${streams}/reset.http2.stream/server"
@@ -129,7 +129,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/ignore.rst.stream/client",
             "${streams}/ignore.rst.stream/server"
@@ -142,7 +142,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/client.sent.read.abort.on.open.request/client",
             "${streams}/client.sent.read.abort.on.open.request/server"
@@ -155,7 +155,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/rst.stream.last.frame/client",
             "${streams}/rst.stream.last.frame/server"
@@ -168,7 +168,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/client.sent.read.abort.on.closed.request/client",
             "${streams}/client.sent.read.abort.on.closed.request/server"
@@ -181,7 +181,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/client.sent.write.abort.on.open.request/client",
             "${streams}/client.sent.write.abort.on.open.request/server"
@@ -194,7 +194,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/client.sent.write.abort.on.closed.request/client",
             "${streams}/client.sent.write.abort.on.closed.request/server"
@@ -207,7 +207,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/client.sent.write.close/client",
             "${streams}/client.sent.write.close/server"
@@ -220,7 +220,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/server.sent.read.abort.on.open.request/client",
             "${streams}/server.sent.read.abort.on.open.request/server"
@@ -233,7 +233,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/server.sent.read.abort.before.correlated/client",
             "${streams}/server.sent.read.abort.before.correlated/server"
@@ -246,7 +246,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/server.sent.write.abort.on.open.request/client",
             "${streams}/server.sent.write.abort.on.open.request/server"
@@ -259,7 +259,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/server.sent.write.abort.on.closed.request/client",
             "${streams}/server.sent.write.abort.on.closed.request/server"
@@ -272,7 +272,7 @@ public class ConnectionManagementIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${streams}/server.sent.write.close/client",
             "${streams}/server.sent.write.close/server"
