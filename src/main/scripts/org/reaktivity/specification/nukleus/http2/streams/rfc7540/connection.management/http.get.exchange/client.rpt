@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-
 connect await ROUTED_CLIENT
-        "nukleus://http2/streams/source"
-        option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http2#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -45,4 +42,3 @@ read "<html>"
      "</html>"
 
 read closed
-

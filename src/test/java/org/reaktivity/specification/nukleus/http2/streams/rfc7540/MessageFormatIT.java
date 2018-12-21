@@ -38,7 +38,7 @@ public class MessageFormatIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/continuation.frames/client",
             "${nukleus}/continuation.frames/server"
@@ -51,7 +51,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/dynamic.table.requests/client",
             "${nukleus}/dynamic.table.requests/server"
@@ -64,7 +64,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/max.frame.size/client",
             "${nukleus}/max.frame.size/server"
@@ -77,7 +77,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/max.frame.size.error/client",
             "${nukleus}/max.frame.size.error/server"
@@ -90,7 +90,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/priority.frame.size.error/client",
             "${nukleus}/priority.frame.size.error/server"
@@ -103,7 +103,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/rst.stream.frame.size.error/client",
             "${nukleus}/rst.stream.frame.size.error/server"
@@ -116,7 +116,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/window.frame.size.error/client",
             "${nukleus}/window.frame.size.error/server"
@@ -129,7 +129,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/max.nukleus.data.frame.size/client",
             "${nukleus}/max.nukleus.data.frame.size/server"
@@ -142,7 +142,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/connection.headers/client",
             "${nukleus}/connection.headers/server"
@@ -155,7 +155,7 @@ public class MessageFormatIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${nukleus}/stream.id.order/client",
             "${nukleus}/stream.id.order/server"

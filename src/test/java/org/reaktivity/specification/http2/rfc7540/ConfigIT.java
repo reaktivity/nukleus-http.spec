@@ -38,7 +38,7 @@ public class ConfigIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
             "${spec}/access.control.allow.origin/client",
             "${spec}/access.control.allow.origin/server",
@@ -51,7 +51,7 @@ public class ConfigIT
     }
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://http2/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
         "${spec}/server.header/client",
         "${spec}/server.header/server",

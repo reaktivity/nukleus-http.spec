@@ -14,13 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef}
-
-property serverTransport "nukleus://target/streams/http2#source"
+property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
-       option nukleus:route ${newClientConnectRef}
        option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
@@ -94,4 +90,3 @@ write [0x00 0x00 0x00]                          # length = 0
       [0x01]                                    # END_STREAM
       [0x00 0x00 0x00 0x01]                     # stream_id=1
 write flush
-

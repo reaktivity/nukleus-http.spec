@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-property clientTransport "nukleus://http2/streams/source"
+property clientTransport "nukleus://streams/http2#0"
 
 connect await ROUTED_CLIENT
         ${clientTransport}
-        option nukleus:route ${newClientAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -50,7 +48,6 @@ read "function f() {"
 
 connect await ROUTED_CLIENT
         ${clientTransport}
-        option nukleus:route ${newClientAcceptRef}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
@@ -77,4 +74,3 @@ read nukleus:begin.ext ${http:headers()
 read "h1 {"
      "    color: blue;"
      "}"
-

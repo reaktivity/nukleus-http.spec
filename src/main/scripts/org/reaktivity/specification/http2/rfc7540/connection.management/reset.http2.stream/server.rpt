@@ -14,13 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef}
-
-property serverTransport "nukleus://target/streams/http2#source"
+property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
-       option nukleus:route ${newClientConnectRef}
        option nukleus:window 8192
        option nukleus:transmission "duplex"
 accepted
@@ -90,4 +86,3 @@ read [0x00 0x00 0x04]                          # length = 4
      [0x00]                                    # no flags
      [0x00 0x00 0x00 0x01]                     # stream_id=1
      [0x00 0x00 0x00 0x01]                     # PROTOCOL_ERROR
-
