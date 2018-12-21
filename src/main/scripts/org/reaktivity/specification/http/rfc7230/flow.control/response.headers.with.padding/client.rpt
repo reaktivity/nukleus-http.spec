@@ -14,11 +14,8 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 99
 
   option nukleus:transmission "duplex"
@@ -35,4 +32,3 @@ read "HTTP/1.1 200 OK\r\n"
 read "Custom-Header-1: custom header 1 value\r\n"
 read "Custom-Header-2: custom header 2 value\r\n"
 read "\r\n"
-

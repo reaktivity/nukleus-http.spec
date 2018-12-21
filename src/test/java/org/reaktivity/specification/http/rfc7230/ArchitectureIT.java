@@ -41,7 +41,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.and.response/client",
         "${scripts}/request.and.response/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestAndResponse() throws Exception
     {
         k3po.start();
@@ -53,7 +53,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.uri.with.percent.chars/client",
         "${scripts}/request.uri.with.percent.chars/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldAcceptRequestWithPercentChars() throws Exception
     {
         k3po.start();
@@ -65,7 +65,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.version.1.2+/client",
         "${scripts}/request.version.1.2+/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRespondVersionHttp11WhenRequestVersionHttp12plus() throws Exception
     {
         k3po.start();
@@ -77,7 +77,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.header.host.missing/client",
         "${scripts}/request.header.host.missing/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRejectRequestWhenHostHeaderMissing() throws Exception
     {
         k3po.start();
@@ -89,7 +89,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.uri.with.user.info/client",
         "${scripts}/request.uri.with.user.info/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRejectRequestWithUserInfo() throws Exception
     {
         k3po.start();
@@ -101,7 +101,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.version.invalid/client",
         "${scripts}/request.version.invalid/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRejectRequestWhenVersionInvalid() throws Exception
     {
         k3po.start();
@@ -113,7 +113,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.version.missing/client",
         "${scripts}/request.version.missing/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRejectRequestWhenVersionMissing() throws Exception
     {
         k3po.start();
@@ -125,7 +125,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/request.version.not.1.x/client",
         "${scripts}/request.version.not.1.x/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRejectRequestWhenVersionNotHttp1x() throws Exception
     {
         k3po.start();
@@ -137,7 +137,7 @@ public class ArchitectureIT
     @Specification({
         "${scripts}/response.version.missing/client",
         "${scripts}/response.version.missing/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void responseVersionMissing() throws Exception
     {
         k3po.start();

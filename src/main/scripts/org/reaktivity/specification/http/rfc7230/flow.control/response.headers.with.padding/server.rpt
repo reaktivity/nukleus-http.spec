@@ -14,12 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
-  option nukleus:route ${newClientConnectRef}
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
@@ -34,4 +31,3 @@ write "Custom-Header-1: custom header 1 value\r\n"
 write "Custom-Header-2: custom header 2 value\r\n"
 write "\r\n"
 write flush
-

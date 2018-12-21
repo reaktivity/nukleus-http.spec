@@ -41,7 +41,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/multiple.requests.pipelined.fragmented/client",
         "${scripts}/multiple.requests.pipelined.fragmented/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void multipleRequestsPipelinedFragmented() throws Exception
     {
         k3po.start();
@@ -53,7 +53,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/client",
         "${scripts}/multiple.requests.with.content.length.pipelined.fragmented/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void multipleRequestsWithContentLengthPipelinedFragmented() throws Exception
     {
         k3po.start();
@@ -65,7 +65,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/request.fragmented/client",
         "${scripts}/request.fragmented/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void fragmentedRequest() throws Exception
     {
         k3po.start();
@@ -77,7 +77,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/request.fragmented.with.content.length/client",
         "${scripts}/request.fragmented.with.content.length/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void fragmentedRequestWithContentLength() throws Exception
     {
         k3po.start();
@@ -89,7 +89,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/request.with.content.length.and.transport.close/client",
         "${scripts}/request.with.content.length.and.transport.close/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldDeferEndProcessingUntilRequestProcessed() throws Exception
     {
         k3po.start();
@@ -101,7 +101,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.chunked.with.extensions.filling.maximum.headers/client",
         "${scripts}/response.chunked.with.extensions.filling.maximum.headers/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessResponseWhenFirstChunkMetadataFillsMaxHeaders() throws Exception
     {
         k3po.start();
@@ -113,7 +113,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.first.fragment.maximum.headers/client",
         "${scripts}/response.first.fragment.maximum.headers/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessResponseWhenFirstFragmentIsHeadersOfLength64() throws Exception
     {
         k3po.start();
@@ -125,7 +125,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.fragmented/client",
         "${scripts}/response.fragmented/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessFragmentedResponse() throws Exception
     {
         k3po.start();
@@ -137,7 +137,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.fragmented.with.content.length/client",
         "${scripts}/response.fragmented.with.content.length/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessFragmentedResponseWithContentLength() throws Exception
     {
         k3po.start();
@@ -149,7 +149,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.headers.too.long/client.response.reset",
         "${scripts}/response.headers.too.long/server.response.reset"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldRejectNetworkResponseWithHeadersTooLong() throws Exception
     {
         k3po.start();
@@ -161,7 +161,7 @@ public class FlowControlIT
     @Specification({
             "${scripts}/response.fragmented.with.padding/client",
             "${scripts}/response.fragmented.with.padding/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessResponseFragmentedByPadding() throws Exception
     {
         k3po.start();
@@ -173,7 +173,7 @@ public class FlowControlIT
     @Specification({
             "${scripts}/response.headers.with.padding/client",
             "${scripts}/response.headers.with.padding/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessResponseHeadersFragmentedByPadding() throws Exception
     {
         k3po.start();
@@ -186,7 +186,7 @@ public class FlowControlIT
     @Specification({
             "${scripts}/request.with.padding/client",
             "${scripts}/request.with.padding/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessRequestWithPadding() throws Exception
     {
         k3po.start();
@@ -198,7 +198,7 @@ public class FlowControlIT
     @Specification({
             "${scripts}/response.with.padding/client",
             "${scripts}/response.with.padding/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldProcessResponseWithPadding() throws Exception
     {
         k3po.start();
@@ -210,7 +210,7 @@ public class FlowControlIT
     @Specification({
             "${scripts}/response.with.content.exceeding.window/client",
             "${scripts}/response.with.content.exceeding.window/server"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldHandleResponseWithContentViolatingWindow() throws Exception
     {
         k3po.start();
@@ -222,7 +222,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.headers.too.long/client.5xx.response",
         "${scripts}/response.headers.too.long/server.5xx.response"})
-    @ScriptProperty({"serverTransport \"nukleus://http/streams/source\""})
+    @ScriptProperty({"serverTransport \"nukleus://streams/http#0\""})
     public void shouldRejectApplicationResponseWithHeadersTooLong() throws Exception
     {
         k3po.start();
@@ -234,7 +234,7 @@ public class FlowControlIT
     @Specification({
         "${scripts}/response.with.content.length.and.transport.close/client",
         "${scripts}/response.with.content.length.and.transport.close/server"})
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldDeferEndProcessingUntilResponseProcessed() throws Exception
     {
         k3po.start();

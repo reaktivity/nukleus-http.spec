@@ -42,7 +42,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/request.transfer.encoding.chunked/client",
         "${scripts}/request.transfer.encoding.chunked/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void requestTransferEncodingChunked() throws Exception
     {
         k3po.start();
@@ -54,7 +54,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/multiple.requests.transfer.encoding.chunked/client",
         "${scripts}/multiple.requests.transfer.encoding.chunked/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void multipleRequestsTransferEncodingChunked() throws Exception
     {
         k3po.start();
@@ -66,7 +66,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/invalid.chunked.request.no.crlf.at.end.of.chunk/client",
         "${scripts}/invalid.chunked.request.no.crlf.at.end.of.chunk/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void invalidRequestTransferEncodingChunked() throws Exception
     {
         k3po.start();
@@ -78,7 +78,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/response.transfer.encoding.chunked/client",
         "${scripts}/response.transfer.encoding.chunked/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void responseTransferEncodingChunked() throws Exception
     {
         k3po.start();
@@ -88,7 +88,7 @@ public class TransferCodingsIT
 
     @Test
     @Ignore("${scripts}/requires enhancement https://github.com/k3po/k3po/issues/313")
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void requestTransferEncodingChunkedExtension() throws Exception
     {
         k3po.start();
@@ -98,7 +98,7 @@ public class TransferCodingsIT
 
     @Test
     @Ignore("${scripts}/requires enhancement https://github.com/k3po/k3po/issues/313")
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void responseTransferEncodingChunkedExtension() throws Exception
     {
         k3po.start();
@@ -110,7 +110,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/request.transfer.encoding.chunked.with.trailer/client",
         "${scripts}/request.transfer.encoding.chunked.with.trailer/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void requestTransferEncodingChunkedWithTrailer() throws Exception
     {
         k3po.start();
@@ -122,7 +122,7 @@ public class TransferCodingsIT
     @Specification({
         "${scripts}/response.transfer.encoding.chunked.with.trailer/client",
         "${scripts}/response.transfer.encoding.chunked.with.trailer/server" })
-    @ScriptProperty("serverConnect \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
     public void responseTransferEncodingChunkedWithTrailer() throws Exception
     {
         k3po.start();

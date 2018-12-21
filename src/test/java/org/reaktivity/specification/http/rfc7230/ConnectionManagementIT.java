@@ -60,7 +60,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.with.connection.close/client",
         "${scripts}/request.with.connection.close/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldCloseConnectionAfterRequestWithConnectionClose() throws Exception
     {
         k3po.start();
@@ -86,7 +86,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}response.with.connection.close/client",
         "${scripts}response.with.connection.close/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldCloseConnectionAfterSendingResponseWithConnectionClose() throws Exception
     {
         k3po.start();
@@ -105,7 +105,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/concurrent.requests.different.connections/client",
         "${scripts}/concurrent.requests.different.connections/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldProcessConcurrentRequestsOnDifferentConnections() throws Exception
     {
         k3po.start();
@@ -124,7 +124,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/multiple.requests.same.connection/client",
         "${scripts}/multiple.requests.same.connection/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldProcessMultipleRequestsOnSameConnection() throws Exception
     {
         k3po.start();
@@ -146,7 +146,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/multiple.requests.pipelined/client",
         "${scripts}/multiple.requests.pipelined/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldProcessMultipleRequestsPipelined() throws Exception
     {
         k3po.start();
@@ -167,7 +167,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/multiple.requests.pipelined.with.retry/client",
         "${scripts}/multiple.requests.pipelined.with.retry/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldNotRetryPipeliningImmediatelyAfterFailure() throws Exception
     {
         k3po.start();
@@ -187,7 +187,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/first.pipelined.response.has.connection.close/client",
         "${scripts}/first.pipelined.response.has.connection.close/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldNotReuseConnectionAfterResponseWithConnectionClose() throws Exception
     {
         k3po.start();
@@ -208,7 +208,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/upgrade.request.and.response/client",
         "${scripts}/upgrade.request.and.response/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldRespondWithUpgradeHeaderWhenActingAsServer() throws Exception
     {
         k3po.start();
@@ -227,7 +227,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.and.upgrade.required.response/client",
         "${scripts}/request.and.upgrade.required.response/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldIncludeUpgradeHeaderWithUpgradeRequiredResponse() throws Exception
     {
         k3po.start();
@@ -248,7 +248,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/upgrade.request.and.response.with.data/client",
         "${scripts}/upgrade.request.and.response.with.data/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldSendA101ResponseBeforeData() throws Exception
     {
         k3po.start();
@@ -260,7 +260,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.incomplete.response.headers.and.abort/client",
         "${scripts}/request.incomplete.response.headers.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportResponseAbortedBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
@@ -272,7 +272,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.incomplete.response.headers.and.end/client",
         "${scripts}/request.incomplete.response.headers.and.end/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportResponseEndedBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
@@ -284,7 +284,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.incomplete.response.headers.and.reset/client",
         "${scripts}/request.incomplete.response.headers.and.reset/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportConnectStreamResetBeforeResponseHeadersComplete() throws Exception
     {
         k3po.start();
@@ -296,7 +296,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.no.response.and.end/client",
         "${scripts}/request.no.response.and.end/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldHandleConnectReplyStreamEndedWithNoResponse() throws Exception
     {
         k3po.start();
@@ -308,7 +308,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.no.response.and.reset/client",
         "${scripts}/request.no.response.and.reset/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldHandleConnectStreamResetWithNoResponse() throws Exception
     {
         k3po.start();
@@ -320,7 +320,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.headers.incomplete.data.and.abort/client",
         "${scripts}/request.response.headers.incomplete.data.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportResponseAbortedWithIncompleteData() throws Exception
     {
         k3po.start();
@@ -332,7 +332,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.headers.incomplete.data.and.end/client",
         "${scripts}/request.response.headers.incomplete.data.and.end/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportResponseEndedWithIncompleteData() throws Exception
     {
         k3po.start();
@@ -344,7 +344,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.headers.incomplete.data.and.reset/client",
         "${scripts}/request.response.headers.incomplete.data.and.reset/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportConnectStreamResetWhenResponseHasIncompleteData() throws Exception
     {
         k3po.start();
@@ -356,7 +356,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.and.abort/client",
         "${scripts}/request.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldAbortRequest() throws Exception
     {
         k3po.start();
@@ -368,7 +368,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/pending.request.second.request.and.abort/client",
         "${scripts}/pending.request.second.request.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldAbortEnqueuedRequest() throws Exception
     {
         k3po.start();
@@ -381,7 +381,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/partial.request.receive.reset/client",
         "${scripts}/partial.request.receive.reset/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldReportRequestReset() throws Exception
     {
         k3po.start();
@@ -393,7 +393,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.and.end/client",
         "${scripts}/request.response.and.end/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldProcessRequestResponseAndEnd() throws Exception
     {
         k3po.start();
@@ -405,7 +405,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.and.reset/client",
         "${scripts}/request.response.and.reset/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldProcessRequestResponseAndReset() throws Exception
     {
         k3po.start();
@@ -418,7 +418,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/send.end.after.upgrade.request.completed/client",
         "${scripts}/send.end.after.upgrade.request.completed/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void  shouldSendEndWhenEndReceivedAfterUpgradeRequestCompleted() throws Exception
     {
         k3po.start();
@@ -432,7 +432,7 @@ public class ConnectionManagementIT
     @Specification({
         "${scripts}/request.response.and.abort/client",
         "${scripts}/request.response.and.abort/server" })
-    @ScriptProperty("serverTransport \"nukleus://http/streams/source\"")
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void shouldFreeConnectionWhenAbortReceivedAfterCompleteResponse() throws Exception
     {
         k3po.start();

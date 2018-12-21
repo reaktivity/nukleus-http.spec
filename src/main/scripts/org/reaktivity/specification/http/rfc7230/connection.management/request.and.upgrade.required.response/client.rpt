@@ -14,12 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER
         "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+  option http:transport "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -27,4 +24,3 @@ connected
 write http:method "GET"
 read http:status "426" "Upgrade Required"
 read http:header "Upgrade" /.*/
-

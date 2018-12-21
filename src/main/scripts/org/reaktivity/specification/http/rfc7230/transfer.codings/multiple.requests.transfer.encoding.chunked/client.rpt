@@ -14,12 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
-
 connect await ROUTED_SERVER
         "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+  option http:transport "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -39,8 +36,7 @@ read notify RESPONSE_ONE_RECEIVED
 
 connect await RESPONSE_ONE_RECEIVED
         "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+  option http:transport "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected
@@ -55,4 +51,3 @@ write "12345"
 write close
 
 read http:status "200" "OK"
-

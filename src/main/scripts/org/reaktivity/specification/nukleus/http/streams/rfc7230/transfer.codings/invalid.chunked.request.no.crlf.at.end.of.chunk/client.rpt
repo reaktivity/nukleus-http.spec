@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newClientAcceptRef  ${nuklei:newReferenceId()} # external
 property newCorrelationId ${nukleus:newCorrelationId()}
 
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-  option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:correlation ${newCorrelationId}
   option nukleus:window 8192
   option nukleus:transmission "simplex"
@@ -36,4 +34,3 @@ connected
 
 
 write "Chunk A"
-

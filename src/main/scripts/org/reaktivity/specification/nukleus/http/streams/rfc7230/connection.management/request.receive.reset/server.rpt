@@ -14,14 +14,9 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
-property newServerConnectRef ${newClientAcceptRef} # external scope
-
-property serverConnect "nukleus://target/streams/http#source"
+property serverConnect "nukleus://streams/target#0"
 
 accept ${serverConnect}
-  option http:transport ${serverConnect}
-  option nukleus:route  ${newServerConnectRef}
   option nukleus:window 8192
   option nukleus:transmission "simplex"
 accepted
@@ -35,4 +30,3 @@ read nukleus:begin.ext ${http:headers()
 connected
 
 read abort
-

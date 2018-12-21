@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property headerSize 8001
 
 connect await ROUTED_SERVER 
-        "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 connected

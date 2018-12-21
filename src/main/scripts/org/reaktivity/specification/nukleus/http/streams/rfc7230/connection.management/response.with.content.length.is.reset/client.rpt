@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} # external scope
 property clientInitialWindow 8192
 
 connect await ROUTED_CLIENT
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window ${clientInitialWindow}
     option nukleus:transmission "half-duplex"
 
@@ -30,8 +28,6 @@ write nukleus:begin.ext ${http:headers()
                               .item(":authority", "localhost:8080")
                               .build()}
 connected
-
-
 
 write close
 
@@ -44,8 +40,7 @@ read abort
 
 # Check connection pool is not exhausted
 connect await FIRST_REQUEST_COMPLETED
-        "nukleus://http/streams/source"
-    option nukleus:route ${newClientAcceptRef}
+        "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
@@ -57,11 +52,8 @@ write nukleus:begin.ext ${http:headers()
                               .build()}
 connected
 
-
-
 write close
 
 read nukleus:begin.ext ${http:headers()
                              .item(":status", "200")
                              .build()}
-

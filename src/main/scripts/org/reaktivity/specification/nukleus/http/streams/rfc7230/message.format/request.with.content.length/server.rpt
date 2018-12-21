@@ -14,15 +14,11 @@
 # under the License.
 #
 
-property newClientAcceptRef ${nuklei:newReferenceId()} 
-property newServerConnectRef ${newClientAcceptRef} # external scope
-
-property serverConnect "nukleus://target/streams/http#source"
+property serverConnect "nukleus://streams/target#0"
 
 property serverInitialWindow 8192
-       
+
 accept ${serverConnect}
-       option nukleus:route ${newServerConnectRef}
        option nukleus:window ${serverInitialWindow}
        option nukleus:transmission "half-duplex"
 accepted
@@ -44,4 +40,3 @@ write nukleus:begin.ext ${http:headers()
                               .item(":status", "200")
                               .build()}
 write close
-

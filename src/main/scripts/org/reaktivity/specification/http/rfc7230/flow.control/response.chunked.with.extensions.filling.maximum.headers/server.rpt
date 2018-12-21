@@ -14,12 +14,9 @@
 # under the License.
 #
 
-property newServerAcceptRef ${nuklei:newReferenceId()} # external scope
-property newClientConnectRef ${newServerAcceptRef} # external scope
-property serverTransport "nukleus://target/streams/http#source"
+property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
-  option nukleus:route  ${newClientConnectRef}
   option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 accepted
@@ -41,4 +38,3 @@ write "chunk\r\n"
 write flush
 write "0\r\n"
 write flush
-

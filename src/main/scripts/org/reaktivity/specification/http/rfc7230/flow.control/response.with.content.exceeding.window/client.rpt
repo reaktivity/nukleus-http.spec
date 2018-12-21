@@ -14,13 +14,11 @@
 # under the License.
 #
 
-property newServerAcceptRef  ${nuklei:newReferenceId()} # external
 property clientInitialWindow 8192
 
 connect await ROUTED_SERVER
         "http://localhost:8080/"
-  option http:transport "nukleus://http/streams/source"
-  option nukleus:route ${newServerAcceptRef}
+  option http:transport "nukleus://streams/http#0"
   option nukleus:window ${clientInitialWindow}
   option nukleus:transmission "half-duplex"
 connected
@@ -32,4 +30,3 @@ write close
 read http:status "200" /.*/
 read http:header "Content-length" /(?<length>.*)/
 read [0..${length}]
-
