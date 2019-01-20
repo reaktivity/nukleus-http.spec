@@ -16,7 +16,7 @@
 
 property nukleiRG010001C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlRG010001C ${nukleiRG010001C.control("http")}
+property controlRG010001C ${nukleiRG010001C.control()}
 
 property routeAuthorization 0x0000_000000000000L
 
