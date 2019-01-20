@@ -18,7 +18,7 @@ property newServerRouteId ${nukleus:newServerRouteId("http2#0", "target#0")} # e
 
 property nukleiUR020001C ${nuklei:directory("target/nukleus-itests").controlCapacity(1024, 1024)}
 
-property controlUR020001C ${nukleiUR020001C.control("http2")}
+property controlUR020001C ${nukleiUR020001C.control()}
 
 property routeAuthorization 0x0000_000000000000L # external
 
