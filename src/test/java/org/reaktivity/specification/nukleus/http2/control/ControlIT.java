@@ -78,4 +78,14 @@ public class ControlIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "route/server.authority/nukleus",
+        "route/server.authority/controller"
+    })
+    public void shouldRouteServerUsingAuthorityWithDefaultPort() throws Exception
+    {
+        k3po.finish();
+    }
 }
