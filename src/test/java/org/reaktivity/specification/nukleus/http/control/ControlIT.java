@@ -47,6 +47,16 @@ public class ControlIT
 
     @Test
     @Specification({
+        "route/server.authority/nukleus",
+        "route/server.authority/controller"
+    })
+    public void shouldRouteServerAuthorityWithNoPort() throws Exception
+    {
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "route/client/nukleus",
         "route/client/controller"
     })
