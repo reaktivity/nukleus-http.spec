@@ -310,4 +310,17 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+            "${spec}/http.authority.default.port/client",
+            "${spec}/http.authority.default.port/server",
+    })
+    public void authorityWithoutPort() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
 }
