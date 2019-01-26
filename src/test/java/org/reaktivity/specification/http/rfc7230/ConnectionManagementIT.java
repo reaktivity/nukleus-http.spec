@@ -439,4 +439,16 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.authority.with.no.port/client",
+        "${scripts}/request.authority.with.no.port/server" })
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
+    public void requestAuthorithWithNoPort() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }

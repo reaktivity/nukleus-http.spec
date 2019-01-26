@@ -372,4 +372,16 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.authority.with.no.port/client",
+        "${scripts}/request.authority.with.no.port/server" })
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
+    public void requestAuthorityWithNoPort() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }
