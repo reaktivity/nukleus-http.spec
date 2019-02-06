@@ -454,8 +454,8 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
-            "${scripts}/request.authority.with.port/client",
-            "${scripts}/request.authority.with.port/server" })
+        "${scripts}/request.authority.with.port/client",
+        "${scripts}/request.authority.with.port/server" })
     @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
     public void requestAuthorityWithPort() throws Exception
     {
