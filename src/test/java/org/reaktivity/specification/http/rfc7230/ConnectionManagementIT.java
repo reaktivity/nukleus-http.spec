@@ -445,7 +445,7 @@ public class ConnectionManagementIT
         "${scripts}/request.authority.with.no.port/client",
         "${scripts}/request.authority.with.no.port/server" })
     @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
-    public void requestAuthorityWithNoPort() throws Exception
+    public void shouldHandleRequestAuthorityWithNoPort() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -457,7 +457,7 @@ public class ConnectionManagementIT
         "${scripts}/request.authority.with.port/client",
         "${scripts}/request.authority.with.port/server" })
     @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
-    public void requestAuthorityWithPort() throws Exception
+    public void shouldMatchRequestAuthorityWithExplicitPort() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
