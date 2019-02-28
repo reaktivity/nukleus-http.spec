@@ -79,4 +79,4 @@ read [0x00 0x00 0x04]                          # length = 4
      [0x03]                                    # HTTP2 RST_STREAM frame
      [0x00]                                    # no flags
      [0x00 0x00 0x00 0x01]                     # stream_id=1
-     [0x00 0x00 0x00 0x0a]                     # CONNECT_ERROR
+     [0x00 0x00 0x00 0x08]                     # CANCEL
