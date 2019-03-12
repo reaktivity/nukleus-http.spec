@@ -323,4 +323,16 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${spec}/http.response.trailer/client",
+        "${spec}/http.response.trailer/server",
+    })
+    public void shouldProxyResponseTrailer() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
