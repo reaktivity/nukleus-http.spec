@@ -14,8 +14,6 @@
 # under the License.
 #
 
-property newCorrelationId ${nukleus:newCorrelationId()}
-
 connect await ROUTED_CLIENT
         "nukleus://streams/http#0"
     option nukleus:window 8192
@@ -42,7 +40,6 @@ read notify FIRST_RESPONSE_RECEIVED
 
 connect await FIRST_REQUEST_PENDING
         "nukleus://streams/http#0"
-  option nukleus:correlation ${newCorrelationId}
   option nukleus:window 8192
   option nukleus:transmission "simplex"
 
