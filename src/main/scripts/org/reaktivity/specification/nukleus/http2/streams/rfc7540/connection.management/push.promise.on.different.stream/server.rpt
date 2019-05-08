@@ -67,6 +67,9 @@ write "<html>"
       "<body><script src=\"script.js\"></script></body>"
       "</html>"
 write flush
+write close
+
+write notify FIRST_RESPONSE_COMPLETED
 
 #
 # Second client-initiated stream
@@ -116,6 +119,8 @@ write flush
 
 # Third push promise
 write await SECOND_PROMISED_RESPONSE_HEADERS_SENT
+write await FIRST_RESPONSE_COMPLETED
+
 write nukleus:data.ext ${http:headers()
                              .item(":method", "GET")
                              .item(":scheme", "http")

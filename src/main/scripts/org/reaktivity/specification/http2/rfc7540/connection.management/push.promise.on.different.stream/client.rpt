@@ -126,6 +126,12 @@ read [0x00 0x00 0x71]                          # length = 119
      "<body><script src=\"script.js\"></script></body>"
      "</html>"
 
+# response http2 DATA frame (EOS)
+read [0x00 0x00 0x00]                  # length = 0
+     [0x00]                            # HTTP2 DATA frame
+     [0x01]                            # END_STREAM
+     [0x00 0x00 0x00 0x01]             # stream_id = 1
+
 # First promised response HEADERS stream-id=2
 read [0x00 0x00 0x48]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
