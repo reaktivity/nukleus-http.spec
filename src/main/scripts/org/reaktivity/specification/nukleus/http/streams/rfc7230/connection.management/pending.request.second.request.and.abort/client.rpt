@@ -19,11 +19,12 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
                               .build()}
 connected
 
@@ -31,8 +32,9 @@ write close
 
 write notify FIRST_REQUEST_PENDING
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
                              .build()}
 
 read notify FIRST_RESPONSE_RECEIVED
@@ -43,11 +45,12 @@ connect await FIRST_REQUEST_PENDING
   option nukleus:window 8192
   option nukleus:transmission "simplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
                               .build()}
 connected
 
@@ -61,17 +64,18 @@ connect await FIRST_RESPONSE_RECEIVED
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
                              .build()}
-

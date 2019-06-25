@@ -19,12 +19,13 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "POST")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .item("content-length", "11")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "POST")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .header("content-length", "11")
                               .build()}
 connected
 
@@ -32,7 +33,8 @@ write "hello world"
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
                              .build()}
 read closed

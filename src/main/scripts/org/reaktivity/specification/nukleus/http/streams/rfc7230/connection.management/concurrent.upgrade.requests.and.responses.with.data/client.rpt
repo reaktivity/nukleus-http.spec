@@ -19,21 +19,23 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .item("upgrade", "WebSocket")
-                              .item("connection", "upgrade")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .header("upgrade", "WebSocket")
+                              .header("connection", "upgrade")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "101")
-                             .item("upgrade", "WebSocket")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "101")
+                             .header("upgrade", "WebSocket")
                              .build()}
 
 
@@ -45,23 +47,24 @@ connect await REQUEST_ONE_UPGRADED
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .item("upgrade", "WebSocket")
-                              .item("connection", "upgrade")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .header("upgrade", "WebSocket")
+                              .header("connection", "upgrade")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "101")
-                             .item("upgrade", "WebSocket")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "101")
+                             .header("upgrade", "WebSocket")
                              .build()}
 
 
 read "request two data from server"
-

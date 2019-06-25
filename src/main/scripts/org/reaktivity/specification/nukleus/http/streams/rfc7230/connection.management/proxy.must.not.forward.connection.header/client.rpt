@@ -19,21 +19,23 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .item("connection", "connectionOption1,close")
-                              .item("connectionOption1", "value1")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .header("connection", "connectionOption1,close")
+                              .header("connectionOption1", "value1")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("connection", "close")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("connection", "close")
                              .build()}
 
 read closed

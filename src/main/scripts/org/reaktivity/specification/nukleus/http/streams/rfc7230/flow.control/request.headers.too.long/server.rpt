@@ -20,13 +20,14 @@ accept ${serverConnect}
        option nukleus:window 8192
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:8080")
-                             .item("Custom-Header-1", "custom header 1 value")
-                             .item("Custom-Header-2", "custom header 2 value")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .header("Custom-Header-1", "custom header 1 value")
+                             .header("Custom-Header-2", "custom header 2 value")
                              .build()}
 connected
 

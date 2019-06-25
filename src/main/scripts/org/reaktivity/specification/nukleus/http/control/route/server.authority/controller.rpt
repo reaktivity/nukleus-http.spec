@@ -33,9 +33,9 @@ write [0x00]
 write ${routeAuthorization}
 write ${core:string("http#0")}
 write ${core:string("target#0")}
-write ${http:headers()
-            .item(":scheme", "https")
-            .item(":authority", "localhost:443")
+write ${http:routeEx()
+            .header(":scheme", "https")
+            .header(":authority", "localhost:443")
             .build()}
 write flush
 

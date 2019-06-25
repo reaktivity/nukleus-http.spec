@@ -22,18 +22,20 @@ accept ${serverConnect}
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "https")
-                             .item(":method", "GET")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:443")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "https")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:443")
                              .build()}
 connected
 
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
                               .build()}
 write close
