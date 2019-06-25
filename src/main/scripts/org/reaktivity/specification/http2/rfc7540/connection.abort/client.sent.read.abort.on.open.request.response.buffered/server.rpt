@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property data ${http2:randomBytes(384)}
+property data ${http:randomBytes(384)}
 
 accept await ROUTED_SERVER
        "nukleus://streams/http2#0"

@@ -14,8 +14,8 @@
 # under the License.
 #
 
-property data20k ${http2:randomBytes(20000)}
-property data15k ${http2:randomBytes(15000)}
+property data20k ${http:randomBytes(20000)}
+property data15k ${http:randomBytes(15000)}
 
 property serverTransport "nukleus://streams/target#0"
 

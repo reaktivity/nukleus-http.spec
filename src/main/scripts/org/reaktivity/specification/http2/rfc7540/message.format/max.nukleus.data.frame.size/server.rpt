@@ -14,7 +14,7 @@
 # under the License.
 #
 
-property data ${http2:randomBytes(65527)}
+property data ${http:randomBytes(65527)}
 
 property serverTransport "nukleus://streams/target#0"
 
