@@ -21,19 +21,21 @@ accept ${serverConnect}
        option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/request1")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/request1")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "9")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "9")
                               .build()}
 
 
@@ -42,19 +44,21 @@ write close
 
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/request2")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/request2")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "9")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "9")
                               .build()}
 
 
@@ -63,19 +67,21 @@ write close
        
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/request3")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/request3")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "9")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "9")
                               .build()}
 
 

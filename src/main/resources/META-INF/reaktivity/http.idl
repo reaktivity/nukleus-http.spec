@@ -32,17 +32,18 @@ scope http
 
     scope stream
     {
-        struct HttpBeginEx
+        struct HttpBeginEx extends core::stream::Extension
         {
             list<http::HttpHeader> headers;
         }
 
-        struct HttpDataEx
+        struct HttpDataEx extends core::stream::Extension
         {
             // TODO: extensions like chunked parameters etc
+            list<http::HttpHeader> promise;
         }
 
-        struct HttpEndEx
+        struct HttpEndEx extends core::stream::Extension
         {
             list<http::HttpHeader> trailers;
         }

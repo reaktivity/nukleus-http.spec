@@ -19,18 +19,20 @@ connect await ROUTED_CLIENT
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "POST")
-                              .item(":path", "/intermediary")
-                              .item(":authority", "proxy:8080")
-                              .item("content-length", "11")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "POST")
+                              .header(":path", "/intermediary")
+                              .header(":authority", "proxy:8080")
+                              .header("content-length", "11")
                               .build()}
 connected
 
 write "This is some data"
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "502")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "502")
                              .build()}

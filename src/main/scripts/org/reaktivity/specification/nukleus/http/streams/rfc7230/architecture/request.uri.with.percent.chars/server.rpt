@@ -21,17 +21,19 @@ accept ${serverConnect}
        option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/Some%20%2f%20Path")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/Some%20%2f%20Path")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
                               .build()}
 write close

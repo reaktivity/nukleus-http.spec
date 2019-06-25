@@ -21,16 +21,18 @@ accept "nukleus://streams/http#0"
        option nukleus:transmission "duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/index.html")
-                             .item(":authority", "proxy:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/index.html")
+                             .header(":authority", "proxy:8080")
                              .build()}
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("content-length", "24")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("content-length", "24")
                               .build()}
 
 connected
@@ -43,16 +45,18 @@ connect ${serverConnect}
     option nukleus:window 8192
     option nukleus:transmission "duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/index.html")
-                              .item(":authority", "backend:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/index.html")
+                              .header(":authority", "backend:8080")
                               .build()}
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-length", "24")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "24")
                              .build()}
 
 connected

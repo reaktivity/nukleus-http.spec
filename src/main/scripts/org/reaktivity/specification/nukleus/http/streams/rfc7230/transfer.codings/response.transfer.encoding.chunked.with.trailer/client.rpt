@@ -19,29 +19,32 @@ connect await ROUTED_CLIENT
   option nukleus:window 8192
   option nukleus:transmission "half-duplex"
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":scheme", "http")
-                              .item(":method", "GET")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
-                              .item("content-type", "text/plain")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .header("content-type", "text/plain")
                               .build()}
 connected
 
 write close
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("content-type", "text/plain")
-                             .item("transfer-encoding", "chunked")
-                             .item("trailer", "Connection")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-type", "text/plain")
+                             .header("transfer-encoding", "chunked")
+                             .header("trailer", "Connection")
                              .build()}
 
 
 read "Chunk A"
 read "Chunk B"
 read "Chunk C"
-read nukleus:end.ext ${http:headers()
-                           .item("connection", "close")
+read nukleus:end.ext ${http:endEx()
+                           .typeId(nukleus:id("http"))
+                           .trailer("connection", "close")
                            .build()}
 read closed

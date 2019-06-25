@@ -20,27 +20,30 @@ accept ${serverConnect}
        option nukleus:window 8192
        option nukleus:transmission "half-duplex"
 accepted
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
                               .build()}
 write close
 
 accepted
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
@@ -48,16 +51,18 @@ read aborted
 write abort
 
 accepted
-read nukleus:begin.ext ${http:headers()
-                             .item(":scheme", "http")
-                             .item(":method", "GET")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
                               .build()}
 write close
