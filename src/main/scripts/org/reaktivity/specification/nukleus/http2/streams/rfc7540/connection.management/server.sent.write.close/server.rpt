@@ -21,23 +21,25 @@ accept ${serverTransport}
         option nukleus:transmission "half-duplex"
 accepted
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":method", "POST")
-                             .item(":scheme", "http")
-                             .item(":path", "/")
-                             .item(":authority", "localhost:8080")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":method", "POST")
+                             .header(":scheme", "http")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
                              .build()}
 connected
 
 read "Hello, world"
 read closed
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":status", "200")
-                              .item("server", "CERN/3.0 libwww/2.17")
-                              .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                              .item("content-type", "text/html; charset=UTF-8")
-                              .item("content-length", "113")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("server", "CERN/3.0 libwww/2.17")
+                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .header("content-type", "text/html; charset=UTF-8")
+                              .header("content-length", "113")
                               .build()}
 
 

@@ -31,8 +31,8 @@ read [0x00]
 read [0..8] # authorization
 read ${core:string("http2#0")}
 read ${core:string("target#0")}
-read ${http:headers()
-           .item(":authority", "localhost:443")
+read ${http:routeEx()
+           .header(":authority", "localhost:443")
            .build()}
 
 write 0x40000001

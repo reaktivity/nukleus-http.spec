@@ -20,26 +20,28 @@ connect await ROUTED_CLIENT
         option nukleus:transmission "half-duplex"
 
 
-write nukleus:begin.ext ${http:headers()
-                              .item(":method", "GET")
-                              .item(":scheme", "http")
-                              .item(":path", "/")
-                              .item(":authority", "localhost:8080")
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":method", "GET")
+                              .header(":scheme", "http")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
                               .build()}
 
 connected
 
-read nukleus:begin.ext ${http:headers()
-                             .item(":status", "200")
-                             .item("server", "CERN/3.0 libwww/2.17")
-                             .item("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                             .item("content-type", "text/html; charset=UTF-8")
-                             .item("connection", "upgrade, close, connection-header")
-                             .item("transfer-encoding", "chunked")
-                             .item("upgrade", "websocket")
-                             .item("connection-header", "custom")
-                             .item("keep-alive", "timeout=5, max=100")
-                             .item("proxy-connection", "localhost:7070")
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("server", "CERN/3.0 libwww/2.17")
+                             .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                             .header("content-type", "text/html; charset=UTF-8")
+                             .header("connection", "upgrade, close, connection-header")
+                             .header("transfer-encoding", "chunked")
+                             .header("upgrade", "websocket")
+                             .header("connection-header", "custom")
+                             .header("keep-alive", "timeout=5, max=100")
+                             .header("proxy-connection", "localhost:7070")
                              .build()}
 
 read "Hello, World"
