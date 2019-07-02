@@ -89,8 +89,6 @@ read [0x00 0x00 0x00]                          # length = 0
      [0x01]                                    # END_STREAM
      [0x00 0x00 0x00 0x01]                     # stream_id=1
 
-write notify END_OF_STREAM_RECEIVED
-
 # Second request HEADERS for /style.css stream_id = 3
 write [0x00 0x00 0x1e]                  # length = 30
       [0x01]                            # HEADERS frame

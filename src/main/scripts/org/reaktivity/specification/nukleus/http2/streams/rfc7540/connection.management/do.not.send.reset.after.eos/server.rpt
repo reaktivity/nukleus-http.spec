@@ -48,8 +48,6 @@ write flush
 
 write close
 
-read notify END_OF_STREAM_RECEIVED
-
 read abort
 
 accepted

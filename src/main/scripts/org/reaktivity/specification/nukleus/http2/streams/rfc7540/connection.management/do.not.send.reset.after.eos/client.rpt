@@ -49,8 +49,6 @@ read  "<html>"
 
 read closed
 
-write notify END_OF_STREAM_RECEIVED
-
 write aborted
 
 connect await ROUTED_CLIENT
