@@ -13,40 +13,44 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-
 property clientTransport "nukleus://streams/http2#0"
 
 connect await ROUTED_CLIENT
-        ${clientTransport}
+         ${clientTransport}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":method", "POST")
+                              .header(":method", "GET")
                               .header(":scheme", "http")
-                              .header(":path", "/script.js")
+                              .header(":path", "/")
                               .header(":authority", "localhost:8080")
                               .build()}
+
 connected
 
-write "Hello, world"
-write flush
 
 read nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
+                             .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("server", "CERN/3.0 libwww/2.17")
                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
                              .header("content-type", "text/html; charset=UTF-8")
-                             .header("content-length", "15")
+                             .header("content-length", "113")
                              .build()}
 
+read  "<html>"
+      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
+      "<body><script src=\"script.js\"></script></body>"
+      "</html>"
 
-read "function f() {"
-     "}"
+read closed
 
+write notify END_OF_STREAM_RECEIVED
+
+write aborted
 
 connect await ROUTED_CLIENT
         ${clientTransport}
@@ -56,7 +60,7 @@ connect await ROUTED_CLIENT
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":method", "POST")
+                              .header(":method", "GET")
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
                               .header(":authority", "localhost:8080")
@@ -74,5 +78,5 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 
 read "h1 {"
-     "    color: blue;"
-     "}"
+      "    color: blue;"
+      "}"
