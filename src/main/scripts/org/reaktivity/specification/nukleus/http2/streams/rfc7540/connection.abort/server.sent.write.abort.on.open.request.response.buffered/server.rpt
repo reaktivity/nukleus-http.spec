@@ -19,7 +19,7 @@ property data ${http:randomBytes(55000)}
 accept await ROUTED_SERVER
         "nukleus://streams/target#0"
         option nukleus:window 0                 # so that request body is buffered
-        option nukleus:update "none"
+        option nukleus:update "handshake"
         option nukleus:transmission "half-duplex"
 accepted
 
