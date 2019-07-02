@@ -63,6 +63,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 connected
 
+write "Hello, world, again"
+write flush
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
