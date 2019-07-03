@@ -19,7 +19,7 @@ property serverTransport "nukleus://streams/target#0"
 accept ${serverTransport}
         option nukleus:window 12
         option nukleus:transmission "half-duplex"
-        option nukleus:update "none"
+        option nukleus:update "handshake"
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
