@@ -375,6 +375,18 @@ public class ConnectionManagementIT
 
     @Test
     @Specification({
+        "${scripts}/request.with.header.override/client",
+        "${scripts}/request.with.header.override/server" })
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
+    public void shouldProxyRequestWithHeaderOverride() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "${scripts}/request.authority.with.no.port/client",
         "${scripts}/request.authority.with.no.port/server" })
     @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")

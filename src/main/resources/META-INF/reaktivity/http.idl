@@ -17,7 +17,6 @@ scope http
 {
     struct HttpHeader
     {
-        int8 representation = 0;
         string name;
         string16 value;
     }
@@ -27,6 +26,7 @@ scope http
         struct HttpRouteEx
         {
             list<http::HttpHeader> headers;
+            list<http::HttpHeader> overrides;
         }
     }
 
@@ -39,7 +39,6 @@ scope http
 
         struct HttpDataEx extends core::stream::Extension
         {
-            // TODO: extensions like chunked parameters etc
             list<http::HttpHeader> promise;
         }
 
