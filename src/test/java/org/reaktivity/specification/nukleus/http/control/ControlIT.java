@@ -57,10 +57,30 @@ public class ControlIT
 
     @Test
     @Specification({
+        "route/server.override/nukleus",
+        "route/server.override/controller"
+    })
+    public void shouldRouteServerWithRequestHeaderOverride() throws Exception
+    {
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
         "route/client/nukleus",
         "route/client/controller"
     })
     public void shouldRouteClient() throws Exception
+    {
+        k3po.finish();
+    }
+
+    @Test
+    @Specification({
+        "route/client.override/nukleus",
+        "route/client.override/controller"
+    })
+    public void shouldRouteClientWithRequestHeaderOverride() throws Exception
     {
         k3po.finish();
     }

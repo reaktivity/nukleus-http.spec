@@ -68,6 +68,17 @@ public class ConnectionManagementIT
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${scripts}/request.with.header.override/client",
+        "${scripts}/request.with.header.override/server" })
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
+    public void shouldSendRequestWithHeaderOverride() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 
     /**
      * See <a href="https://tools.ietf.org/html/rfc7230#section-6.1">RFC 7230 section 6.1: Connection</a>.

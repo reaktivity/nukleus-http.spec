@@ -135,6 +135,14 @@ public final class HttpFunctions
             return this;
         }
 
+        public HttpRouteExBuilder override(
+            String name,
+            String value)
+        {
+            routeExRW.overridesItem(b -> b.name(name).value(value));
+            return this;
+        }
+
         public byte[] build()
         {
             final HttpRouteExFW routeEx = routeExRW.build();
