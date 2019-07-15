@@ -53,6 +53,19 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
+            "${streams}/http.get.exchange.with.header.override/client",
+            "${streams}/http.get.exchange.with.header.override/server"
+    })
+    public void shouldSendRequestWithHeaderOverride() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
             "${streams}/http.post.exchange/client",
             "${streams}/http.post.exchange/server"
     })
