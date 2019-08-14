@@ -28,6 +28,7 @@ import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpSignalExFW;
 
 public final class HttpFunctions
 {
@@ -53,6 +54,12 @@ public final class HttpFunctions
     public static HttpEndExBuilder endEx()
     {
         return new HttpEndExBuilder();
+    }
+
+    @Function
+    public static HttpSignalExBuilder signalEx()
+    {
+        return new HttpSignalExBuilder();
     }
 
     @Function
@@ -250,6 +257,40 @@ public final class HttpFunctions
             final HttpEndExFW endEx = endExRW.build();
             final byte[] array = new byte[endEx.sizeof()];
             endEx.buffer().getBytes(endEx.offset(), array);
+            return array;
+        }
+    }
+
+    public static final class HttpSignalExBuilder
+    {
+        private final HttpSignalExFW.Builder signalExRW;
+
+        private HttpSignalExBuilder()
+        {
+            MutableDirectBuffer writeExBuffer = new UnsafeBuffer(new byte[1024 * 8]);
+            this.signalExRW = new HttpSignalExFW.Builder().wrap(writeExBuffer, 0, writeExBuffer.capacity());
+        }
+
+        public HttpSignalExBuilder typeId(
+            int typeId)
+        {
+            signalExRW.typeId(typeId);
+            return this;
+        }
+
+        public HttpSignalExBuilder header(
+            String name,
+            String value)
+        {
+            signalExRW.headersItem(b -> b.name(name).value(value));
+            return this;
+        }
+
+        public byte[] build()
+        {
+            final HttpSignalExFW signalEx = signalExRW.build();
+            final byte[] array = new byte[signalEx.sizeof()];
+            signalEx.buffer().getBytes(signalEx.offset(), array);
             return array;
         }
     }

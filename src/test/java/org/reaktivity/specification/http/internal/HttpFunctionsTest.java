@@ -33,6 +33,7 @@ import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpSignalExFW;
 
 public class HttpFunctionsTest
 {
@@ -130,5 +131,23 @@ public class HttpFunctionsTest
             assertEquals("value", onlyHeader.value().asString());
         });
         assertTrue(endEx.trailers().sizeof() > 0);
+    }
+
+    @Test
+    public void shouldGenerateSignalExtension()
+    {
+        byte[] build = HttpFunctions.signalEx()
+                                    .typeId(0x01)
+                                    .header("name", "value")
+                                    .build();
+        DirectBuffer buffer = new UnsafeBuffer(build);
+        HttpSignalExFW signalEx = new HttpSignalExFW().wrap(buffer, 0, buffer.capacity());
+        assertEquals(0x01, signalEx.typeId());
+        signalEx.headers().forEach(onlyHeader ->
+        {
+            assertEquals("name", onlyHeader.name().asString());
+            assertEquals("value", onlyHeader.value().asString());
+        });
+        assertTrue(signalEx.headers().sizeof() > 0);
     }
 }
