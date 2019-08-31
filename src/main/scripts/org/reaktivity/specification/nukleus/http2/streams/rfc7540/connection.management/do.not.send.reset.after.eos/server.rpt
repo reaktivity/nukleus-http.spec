@@ -18,7 +18,6 @@ property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
         option nukleus:window 8192
-        option nukleus:update "message"
         option nukleus:transmission "half-duplex"
 accepted
 
