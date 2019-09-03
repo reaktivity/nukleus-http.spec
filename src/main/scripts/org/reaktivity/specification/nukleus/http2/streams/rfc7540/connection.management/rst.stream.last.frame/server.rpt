@@ -19,8 +19,19 @@ property serverTransport "nukleus://streams/target#0"
 accept ${serverTransport}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
-accepted
 
+accepted
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":method", "POST")
+                             .header(":scheme", "http")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+connected
+read aborted
+
+accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":method", "POST")

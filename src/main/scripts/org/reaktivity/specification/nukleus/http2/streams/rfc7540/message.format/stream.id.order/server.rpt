@@ -20,9 +20,7 @@ accept ${serverTransport}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-#
-# HTTP connection-1
-#
+
 accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -32,7 +30,72 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
+read closed
 
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("server", "CERN/3.0 libwww/2.17")
+                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .header("content-type", "text/html; charset=UTF-8")
+                              .header("content-length", "113")
+                              .build()}
+write flush
+write notify REQUEST_ONE_RECEIVED
+
+write await RESPONSE_THREE_SENT
+write nukleus:data.ext ${http:dataEx()
+                             .typeId(nukleus:id("http"))
+                             .promise(":method", "GET")
+                             .promise(":scheme", "http")
+                             .promise(":path", "/push")
+                             .promise(":authority", "localhost:8080")
+                             .build()}
+write flush
+
+
+accepted
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":method", "GET")
+                             .header(":scheme", "http")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+connected
+read closed
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":status", "200")
+                              .header("server", "CERN/3.0 libwww/2.17")
+                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
+                              .header("content-type", "text/html; charset=UTF-8")
+                              .header("content-length", "113")
+                              .build()}
+write flush
+write notify REQUEST_TWO_RECEIVED
+
+write await RESPONSE_THREE_SENT
+write nukleus:data.ext ${http:dataEx()
+                             .typeId(nukleus:id("http"))
+                             .promise(":method", "GET")
+                             .promise(":scheme", "http")
+                             .promise(":path", "/push")
+                             .promise(":authority", "localhost:8080")
+                             .build()}
+write flush
+
+
+accepted
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":method", "GET")
+                             .header(":scheme", "http")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+connected
 read closed
 
 write nukleus:begin.ext ${http:beginEx()
@@ -45,10 +108,10 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 write flush
 
-write notify CONNECTION_1_RECEIVED
-write await SEND_PUSH_PROMISE
+write await REQUEST_ONE_RECEIVED
+write await REQUEST_TWO_RECEIVED
+write notify RESPONSE_THREE_SENT
 
-# First push promise
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
                              .promise(":method", "GET")
@@ -59,82 +122,35 @@ write nukleus:data.ext ${http:dataEx()
 write flush
 
 
-
-#
-# HTTP connection-2
-#
 accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":method", "GET")
                              .header(":scheme", "http")
-                             .header(":path", "/")
+                             .header(":path", "/push")
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
-
 read closed
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("server", "CERN/3.0 libwww/2.17")
-                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                              .header("content-type", "text/html; charset=UTF-8")
-                              .header("content-length", "113")
-                              .build()}
-write flush
-
-write notify CONNECTION_2_RECEIVED
-write await SEND_PUSH_PROMISE
-
-# First push promise
-write nukleus:data.ext ${http:dataEx()
-                             .typeId(nukleus:id("http"))
-                             .promise(":method", "GET")
-                             .promise(":scheme", "http")
-                             .promise(":path", "/push")
-                             .promise(":authority", "localhost:8080")
-                             .build()}
-write flush
-
-
-
-#
-# HTTP connection-3
-#
 accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":method", "GET")
                              .header(":scheme", "http")
-                             .header(":path", "/")
+                             .header(":path", "/push")
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
-
 read closed
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("server", "CERN/3.0 libwww/2.17")
-                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                              .header("content-type", "text/html; charset=UTF-8")
-                              .header("content-length", "113")
-                              .build()}
-write flush
-
-write await CONNECTION_1_RECEIVED
-write await CONNECTION_2_RECEIVED
-write notify SEND_PUSH_PROMISE
-
-# First push promise
-write nukleus:data.ext ${http:dataEx()
+accepted
+read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
-                             .promise(":method", "GET")
-                             .promise(":scheme", "http")
-                             .promise(":path", "/push")
-                             .promise(":authority", "localhost:8080")
+                             .header(":method", "GET")
+                             .header(":scheme", "http")
+                             .header(":path", "/push")
+                             .header(":authority", "localhost:8080")
                              .build()}
-write flush
+connected
+read closed
