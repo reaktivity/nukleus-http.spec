@@ -16,9 +16,6 @@
 
 property clientTransport "nukleus://streams/http2#0"
 
-#
-# HTTP connection-1
-#
 connect await ROUTED_CLIENT
         ${clientTransport}
         option nukleus:window 8192
@@ -31,7 +28,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
-
 write close
 
 read nukleus:begin.ext ${http:beginEx()
@@ -43,7 +39,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "113")
                              .build()}
 
-# First push promise
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":method", "GET")
@@ -51,10 +46,9 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":path", "/push")
                             .promise(":authority", "localhost:8080")
                             .build()}
+read notify PUSH_PROMISE_ONE_RECEIVED
 
-#
-# HTTP connection-2
-#
+
 connect await ROUTED_CLIENT
         ${clientTransport}
         option nukleus:window 8192
@@ -67,7 +61,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
-
 write close
 
 read nukleus:begin.ext ${http:beginEx()
@@ -79,7 +72,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "113")
                              .build()}
 
-# First push promise
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":method", "GET")
@@ -87,10 +79,9 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":path", "/push")
                             .promise(":authority", "localhost:8080")
                             .build()}
+read notify PUSH_PROMISE_TWO_RECEIVED
 
-#
-# HTTP connection-3
-#
+
 connect await ROUTED_CLIENT
         ${clientTransport}
         option nukleus:window 8192
@@ -103,7 +94,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
-
 write close
 
 read nukleus:begin.ext ${http:beginEx()
@@ -115,7 +105,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "113")
                              .build()}
 
-# First push promise
 read nukleus:data.ext ${http:dataEx()
                             .typeId(nukleus:id("http"))
                             .promise(":method", "GET")
@@ -123,3 +112,49 @@ read nukleus:data.ext ${http:dataEx()
                             .promise(":path", "/push")
                             .promise(":authority", "localhost:8080")
                             .build()}
+read notify PUSH_PROMISE_THREE_RECEIVED
+
+
+connect await PUSH_PROMISE_ONE_RECEIVED
+        ${clientTransport}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":method", "GET")
+                              .header(":scheme", "http")
+                              .header(":path", "/push")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+connected
+write close
+
+
+connect await PUSH_PROMISE_TWO_RECEIVED
+        ${clientTransport}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":method", "GET")
+                              .header(":scheme", "http")
+                              .header(":path", "/push")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+connected
+write close
+
+
+connect await PUSH_PROMISE_THREE_RECEIVED
+        ${clientTransport}
+        option nukleus:window 8192
+        option nukleus:transmission "half-duplex"
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":method", "GET")
+                              .header(":scheme", "http")
+                              .header(":path", "/push")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+connected
+write close
