@@ -19,6 +19,8 @@ property serverConnect "nukleus://streams/target#0"
 accept ${serverConnect}
        option nukleus:window 8192
        option nukleus:transmission "half-duplex"
+
+
 accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -28,16 +30,15 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
-
 read closed
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
                               .build()}
 write close
 
-accepted
+
+rejected
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":scheme", "http")
@@ -45,10 +46,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":path", "/")
                              .header(":authority", "localhost:8080")
                              .build()}
-connected
 
-read aborted
-write abort
 
 accepted
 read nukleus:begin.ext ${http:beginEx()
@@ -60,7 +58,6 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 connected
 read closed
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")

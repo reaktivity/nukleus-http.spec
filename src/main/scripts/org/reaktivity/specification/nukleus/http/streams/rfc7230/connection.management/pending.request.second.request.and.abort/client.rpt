@@ -18,7 +18,6 @@ connect await ROUTED_CLIENT
         "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
-
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
@@ -27,43 +26,35 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
-
 write close
-
-write notify FIRST_REQUEST_PENDING
-
+write notify REQUEST_ONE_SENT
+read await REQUEST_TWO_ABORTED
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .build()}
+read notify RESPONSE_ONE_RECEIVED
 
-read notify FIRST_RESPONSE_RECEIVED
 
-
-connect await FIRST_REQUEST_PENDING
-        "nukleus://streams/http#0"
-  option nukleus:window 8192
-  option nukleus:transmission "simplex"
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":scheme", "http")
-                              .header(":method", "GET")
-                              .header(":path", "/")
-                              .header(":authority", "localhost:8080")
-                              .build()}
-connected
-
-write abort
-
-write notify SEND_FIRST_RESPONSE
-
-# Check connection pool is not exhausted
-connect await FIRST_RESPONSE_RECEIVED
+connect await REQUEST_ONE_SENT
         "nukleus://streams/http#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .build()}
+connect abort
+write notify REQUEST_TWO_ABORTED
 
+# Check connection pool is not exhausted
+connect await RESPONSE_ONE_RECEIVED
+        "nukleus://streams/http#0"
+    option nukleus:window 8192
+    option nukleus:transmission "half-duplex"
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
@@ -72,9 +63,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
-
 write close
-
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")

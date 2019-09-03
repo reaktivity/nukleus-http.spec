@@ -19,6 +19,21 @@ property serverConnect "nukleus://streams/target#0"
 accept ${serverConnect}
   option nukleus:window 8192
   option nukleus:transmission "simplex"
+
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":scheme", "http")
+                             .header(":method", "GET")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+
+connected
+
+read abort
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -29,5 +44,3 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
-
-read abort
