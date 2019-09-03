@@ -25,7 +25,7 @@ connected
 
 read http:version "HTTP/1.1"
 
-write await SEND_FIRST_RESPONSE
+write await REQUEST_TWO_ABORTED
 
 write http:status "200" "OK"
 write http:version "HTTP/1.1"

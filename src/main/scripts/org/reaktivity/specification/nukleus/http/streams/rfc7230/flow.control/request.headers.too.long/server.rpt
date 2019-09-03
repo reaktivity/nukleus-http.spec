@@ -18,7 +18,8 @@ property serverConnect "nukleus://streams/target#0"
 
 accept ${serverConnect}
        option nukleus:window 8192
-accepted
+
+rejected
 
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
@@ -29,6 +30,3 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("Custom-Header-1", "custom header 1 value")
                              .header("Custom-Header-2", "custom header 2 value")
                              .build()}
-connected
-
-read abort

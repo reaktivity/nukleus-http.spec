@@ -27,6 +27,4 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("Custom-Header-1", "custom header 1 value")
                               .header("Custom-Header-2", "custom header 2 value")
                               .build()}
-connected
-
-write aborted
+connect aborted
