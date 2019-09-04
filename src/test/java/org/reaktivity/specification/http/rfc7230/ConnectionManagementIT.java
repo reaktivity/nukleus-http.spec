@@ -384,7 +384,7 @@ public class ConnectionManagementIT
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
-        k3po.notifyBarrier("SEND_FIRST_RESPONSE");
+        k3po.notifyBarrier("REQUEST_TWO_ABORTED");
         k3po.finish();
     }
 

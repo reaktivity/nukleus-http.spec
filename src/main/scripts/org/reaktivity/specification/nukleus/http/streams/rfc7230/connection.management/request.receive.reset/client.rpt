@@ -29,6 +29,7 @@ write nukleus:begin.ext ${http:beginEx()
 connected
 
 write aborted
+
 read notify FIRST_REQUEST_COMPLETED
 
 # Check connection pool is not exhausted
