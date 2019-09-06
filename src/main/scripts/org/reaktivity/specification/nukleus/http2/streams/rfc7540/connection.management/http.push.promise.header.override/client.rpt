@@ -35,7 +35,7 @@ write "Hello, world"
 write flush
 
 read nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
+                             .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("server", "CERN/3.0 libwww/2.17")
                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
@@ -43,15 +43,13 @@ read nukleus:begin.ext ${http:beginEx()
                              .header("content-length", "113")
                              .build()}
 
-
-
 # First push promise
 read nukleus:data.ext ${http:beginEx()
                             .typeId(nukleus:id("http"))
                             .header(":method", "GET")
                             .header(":scheme", "http")
                             .header(":path", "/style.css")
-                            .header(":authority", "otherhost:8081")
+                            .header(":authority", "otherhost:8181")
                             .build()}
 read notify FIRST_PUSH_PROMISE_RECEIVED
 
@@ -74,7 +72,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
-                              .header(":authority", "localhost:8080")
+                              .header(":authority", "otherhost:8181")
                               .build()}
 connected
 
