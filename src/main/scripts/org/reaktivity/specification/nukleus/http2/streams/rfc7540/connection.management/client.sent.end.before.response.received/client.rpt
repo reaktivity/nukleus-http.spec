@@ -15,9 +15,10 @@
 #
 
 connect await ROUTED_CLIENT
-         "nukleus://streams/http2#0"
+        "nukleus://streams/http2#0"
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
+
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -27,23 +28,8 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
+
+write "Hello, world"
+write close
 
 read abort
-
-write abort
-
-write notify REQUEST_ONE_ABORTED
-
-connect await REQUEST_ONE_ABORTED
-         "nukleus://streams/http2#0"
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":method", "POST")
-                              .header(":scheme", "http")
-                              .header(":path", "/")
-                              .header(":authority", "localhost:8080")
-                              .build()}
-connected

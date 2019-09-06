@@ -361,4 +361,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${spec}/client.sent.end.before.response.received/client",
+        "${spec}/client.sent.end.before.response.received/server",
+    })
+    public void shouldSendResetOnIncompleteResponse() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
