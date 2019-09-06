@@ -35,7 +35,7 @@ write ${core:string("http2#0")}
 write ${core:string("target#0")}
 write ${http:routeEx()
             .header(":authority", "localhost:8080")
-            .override("x-protocol", "emulated")
+            .override("custom-header", "test")
             .build()}
 write flush
 

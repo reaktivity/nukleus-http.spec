@@ -33,7 +33,7 @@ read ${core:string("http2#0")}
 read ${core:string("target#0")}
 read ${http:routeEx()
            .header(":authority", "localhost:8080")
-           .override("x-protocol", "emulated")
+           .override("custom-header", "test")
            .build()}
 
 write 0x40000001

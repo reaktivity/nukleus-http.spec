@@ -28,7 +28,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":scheme", "http")
                               .header(":path", "/")
                               .header(":authority", "localhost:8080")
-                              .header("x-protocol", "emulated")
+                              .header("custom-header", "test")
                               .build()}
 connected
 
@@ -48,7 +48,7 @@ read nukleus:begin.ext ${http:beginEx()
 
 # First push promise
 read nukleus:data.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
+                            .typeId(nukleus:id("http"))
                             .header(":method", "GET")
                             .header(":scheme", "http")
                             .header(":path", "/style.css")
@@ -76,7 +76,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
                               .header(":authority", "localhost:8080")
-                              .header("x-protocol", "emulated")
+                              .header("custom-header", "test")
                               .build()}
 connected
 
