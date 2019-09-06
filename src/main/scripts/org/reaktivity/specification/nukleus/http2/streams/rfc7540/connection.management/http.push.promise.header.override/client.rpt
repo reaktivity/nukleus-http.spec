@@ -28,6 +28,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":scheme", "http")
                               .header(":path", "/")
                               .header(":authority", "localhost:8080")
+                              .header("x-protocol", "emulated")
                               .build()}
 connected
 
@@ -55,16 +56,6 @@ read nukleus:data.ext ${http:beginEx()
                             .build()}
 read notify FIRST_PUSH_PROMISE_RECEIVED
 
-# Second push promise
-read nukleus:data.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                            .header(":method", "GET")
-                            .header(":scheme", "http")
-                            .header(":path", "/script.js")
-                            .header(":authority", "localhost:8080")
-                            .build()}
-read notify SECOND_PUSH_PROMISE_RECEIVED
-
 read "<html>"
      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
      "<body><script src=\"script.js\"></script></body>"
@@ -85,6 +76,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
                               .header(":authority", "localhost:8080")
+                              .header("x-protocol", "emulated")
                               .build()}
 connected
 
@@ -101,33 +93,3 @@ read "h1 {"
      "    color: blue;"
      "}"
 
-
-#
-# Second promised request
-#
-connect await SECOND_PUSH_PROMISE_RECEIVED
-        ${clientTransport}
-        option nukleus:window 8192
-        option nukleus:transmission "half-duplex"
-
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":method", "GET")
-                              .header(":scheme", "http")
-                              .header(":path", "/script.js")
-                              .header(":authority", "localhost:8080")
-                              .build()}
-connected
-
-read nukleus:begin.ext ${http:beginEx()
-                             .typeId(nukleus:id("http"))
-                             .header(":status", "200")
-                             .header("server", "CERN/3.0 libwww/2.17")
-                             .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                             .header("content-type", "text/javascript")
-                             .header("content-length", "15")
-                             .build()}
-
-
-read "function f() {"
-     "}"
