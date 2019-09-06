@@ -27,7 +27,11 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":authority", "localhost:8080")
                               .build()}
 connected
+
+read abort
+
 write abort
+
 write notify REQUEST_ONE_ABORTED
 
 connect await REQUEST_ONE_ABORTED
