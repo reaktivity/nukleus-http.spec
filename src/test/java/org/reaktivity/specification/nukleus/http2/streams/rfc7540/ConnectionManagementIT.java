@@ -335,4 +335,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${streams}/http.push.promise.header.override/client",
+        "${streams}/http.push.promise.header.override/server"
+    })
+    public void pushResourcesWithOverrideHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }
