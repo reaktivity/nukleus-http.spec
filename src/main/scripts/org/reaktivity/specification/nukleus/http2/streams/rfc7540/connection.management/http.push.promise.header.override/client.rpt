@@ -49,7 +49,7 @@ read nukleus:data.ext ${http:beginEx()
                             .header(":method", "GET")
                             .header(":scheme", "http")
                             .header(":path", "/style.css")
-                            .header(":authority", "otherhost:8181")
+                            .header(":authority", "localhost:8080")
                             .build()}
 read notify FIRST_PUSH_PROMISE_RECEIVED
 
