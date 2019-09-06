@@ -27,8 +27,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":method", "POST")
                              .header(":scheme", "http")
                              .header(":path", "/")
-                             .header(":authority", "localhost:8080")
-                             .header("custom-header", "test")
+                             .header(":authority", "otherhost:8081")
                              .build()}
 connected
 
@@ -50,7 +49,7 @@ write nukleus:data.ext ${http:beginEx()
                              .header(":method", "GET")
                              .header(":scheme", "http")
                              .header(":path", "/style.css")
-                             .header(":authority", "localhost:8080")
+                             .header(":authority", "otherhost:8081")
                              .build()}
 write flush
 
@@ -70,8 +69,7 @@ read nukleus:begin.ext ${http:beginEx()
                               .header(":method", "GET")
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
-                              .header(":authority", "localhost:8080")
-                              .header("custom-header", "test")
+                              .header(":authority", "otherhost:8181")
                               .build()}
 connected
 

@@ -27,8 +27,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":method", "POST")
                               .header(":scheme", "http")
                               .header(":path", "/")
-                              .header(":authority", "localhost:8080")
-                              .header("custom-header", "test")
+                              .header(":authority", "otherhost:8181")
                               .build()}
 connected
 
@@ -52,7 +51,7 @@ read nukleus:data.ext ${http:beginEx()
                             .header(":method", "GET")
                             .header(":scheme", "http")
                             .header(":path", "/style.css")
-                            .header(":authority", "localhost:8080")
+                            .header(":authority", "otherhost:8081")
                             .build()}
 read notify FIRST_PUSH_PROMISE_RECEIVED
 
@@ -76,7 +75,6 @@ write nukleus:begin.ext ${http:beginEx()
                               .header(":scheme", "http")
                               .header(":path", "/style.css")
                               .header(":authority", "localhost:8080")
-                              .header("custom-header", "test")
                               .build()}
 connected
 
