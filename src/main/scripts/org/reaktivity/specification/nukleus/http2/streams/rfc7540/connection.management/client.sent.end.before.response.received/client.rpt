@@ -32,4 +32,4 @@ connected
 write "Hello, world"
 write close
 
-write aborted
+read abort
