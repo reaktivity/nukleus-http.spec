@@ -28,7 +28,7 @@ import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
-import org.reaktivity.specification.http.internal.types.stream.HttpSignalExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpChallengeExFW;
 
 public final class HttpFunctions
 {
@@ -57,9 +57,9 @@ public final class HttpFunctions
     }
 
     @Function
-    public static HttpSignalExBuilder signalEx()
+    public static HttpChallengeExBuilder signalEx()
     {
-        return new HttpSignalExBuilder();
+        return new HttpChallengeExBuilder();
     }
 
     @Function
@@ -261,36 +261,36 @@ public final class HttpFunctions
         }
     }
 
-    public static final class HttpSignalExBuilder
+    public static final class HttpChallengeExBuilder
     {
-        private final HttpSignalExFW.Builder signalExRW;
+        private final HttpChallengeExFW.Builder challengeExRW;
 
-        private HttpSignalExBuilder()
+        private HttpChallengeExBuilder()
         {
             MutableDirectBuffer writeExBuffer = new UnsafeBuffer(new byte[1024 * 8]);
-            this.signalExRW = new HttpSignalExFW.Builder().wrap(writeExBuffer, 0, writeExBuffer.capacity());
+            this.challengeExRW = new HttpChallengeExFW.Builder().wrap(writeExBuffer, 0, writeExBuffer.capacity());
         }
 
-        public HttpSignalExBuilder typeId(
+        public HttpChallengeExBuilder typeId(
             int typeId)
         {
-            signalExRW.typeId(typeId);
+            challengeExRW.typeId(typeId);
             return this;
         }
 
-        public HttpSignalExBuilder header(
+        public HttpChallengeExBuilder header(
             String name,
             String value)
         {
-            signalExRW.headersItem(b -> b.name(name).value(value));
+            challengeExRW.headersItem(b -> b.name(name).value(value));
             return this;
         }
 
         public byte[] build()
         {
-            final HttpSignalExFW signalEx = signalExRW.build();
-            final byte[] array = new byte[signalEx.sizeof()];
-            signalEx.buffer().getBytes(signalEx.offset(), array);
+            final HttpChallengeExFW challengeEx = challengeExRW.build();
+            final byte[] array = new byte[challengeEx.sizeof()];
+            challengeEx.buffer().getBytes(challengeEx.offset(), array);
             return array;
         }
     }

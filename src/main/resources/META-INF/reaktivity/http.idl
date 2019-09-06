@@ -47,7 +47,7 @@ scope http
             list<http::HttpHeader> trailers;
         }
 
-        struct HttpSignalEx extends core::stream::Extension
+        struct HttpChallengeEx extends core::stream::Extension
         {
             list<http::HttpHeader> headers;
         }
