@@ -57,7 +57,7 @@ public final class HttpFunctions
     }
 
     @Function
-    public static HttpChallengeExBuilder signalEx()
+    public static HttpChallengeExBuilder challengeEx()
     {
         return new HttpChallengeExBuilder();
     }

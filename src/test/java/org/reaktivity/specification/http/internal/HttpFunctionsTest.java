@@ -134,9 +134,9 @@ public class HttpFunctionsTest
     }
 
     @Test
-    public void shouldGenerateSignalExtension()
+    public void shouldGenerateChallengeExtension()
     {
-        byte[] build = HttpFunctions.signalEx()
+        byte[] build = HttpFunctions.challengeEx()
                                     .typeId(0x01)
                                     .header("name", "value")
                                     .build();
