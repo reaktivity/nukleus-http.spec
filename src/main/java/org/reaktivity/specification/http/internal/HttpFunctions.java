@@ -285,9 +285,10 @@ public final class HttpFunctions
 
     private static int randomCharBytesUTF8(
         byte[] bytes,
-        int offset,
+        int index,
         int width)
     {
+        int offset = index;
         Random random = ThreadLocalRandom.current();
         switch (width)
         {
