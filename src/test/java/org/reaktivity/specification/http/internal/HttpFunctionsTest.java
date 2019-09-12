@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
 import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpChallengeExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
 
@@ -130,5 +131,23 @@ public class HttpFunctionsTest
             assertEquals("value", onlyHeader.value().asString());
         });
         assertTrue(endEx.trailers().sizeof() > 0);
+    }
+
+    @Test
+    public void shouldGenerateChallengeExtension()
+    {
+        byte[] build = HttpFunctions.challengeEx()
+                                    .typeId(0x01)
+                                    .header("name", "value")
+                                    .build();
+        DirectBuffer buffer = new UnsafeBuffer(build);
+        HttpChallengeExFW challengeEx = new HttpChallengeExFW().wrap(buffer, 0, buffer.capacity());
+        assertEquals(0x01, challengeEx.typeId());
+        challengeEx.headers().forEach(onlyHeader ->
+        {
+            assertEquals("name", onlyHeader.name().asString());
+            assertEquals("value", onlyHeader.value().asString());
+        });
+        assertTrue(challengeEx.headers().sizeof() > 0);
     }
 }
