@@ -26,9 +26,9 @@ import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
 import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpChallengeExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
-import org.reaktivity.specification.http.internal.types.stream.HttpChallengeExFW;
 
 public final class HttpFunctions
 {
