@@ -26,6 +26,7 @@ import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
 import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
+import org.reaktivity.specification.http.internal.types.stream.HttpChallengeExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpDataExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpEndExFW;
 
@@ -53,6 +54,12 @@ public final class HttpFunctions
     public static HttpEndExBuilder endEx()
     {
         return new HttpEndExBuilder();
+    }
+
+    @Function
+    public static HttpChallengeExBuilder challengeEx()
+    {
+        return new HttpChallengeExBuilder();
     }
 
     @Function
@@ -250,6 +257,40 @@ public final class HttpFunctions
             final HttpEndExFW endEx = endExRW.build();
             final byte[] array = new byte[endEx.sizeof()];
             endEx.buffer().getBytes(endEx.offset(), array);
+            return array;
+        }
+    }
+
+    public static final class HttpChallengeExBuilder
+    {
+        private final HttpChallengeExFW.Builder challengeExRW;
+
+        private HttpChallengeExBuilder()
+        {
+            MutableDirectBuffer writeExBuffer = new UnsafeBuffer(new byte[1024 * 8]);
+            this.challengeExRW = new HttpChallengeExFW.Builder().wrap(writeExBuffer, 0, writeExBuffer.capacity());
+        }
+
+        public HttpChallengeExBuilder typeId(
+            int typeId)
+        {
+            challengeExRW.typeId(typeId);
+            return this;
+        }
+
+        public HttpChallengeExBuilder header(
+            String name,
+            String value)
+        {
+            challengeExRW.headersItem(b -> b.name(name).value(value));
+            return this;
+        }
+
+        public byte[] build()
+        {
+            final HttpChallengeExFW challengeEx = challengeExRW.build();
+            final byte[] array = new byte[challengeEx.sizeof()];
+            challengeEx.buffer().getBytes(challengeEx.offset(), array);
             return array;
         }
     }
