@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.reaktivity</groupId>
   <artifactId>nukleus-http.spec</artifactId>
-  <version>0.77</version>
+  <version>0.78</version>
   <name>HTTP Nukleus Specification</name>
   <description>HTTP Nukleus Specification</description>
   <url>https://github.com/reaktivity/nukleus-http.spec</url>
@@ -42,7 +42,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <checkstyle.config.location>src/conf/checkstyle/configuration.xml</checkstyle.config.location>
     <checkstyle.suppressions.location>src/conf/checkstyle/suppressions.xml</checkstyle.suppressions.location>
-    <jacoco.coverage.ratio>0.61</jacoco.coverage.ratio>
+    <jacoco.coverage.ratio>0.99</jacoco.coverage.ratio>
     <jacoco.missed.count>0</jacoco.missed.count>
 
     <junit.version>4.12</junit.version>

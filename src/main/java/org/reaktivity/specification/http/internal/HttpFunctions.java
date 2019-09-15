@@ -15,6 +15,10 @@
  */
 package org.reaktivity.specification.http.internal;
 
+import static java.lang.Character.toLowerCase;
+import static java.lang.Character.toUpperCase;
+
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
@@ -88,6 +92,95 @@ public final class HttpFunctions
     }
 
     @Function
+    public static String randomMethodNot(
+        String method)
+    {
+        Random random = ThreadLocalRandom.current();
+        String[] methods = new String[]{"GET", "OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE", "CONNECT"};
+        String result;
+        do
+        {
+            result = methods[random.nextInt(methods.length)];
+        } while (result.equalsIgnoreCase(method));
+        return result;
+    }
+
+    @Function
+    public static String randomHeaderNot(
+        String header)
+    {
+        Random random = ThreadLocalRandom.current();
+        // random strings from bytes can generate random bad chars like \n \r \f \v etc which are not allowed
+        // except under special conditions, and will crash the http pipeline
+        String commonHeaderChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "1234567890!@#$%^&*()_+-=`~[]\\{}|;':\",./<>?";
+        StringBuilder result = new StringBuilder();
+        do
+        {
+            int maxHeaderLength = 200;
+            int randomHeaderLength = random.nextInt(maxHeaderLength) + 1;
+            for (int i = 0; i < randomHeaderLength; i++)
+            {
+                result.append(commonHeaderChars.charAt(random.nextInt(commonHeaderChars.length())));
+            }
+        } while (result.toString().equalsIgnoreCase(header));
+        return result.toString();
+    }
+
+    @Function
+    public static String randomizeLetterCase(
+        String text)
+    {
+        Random random = ThreadLocalRandom.current();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < text.length(); i++)
+        {
+            char c = text.charAt(i);
+            if (random.nextBoolean())
+            {
+                c = toUpperCase(c);
+            }
+            else
+            {
+                c = toLowerCase(c);
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+
+    @Function
+    public static String randomCaseNot(
+        String value)
+    {
+        Random random = ThreadLocalRandom.current();
+
+        String result;
+        char[] resultChars = new char[value.length()];
+
+        do
+        {
+            for (int i = 0; i < value.length(); i++)
+            {
+                char c = value.charAt(i);
+                resultChars[i] = random.nextBoolean() ? toUpperCase(c) : toLowerCase(c);
+            }
+            result = new String(resultChars);
+        } while(result.equals(value));
+
+        return result;
+    }
+
+    @Function
+    public static byte[] copyOfRange(
+        byte[] original,
+        int from,
+        int to)
+    {
+        return Arrays.copyOfRange(original, from, to);
+    }
+
+    @Function
     public static byte[] randomAscii(
         int length)
     {
@@ -121,6 +214,34 @@ public final class HttpFunctions
     {
         byte[] bytes = new byte[length];
         randomBytesUTF8(bytes, 0, length);
+        return bytes;
+    }
+
+    @Function
+    public static byte[] randomBytesInvalidUTF8(
+        int length)
+    {
+        // TODO: make invalid UTF-8 bytes less like valid UTF-8 (!)
+        byte[] bytes = new byte[length];
+        bytes[0] = (byte) 0x80;
+        randomBytesUTF8(bytes, 1, length - 1);
+        return bytes;
+    }
+
+    @Function
+    public static byte[] randomBytesUnalignedUTF8(
+        int length,
+        int unalignAt)
+    {
+        assert -1 < unalignAt && unalignAt < length;
+
+        Random random = ThreadLocalRandom.current();
+        byte[] bytes = new byte[length];
+        int straddleWidth = random.nextInt(3) + 2;
+        int straddleAt = unalignAt - straddleWidth + 1;
+        randomBytesUTF8(bytes, 0, straddleAt);
+        int realignAt = randomCharBytesUTF8(bytes, straddleAt, straddleWidth);
+        randomBytesUTF8(bytes, realignAt, length);
         return bytes;
     }
 
