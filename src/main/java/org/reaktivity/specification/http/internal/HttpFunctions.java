@@ -166,7 +166,7 @@ public final class HttpFunctions
                 resultChars[i] = random.nextBoolean() ? toUpperCase(c) : toLowerCase(c);
             }
             result = new String(resultChars);
-        } while(result.equals(value));
+        } while (result.equals(value));
 
         return result;
     }

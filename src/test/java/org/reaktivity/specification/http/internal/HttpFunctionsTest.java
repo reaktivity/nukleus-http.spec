@@ -118,7 +118,7 @@ public class HttpFunctionsTest
     public void shouldCopyRangeOfBytes() throws Exception
     {
         final byte[] bytes = new byte[42];
-        for (int i=0; i < bytes.length; i++)
+        for (int i = 0; i < bytes.length; i++)
         {
             bytes[i] = (byte) i;
         }
@@ -128,7 +128,7 @@ public class HttpFunctionsTest
         assertNotNull(range);
         assertEquals(5, range.length);
 
-        for (int i=0; i < range.length; i++)
+        for (int i = 0; i < range.length; i++)
         {
             assertEquals(i + 5, range[i]);
         }
