@@ -84,10 +84,10 @@ message.routing/proxy.must.attach.appropriate.via.header/proxy.rpt
 message.routing/proxy.must.attach.appropriate.via.headers.even.when.others/proxy.rpt
 mv message.routing/proxy.must.not.modify.query.or.absolute.path.of.request/request.rpt message.routing/proxy.must.not.modify.query.or.absolute.path.of.request/client.rpt
 mv message.routing/proxy.must.not.modify.query.or.absolute.path.of.request/response.rpt message.routing/proxy.must.not.modify.query.or.absolute.path.of.request/server.rpt
-mv message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.cache.control/request.rpt message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.cache.control/client.rpt
-mv message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.cache.control/response.rpt message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.cache.control/server.rpt
-mv message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.cache.control/request.rpt message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.cache.control/client.rpt
-mv message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.cache.control/response.rpt message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.cache.control/server.rpt
+mv message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.emulatedCache.control/request.rpt message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.emulatedCache.control/client.rpt
+mv message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.emulatedCache.control/response.rpt message.routing/proxy.must.not.transform.the.payload.of.a.request.that.contains.a.no.transform.emulatedCache.control/server.rpt
+mv message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.emulatedCache.control/request.rpt message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.emulatedCache.control/client.rpt
+mv message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.emulatedCache.control/response.rpt message.routing/proxy.must.not.transform.the.payload.of.a.response.that.contains.a.no.transform.emulatedCache.control/server.rpt
 message.routing/proxy.should.rewrite.host.header/proxy.rpt
 mv transfer.codings/request.transfer.encoding.chunked.with.trailer/request.rpt transfer.codings/request.transfer.encoding.chunked.with.trailer/client.rpt
 mv transfer.codings/request.transfer.encoding.chunked.with.trailer/response.rpt transfer.codings/request.transfer.encoding.chunked.with.trailer/server.rpt

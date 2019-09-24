@@ -396,4 +396,16 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.response.headers.incomplete.data.and.end/client",
+        "${scripts}/request.response.headers.incomplete.data.and.end/server" })
+    @ScriptProperty("serverConnect \"nukleus://streams/http#0\"")
+    public void shouldReportResponseEndedWithIncompleteData() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }

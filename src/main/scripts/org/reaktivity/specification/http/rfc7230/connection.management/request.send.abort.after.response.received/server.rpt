@@ -26,16 +26,10 @@ read "GET / HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
-read notify FIRST_REQUEST_RECEIVED
+write "HTTP/1.1 200 OK\r\n"
+write "\r\n"
+write flush
 
 read aborted
 write aborted
-read notify FIRST_REQUEST_ABORTED
 
-# Check connection pool is not exhausted
-accepted
-connected
-
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"

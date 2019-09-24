@@ -14,28 +14,19 @@
 # under the License.
 #
 
-property serverTransport "nukleus://streams/target#0"
-
-accept ${serverTransport}
+connect await ROUTED_SERVER 
+        "nukleus://streams/http#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
-accepted
 connected
 
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
+write "GET / HTTP/1.1" "\r\n"
+write "Host: localhost:8080" "\r\n"
+write "\r\n"
+
+read "HTTP/1.1 200 OK\r\n"
 read "\r\n"
 
-read notify FIRST_REQUEST_RECEIVED
+write abort
+read abort
 
-read aborted
-write aborted
-read notify FIRST_REQUEST_ABORTED
-
-# Check connection pool is not exhausted
-accepted
-connected
-
-read "GET / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "\r\n"
