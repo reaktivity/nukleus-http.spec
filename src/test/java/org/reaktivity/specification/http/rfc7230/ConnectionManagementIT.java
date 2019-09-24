@@ -474,4 +474,16 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "${scripts}/request.send.abort.after.response.received/client",
+        "${scripts}/request.send.abort.after.response.received/server" })
+    @ScriptProperty("serverTransport \"nukleus://streams/http#0\"")
+    public void shouldSendAbortAndResetOnAbortedRequestAfterResponseHeaderReceived() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
