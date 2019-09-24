@@ -14,27 +14,26 @@
 # under the License.
 #
 
-connect await ROUTED_SERVER 
+connect await ROUTED_CLIENT
         "nukleus://streams/http#0"
   option nukleus:window 8192
-  option nukleus:transmission "duplex"
+  option nukleus:transmission "half-duplex"
+
+write nukleus:begin.ext ${http:beginEx()
+                              .typeId(nukleus:id("http"))
+                              .header(":scheme", "http")
+                              .header(":method", "GET")
+                              .header(":path", "/")
+                              .header(":authority", "localhost:8080")
+                              .build()}
 connected
 
-write "GET / HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":status", "200")
+                             .header("content-length", "8")
+                             .build()}
 
 write abort
-read abort
-read notify FIRST_REQUEST_COMPLETED
+read aborted
 
-# Check connection pool is not exhausted
-connect await FIRST_REQUEST_ABORTED
-        "nukleus://streams/http#0"
-  option nukleus:window 8192
-  option nukleus:transmission "duplex"
-connected
-
-write "GET / HTTP/1.1" "\r\n"
-write "Host: localhost:8080" "\r\n"
-write "\r\n"
