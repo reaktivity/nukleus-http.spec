@@ -29,8 +29,7 @@ read "\r\n"
 read notify FIRST_REQUEST_RECEIVED
 
 read aborted
-write abort
-
+write aborted
 read notify FIRST_REQUEST_ABORTED
 
 # Check connection pool is not exhausted
