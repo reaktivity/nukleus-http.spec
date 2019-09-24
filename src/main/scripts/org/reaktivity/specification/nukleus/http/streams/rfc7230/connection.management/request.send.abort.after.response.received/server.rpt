@@ -18,7 +18,7 @@ property serverConnect "nukleus://streams/target#0"
 
 accept ${serverConnect}
   option nukleus:window 8192
-  option nukleus:transmission "simplex"
+  option nukleus:transmission "half-duplex"
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -33,6 +33,7 @@ connected
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
+                              .header("content-length", "8")
                               .build()}
 
 read aborted

@@ -27,6 +27,7 @@ read "Host: localhost:8080" "\r\n"
 read "\r\n"
 
 write "HTTP/1.1 200 OK\r\n"
+write "content-length: 8" "\r\n"
 write "\r\n"
 write flush
 
