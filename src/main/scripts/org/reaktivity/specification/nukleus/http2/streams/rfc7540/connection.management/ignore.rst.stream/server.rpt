@@ -43,6 +43,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 write flush
 
+read aborted
 write aborted
 
 #
