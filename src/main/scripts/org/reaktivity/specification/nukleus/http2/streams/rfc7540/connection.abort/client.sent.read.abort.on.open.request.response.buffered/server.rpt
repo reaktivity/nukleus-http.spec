@@ -46,6 +46,5 @@ write ${data}
 
 write flush
 
-write aborted
-
 read aborted
+write aborted
