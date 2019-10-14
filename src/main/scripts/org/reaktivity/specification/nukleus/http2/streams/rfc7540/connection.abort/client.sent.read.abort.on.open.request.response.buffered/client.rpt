@@ -40,6 +40,5 @@ read nukleus:begin.ext ${http:beginEx()
 
 read ${data}
 
-read abort
-
 write abort
+read abort

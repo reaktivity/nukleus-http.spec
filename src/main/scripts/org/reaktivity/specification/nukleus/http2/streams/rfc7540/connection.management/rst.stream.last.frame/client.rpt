@@ -28,11 +28,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 connected
 
-read abort
-
 write abort
-
-write notify REQUEST_ONE_ABORTED
+read abort
+read notify REQUEST_ONE_ABORTED
 
 connect await REQUEST_ONE_ABORTED
          "nukleus://streams/http2#0"
