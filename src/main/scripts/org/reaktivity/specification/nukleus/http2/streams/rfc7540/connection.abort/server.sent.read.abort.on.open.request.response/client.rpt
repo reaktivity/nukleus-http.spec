@@ -39,8 +39,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 
 
-read [0..55000]
+read [0..384]
+
+write aborted
 
 read abort
-
-write abort
