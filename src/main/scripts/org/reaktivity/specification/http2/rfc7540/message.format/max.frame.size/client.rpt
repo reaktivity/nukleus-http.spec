@@ -41,8 +41,16 @@ write [0x00 0x00 0x12]                   # length = 18
       [0x00]                             # flags = 0x00
       [0x00 0x00 0x00 0x00]              # stream_id = 0
       [0x00 0x03 0x00 0x00 0x00 0x64]    # SETTINGS_MAX_CONCURRENT_STREAMS(0x03) = 100
-      [0x00 0x04 0x00 0x00 0x75 0x30]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 30000
+      [0x00 0x04 0x00 0x00 0x71 0x48]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 29000
       [0x00 0x05 0x00 0x00 0x4e 0x20]    # SETTINGS_MAX_FRAME_SIZE(0x05) = 20000
+write flush
+
+# connection-level flow control
+write [0x00 0x00 0x04]                         # length
+      [0x08]                                   # WINDOW_UPDATE frame
+      [0x00]                                   # no flags
+      [0x00 0x00 0x00 0x00]                    # stream_id=0
+      [0x00 0x00 0x75 0x30]                    # window size increment = 30000
 write flush
 
 read [0x00 0x00 0x00]                   # length = 0
@@ -92,7 +100,7 @@ read [0x00 0x4e 0x20]                          # length = 20000
 read [0..20000]
 
 #
-# response DATA frame 9000 = (30000 - 20000 - padding:1000)
+# response DATA frame 9000 = max(30000 - 20000, 29000 - 20000)
 #
 read [0x00 0x23 0x28]                          # length = 9000
      [0x00]                                    # HTTP2 DATA frame

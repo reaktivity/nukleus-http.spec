@@ -20,9 +20,6 @@ accept ${serverTransport}
         option nukleus:window 8192
         option nukleus:transmission "half-duplex"
 
-#
-# First client-initiated stream
-#
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -44,9 +41,10 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 write flush
 
-write await SECOND_REQUEST_RECEIVED
+write notify REQUEST_ONE_RESPONSE_HEADERS_SENT
 
-# First push promise
+write await REQUEST_TWO_RESPONSE_HEADERS_SENT
+
 write nukleus:data.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                              .header(":method", "GET")
@@ -55,8 +53,8 @@ write nukleus:data.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .build()}
 write flush
+write notify PROMISE_ONE_SENT
 
-# Second push promise
 write nukleus:data.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                              .header(":method", "GET")
@@ -65,6 +63,7 @@ write nukleus:data.ext ${http:beginEx()
                              .header(":authority", "localhost:8080")
                              .build()}
 write flush
+write notify PROMISE_TWO_SENT
 
 write "<html>"
       "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
@@ -73,11 +72,9 @@ write "<html>"
 write flush
 write close
 
-write notify FIRST_RESPONSE_COMPLETED
+write notify REQUEST_ONE_RESPONSE_COMPLETED
 
-#
-# Second client-initiated stream
-#
+
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -97,13 +94,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 write flush
 
-read notify SECOND_REQUEST_RECEIVED
+write notify REQUEST_TWO_RESPONSE_HEADERS_SENT
 
 
-
-#
-# First promised response
-#
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -115,6 +108,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 connected
 
+write await REQUEST_ONE_RESPONSE_COMPLETED
+
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
@@ -125,9 +120,9 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 write flush
 
-# Third push promise
-write await SECOND_PROMISED_RESPONSE_HEADERS_SENT
-write await FIRST_RESPONSE_COMPLETED
+write notify PROMISE_ONE_RESPONSE_HEADERS_SENT
+
+write await PROMISE_TWO_RESPONSE_HEADERS_SENT
 
 write nukleus:data.ext ${http:dataEx()
                              .typeId(nukleus:id("http"))
@@ -137,17 +132,16 @@ write nukleus:data.ext ${http:dataEx()
                              .promise(":authority", "localhost:8080")
                              .build()}
 write flush
+write notify PROMISE_THREE_SENT
 
 write "h1 {"
       "    color: blue;"
       "}"
 write flush
-write notify FIRST_PROMISED_RESPONSE
+
+write notify PROMISE_ONE_RESPONSE_CONTENT_SENT
 
 
-#
-# Second promised response
-#
 accepted
 
 read nukleus:begin.ext ${http:beginEx()
@@ -159,6 +153,8 @@ read nukleus:begin.ext ${http:beginEx()
                              .build()}
 connected
 
+write await PROMISE_ONE_RESPONSE_HEADERS_SENT
+
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":status", "200")
@@ -168,9 +164,12 @@ write nukleus:begin.ext ${http:beginEx()
                               .header("content-length", "15")
                               .build()}
 write flush
-write notify SECOND_PROMISED_RESPONSE_HEADERS_SENT
+write notify PROMISE_TWO_RESPONSE_HEADERS_SENT
 
-write await FIRST_PROMISED_RESPONSE
+write await PROMISE_ONE_RESPONSE_CONTENT_SENT
+
 write "function f() {"
       "}"
 write flush
+
+write notify PROMISE_TWO_RESPONSE_CONTENT_SENT
