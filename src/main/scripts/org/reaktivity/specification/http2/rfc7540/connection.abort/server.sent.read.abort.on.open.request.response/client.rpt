@@ -16,7 +16,7 @@
 
 connect await ROUTED_SERVER
         "nukleus://streams/http2#0"
-        option nukleus:window 128               # enough for SETTINGS + HEADERS
+        option nukleus:window 512               # enough for SETTINGS + HEADERS + partial DATA
         option nukleus:transmission "duplex"
 connected
 
@@ -32,6 +32,14 @@ write [0x00 0x00 0x06]                   # length = 6
       [0x00]                             # flags = 0x00
       [0x00 0x00 0x00 0x00]              # stream_id = 0
       [0x00 0x04 0x00 0x00 0xff 0xff]    # SETTINGS_INITIAL_WINDOW_SIZE(0x04) = 65535
+write flush
+
+# connection-level flow control
+write [0x00 0x00 0x04]                         # length
+      [0x08]                                   # WINDOW_UPDATE frame
+      [0x00]                                   # no flags
+      [0x00 0x00 0x00 0x00]                    # stream_id=0
+      [0x00 0x00 0x20 0x00]                    # window size increment = 8192
 write flush
 
 write [0x00 0x00 0x13]                  # length = 19
