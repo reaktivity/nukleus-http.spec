@@ -352,10 +352,10 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
-        "${streams}/client.sent.write.abort.then.write.abort.on.open.request/client",
-        "${streams}/client.sent.write.abort.then.write.abort.on.open.request/server"
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/client",
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/server"
     })
-    public void clientSentWriteAbortThenWriteAbortOnOpenRequest() throws Exception
+    public void clientSentWriteAbortThenReadAbortOnOpenRequest() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");
