@@ -387,4 +387,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${spec}/client.sent.read.abort.and.write.reset.on.open.request/client",
+        "${spec}/client.sent.read.abort.and.write.reset.on.open.request/server",
+    })
+    public void clientSentReadAbortAndWriteResetOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
