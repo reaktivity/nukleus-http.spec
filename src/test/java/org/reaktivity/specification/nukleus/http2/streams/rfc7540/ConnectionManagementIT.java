@@ -348,4 +348,17 @@ public class ConnectionManagementIT
         k3po.notifyBarrier("ROUTED_CLIENT");
         k3po.finish();
     }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/client",
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/server"
+    })
+    public void clientSentWriteAbortThenReadAbortOnOpenRequest() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
 }
