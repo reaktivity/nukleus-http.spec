@@ -45,14 +45,6 @@ write [0x00 0x00 0x12]                   # length = 18
       [0x00 0x05 0x00 0x00 0x4e 0x20]    # SETTINGS_MAX_FRAME_SIZE(0x05) = 20000
 write flush
 
-# connection-level flow control
-write [0x00 0x00 0x04]                         # length
-      [0x08]                                   # WINDOW_UPDATE frame
-      [0x00]                                   # no flags
-      [0x00 0x00 0x00 0x00]                    # stream_id=0
-      [0x00 0x00 0x75 0x30]                    # window size increment = 30000
-write flush
-
 read [0x00 0x00 0x00]                   # length = 0
      [0x04]                             # HTTP2 SETTINGS frame
      [0x01]                             # ACK
