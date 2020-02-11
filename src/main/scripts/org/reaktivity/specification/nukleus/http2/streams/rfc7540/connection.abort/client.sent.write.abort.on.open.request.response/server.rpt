@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2019 The Reaktivity Project
+# Copyright 2016-2020 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,12 +14,11 @@
 # under the License.
 #
 
-property data ${http:randomBytes(55000)}
+property data ${http:randomBytes(384)}
 
 accept await ROUTED_SERVER
         "nukleus://streams/target#0"
-        option nukleus:window 0                 # so that request body is buffered
-        option nukleus:update "handshake"
+        option nukleus:window 0
         option nukleus:transmission "half-duplex"
 accepted
 
@@ -46,6 +45,6 @@ write ${data}
 
 write flush
 
-write abort
-
 read aborted
+
+write aborted

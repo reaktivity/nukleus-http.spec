@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2019 The Reaktivity Project
+ * Copyright 2016-2020 The Reaktivity Project
  *
  * The Reaktivity Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -343,6 +343,19 @@ public class ConnectionManagementIT
         "${streams}/http.push.promise.header.override/server"
     })
     public void pushResourcesWithOverrideHeader() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_CLIENT");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/client",
+        "${streams}/client.sent.write.abort.then.read.abort.on.open.request/server"
+    })
+    public void clientSentWriteAbortThenReadAbortOnOpenRequest() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_CLIENT");

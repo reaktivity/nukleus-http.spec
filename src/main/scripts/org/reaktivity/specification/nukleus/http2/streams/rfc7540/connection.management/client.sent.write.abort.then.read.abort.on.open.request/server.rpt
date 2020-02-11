@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2019 The Reaktivity Project
+# Copyright 2016-2020 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -14,12 +14,10 @@
 # under the License.
 #
 
-property data ${http:randomBytes(55000)}
+property serverTransport "nukleus://streams/target#0"
 
-accept await ROUTED_SERVER
-        "nukleus://streams/target#0"
+accept ${serverTransport}
         option nukleus:window 0
-        option nukleus:update "handshake"            # So that some request body gets buffered
         option nukleus:transmission "half-duplex"
 accepted
 
@@ -30,21 +28,22 @@ read nukleus:begin.ext ${http:beginEx()
                              .header(":path", "/")
                              .header(":authority", "localhost:8080")
                              .build()}
-
 connected
 
-write nukleus:begin.ext ${http:beginEx()
-                              .typeId(nukleus:id("http"))
-                              .header(":status", "200")
-                              .header("server", "CERN/3.0 libwww/2.17")
-                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                              .header("content-type", "text/html; charset=UTF-8")
-                              .header("content-length", "113")
-                              .build()}
 
-write ${data}
+read aborted
+write aborted
 
-write flush
+accepted
+
+read nukleus:begin.ext ${http:beginEx()
+                             .typeId(nukleus:id("http"))
+                             .header(":method", "POST")
+                             .header(":scheme", "http")
+                             .header(":path", "/")
+                             .header(":authority", "localhost:8080")
+                             .build()}
+connected
 
 read aborted
 

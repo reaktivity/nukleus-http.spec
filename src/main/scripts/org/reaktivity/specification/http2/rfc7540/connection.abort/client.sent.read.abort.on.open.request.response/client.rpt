@@ -1,5 +1,5 @@
 #
-# Copyright 2016-2019 The Reaktivity Project
+# Copyright 2016-2020 The Reaktivity Project
 #
 # The Reaktivity Project licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -17,7 +17,6 @@
 connect await ROUTED_SERVER
         "nukleus://streams/http2#0"
         option nukleus:window 512               # enough for SETTINGS + HEADERS + partial DATA
-        option nukleus:update "handshake"            # So that response body gets buffered
         option nukleus:transmission "duplex"
 connected
 
@@ -82,8 +81,8 @@ read [0x00 0x00 0x59]                                      # length
      [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
      [0x0f 0x0d] [0x03] "113"                              # content-length
 
-read [0..384]
+read [0..393]
 
-write abort
+read abort
 
-read aborted
+write aborted

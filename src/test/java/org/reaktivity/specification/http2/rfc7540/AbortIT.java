@@ -1,5 +1,5 @@
 /**
- * Copyright 2016-2019 The Reaktivity Project
+ * Copyright 2016-2020 The Reaktivity Project
  *
  * The Reaktivity Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -38,10 +38,10 @@ public class AbortIT
 
     @Test
     @Specification({
-            "${spec}/client.sent.read.abort.on.open.request.response.buffered/client",
-            "${spec}/client.sent.read.abort.on.open.request.response.buffered/server",
+            "${spec}/client.sent.read.abort.on.open.request.response/client",
+            "${spec}/client.sent.read.abort.on.open.request.response/server",
     })
-    public void clientSentReadAbortOnOpenRequestResponseBuffered() throws Exception
+    public void clientSentReadAbortOnOpenRequestResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -50,10 +50,10 @@ public class AbortIT
 
     @Test
     @Specification({
-            "${spec}/client.sent.write.abort.on.open.request.response.buffered/client",
-            "${spec}/client.sent.write.abort.on.open.request.response.buffered/server",
+            "${spec}/client.sent.write.abort.on.open.request.response/client",
+            "${spec}/client.sent.write.abort.on.open.request.response/server",
     })
-    public void clientSentWriteAbortOnOpenRequestResponseBuffered() throws Exception
+    public void clientSentWriteAbortOnOpenRequestResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -62,10 +62,10 @@ public class AbortIT
 
     @Test
     @Specification({
-            "${spec}/server.sent.read.abort.on.open.request.response.buffered/client",
-            "${spec}/server.sent.read.abort.on.open.request.response.buffered/server",
+            "${spec}/server.sent.read.abort.on.open.request.response/client",
+            "${spec}/server.sent.read.abort.on.open.request.response/server",
     })
-    public void serverSentReadAbortOnOpenRequestResponseBuffered() throws Exception
+    public void serverSentReadAbortOnOpenRequestResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
@@ -74,14 +74,13 @@ public class AbortIT
 
     @Test
     @Specification({
-            "${spec}/server.sent.write.abort.on.open.request.response.buffered/client",
-            "${spec}/server.sent.write.abort.on.open.request.response.buffered/server",
+            "${spec}/server.sent.write.abort.on.open.request.response/client",
+            "${spec}/server.sent.write.abort.on.open.request.response/server",
     })
-    public void serverSentWriteAbortOnOpenRequestResponseBuffered() throws Exception
+    public void serverSentWriteAbortOnOpenRequestResponse() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
-
 }
