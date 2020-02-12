@@ -271,6 +271,14 @@ public final class HttpFunctions
             return this;
         }
 
+        public HttpRouteExBuilder exclude(
+            String name,
+            String value)
+        {
+            routeExRW.excludesItem(b -> b.name(name).value(value));
+            return this;
+        }
+
         public byte[] build()
         {
             final HttpRouteExFW routeEx = routeExRW.build();
