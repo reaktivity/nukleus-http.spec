@@ -18,6 +18,7 @@ package org.reaktivity.specification.http.internal;
 import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
 
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -272,10 +273,9 @@ public final class HttpFunctions
         }
 
         public HttpRouteExBuilder exclude(
-            String name,
-            String value)
+            String name)
         {
-            routeExRW.excludesItem(b -> b.name(name).value(value));
+            routeExRW.excludesItem(n -> n.set(name, Charset.defaultCharset()));
             return this;
         }
 

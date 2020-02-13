@@ -22,17 +22,6 @@ accept ${serverTransport}
 accepted
 connected
 
-read "OPTIONS / HTTP/1.1" "\r\n"
-read "Host: localhost:8080" "\r\n"
-read "Access-Control-Request-Headers: origin" "\r\n"
-
-read "\r\n"
-
-write "HTTP/1.1 200 OK\r\n"
-write "Content-Length: 0\r\n"
-write "Access-Control-Allow-Headers: origin\r\n"
-write "\r\n"
-
 read "GET / HTTP/1.1" "\r\n"
 read "Host: localhost:8080" "\r\n"
 

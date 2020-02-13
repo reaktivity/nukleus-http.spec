@@ -27,7 +27,7 @@ scope http
         {
             HttpHeader[] headers;
             HttpHeader[] overrides;
-            HttpHeader[] excludes;
+            string[] excludes;
         }
     }
 

@@ -22,10 +22,10 @@ connect await ROUTED_CLIENT
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
                               .header(":scheme", "http")
-                              .header(":method", "GET")
+                              .header(":method", "OPTIONS")
                               .header(":path", "/")
                               .header(":authority", "localhost:8080")
-                              .header("x-custom-one", "one")
+                              .header("access-control-request-headers", "x-custom-one, x-custom-two")
                               .build()}
 connected
 
@@ -35,6 +35,7 @@ read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
                              .header(":status", "200")
                              .header("content-length", "0")
+                             .header("access-control-allow-headers", "x-custom-one, x-custom-two")
                              .build()}
 
 read closed
