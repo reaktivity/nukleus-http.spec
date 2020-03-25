@@ -309,30 +309,11 @@ public class HttpFunctionsTest
     }
 
     @Test(expected = Exception.class)
-    public void shouldFailWhenHeadersItemNameDoNotMatch() throws Exception
-    {
-        BytesMatcher matcher = HttpFunctions.matchBeginEx()
-            .typeId(0x01)
-            .headerRegex("name", "value")
-            .build();
-
-        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
-
-        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
-            .typeId(0x02)
-            .headersItem(h -> h.name("headerName")
-                .value("value"))
-            .build();
-
-        matcher.match(byteBuf);
-    }
-
-    @Test(expected = Exception.class)
     public void shouldFailWhenDoNotMatchBeginExtensionWithRegex() throws Exception
     {
         BytesMatcher matcher = HttpFunctions.matchBeginEx()
                                             .typeId(0x01)
-                                            .headerRegex("name", "value1")
+                                            .headerRegex("name", "regex")
                                             .build();
 
         ByteBuffer byteBuf = ByteBuffer.allocate(1024);
@@ -344,6 +325,19 @@ public class HttpFunctionsTest
             .build();
 
         matcher.match(byteBuf);
+    }
+
+    @Test
+    public void shouldFailWhenBufferDoNotHaveEnoughSpace() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .typeId(0x01)
+                                            .headerRegex("name", "value")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(0);
+
+        assertNull(matcher.match(byteBuf));
     }
 
     @Test
