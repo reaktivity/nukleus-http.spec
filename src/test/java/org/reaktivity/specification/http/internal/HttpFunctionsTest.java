@@ -20,6 +20,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.reaktivity.specification.http.internal.HttpFunctions.copyOfRange;
@@ -268,6 +269,62 @@ public class HttpFunctionsTest
             .build();
 
         assertNotNull(matcher.match(byteBuf));
+    }
+
+    @Test
+    public void shouldFailWhenDoNotSetTypeId() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .headerRegex("name", "value")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x01)
+            .headersItem(h -> h.name("name")
+                               .value("value"))
+            .build();
+
+        assertNull(matcher.match(byteBuf));
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldFailWhenTypeIdDoNotMatch() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .typeId(0x01)
+                                            .headerRegex("name", "value")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x02)
+            .headersItem(h -> h.name("name")
+                               .value("value"))
+            .build();
+
+        matcher.match(byteBuf);
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldFailWhenHeadersItemNameDoNotMatch() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+            .typeId(0x01)
+            .headerRegex("name", "value")
+            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x02)
+            .headersItem(h -> h.name("headerName")
+                .value("value"))
+            .build();
+
+        matcher.match(byteBuf);
     }
 
     @Test(expected = Exception.class)

@@ -16,7 +16,7 @@
 
 connect await ROUTED_SERVER
         "nukleus://streams/http2#0"
-        option nukleus:window 100
+        option nukleus:window 108
         option nukleus:transmission "duplex"
 connected
 
