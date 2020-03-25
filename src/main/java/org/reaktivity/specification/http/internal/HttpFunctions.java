@@ -18,14 +18,21 @@ package org.reaktivity.specification.http.internal;
 import static java.lang.Character.toLowerCase;
 import static java.lang.Character.toUpperCase;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.agrona.DirectBuffer;
 import org.agrona.MutableDirectBuffer;
+import org.agrona.collections.MutableBoolean;
 import org.agrona.concurrent.UnsafeBuffer;
+import org.kaazing.k3po.lang.el.BytesMatcher;
 import org.kaazing.k3po.lang.el.Function;
 import org.kaazing.k3po.lang.el.spi.FunctionMapperSpi;
 import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
@@ -46,6 +53,12 @@ public final class HttpFunctions
     public static HttpBeginExBuilder beginEx()
     {
         return new HttpBeginExBuilder();
+    }
+
+    @Function
+    public static HttpBeginExMatcherBuilder matchBeginEx()
+    {
+        return new HttpBeginExMatcherBuilder();
     }
 
     @Function
@@ -311,6 +324,84 @@ public final class HttpFunctions
             final byte[] array = new byte[beginEx.sizeof()];
             beginEx.buffer().getBytes(beginEx.offset(), array);
             return array;
+        }
+    }
+
+    public static final class HttpBeginExMatcherBuilder
+    {
+        private final DirectBuffer bufferRO = new UnsafeBuffer();
+
+        private final HttpBeginExFW beginExRO = new HttpBeginExFW();
+
+        private final Map<String, Predicate<String>> headers = new LinkedHashMap<>();
+
+        private Integer typeId;
+
+        public HttpBeginExMatcherBuilder typeId(
+            int typeId)
+        {
+            this.typeId = typeId;
+            return this;
+        }
+
+        public HttpBeginExMatcherBuilder header(
+            String name,
+            String value)
+        {
+            headers.put(name, value::equals);
+            return this;
+        }
+
+        public HttpBeginExMatcherBuilder headerRegex(
+            String name,
+            String regex)
+        {
+            Pattern pattern = Pattern.compile(regex);
+            headers.put(name, v -> pattern.matcher(v).matches());
+            return this;
+        }
+
+        public BytesMatcher build()
+        {
+            return typeId != null ? this::match : buf -> null;
+        }
+
+        private HttpBeginExFW match(
+            ByteBuffer byteBuf) throws Exception
+        {
+            if (!byteBuf.hasRemaining())
+            {
+                return null;
+            }
+
+            bufferRO.wrap(byteBuf);
+            final HttpBeginExFW beginEx = beginExRO.tryWrap(bufferRO, byteBuf.position(), byteBuf.capacity());
+
+            if (beginEx != null &&
+                matchTypeId(beginEx) &&
+                matchHeaders(beginEx))
+            {
+                byteBuf.position(byteBuf.position() + beginEx.sizeof());
+                return beginEx;
+            }
+
+            throw new Exception(beginEx.toString());
+        }
+
+        private boolean matchHeaders(
+            HttpBeginExFW beginEx)
+        {
+            MutableBoolean match = new MutableBoolean(true);
+            headers.forEach((k, v) -> match.value &= beginEx.headers()
+                                                            .anyMatch(h -> k.equals(h.name().asString()) &&
+                                                                           v.test(h.value().asString())));
+            return match.value;
+        }
+
+        private boolean matchTypeId(
+            HttpBeginExFW beginEx)
+        {
+            return typeId == null || typeId == beginEx.typeId();
         }
     }
 

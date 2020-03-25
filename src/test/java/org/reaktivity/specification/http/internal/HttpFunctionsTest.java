@@ -44,6 +44,7 @@ import javax.el.FunctionMapper;
 import org.agrona.DirectBuffer;
 import org.agrona.concurrent.UnsafeBuffer;
 import org.junit.Test;
+import org.kaazing.k3po.lang.el.BytesMatcher;
 import org.kaazing.k3po.lang.internal.el.ExpressionContext;
 import org.reaktivity.specification.http.internal.types.control.HttpRouteExFW;
 import org.reaktivity.specification.http.internal.types.stream.HttpBeginExFW;
@@ -229,6 +230,63 @@ public class HttpFunctionsTest
             assertEquals("value", onlyHeader.value().asString());
         });
         assertTrue(beginEx.headers().sizeof() > 0);
+    }
+
+    @Test
+    public void shouldMatchBeginExtension() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .typeId(0x01)
+                                            .header("name", "value")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x01)
+            .headersItem(h -> h.name("name")
+                               .value("value"))
+            .build();
+
+        assertNotNull(matcher.match(byteBuf));
+    }
+
+    @Test
+    public void shouldMatchBeginExtensionWithRegex() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .typeId(0x01)
+                                            .headerRegex("name", "value")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x01)
+            .headersItem(h -> h.name("name")
+                               .value("value"))
+            .build();
+
+        assertNotNull(matcher.match(byteBuf));
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldFailWhenDoNotMatchBeginExtensionWithRegex() throws Exception
+    {
+        BytesMatcher matcher = HttpFunctions.matchBeginEx()
+                                            .typeId(0x01)
+                                            .headerRegex("name", "value1")
+                                            .build();
+
+        ByteBuffer byteBuf = ByteBuffer.allocate(1024);
+
+        new HttpBeginExFW.Builder().wrap(new UnsafeBuffer(byteBuf), 0, byteBuf.capacity())
+            .typeId(0x01)
+            .headersItem(h -> h.name("name")
+                               .value("value"))
+            .build();
+
+        matcher.match(byteBuf);
     }
 
     @Test
