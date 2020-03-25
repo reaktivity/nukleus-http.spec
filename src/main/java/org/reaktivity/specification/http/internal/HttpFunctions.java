@@ -392,8 +392,7 @@ public final class HttpFunctions
             HttpBeginExFW beginEx)
         {
             MutableBoolean match = new MutableBoolean(true);
-            headers.forEach((k, v) -> match.value &= beginEx.headers()
-                                                            .anyMatch(h -> k.equals(h.name().asString()) &&
+            headers.forEach((k, v) -> match.value &= beginEx.headers().anyMatch(h -> k.equals(h.name().asString()) &&
                                                                            v.test(h.value().asString())));
             return match.value;
         }
@@ -401,7 +400,7 @@ public final class HttpFunctions
         private boolean matchTypeId(
             HttpBeginExFW beginEx)
         {
-            return typeId == null || typeId == beginEx.typeId();
+            return typeId == beginEx.typeId();
         }
     }
 
