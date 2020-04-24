@@ -16,7 +16,7 @@
 
 connect await ROUTED_SERVER
         "nukleus://streams/http2#0"
-        option nukleus:window 512               # enough for SETTINGS + HEADERS + partial DATA
+        option nukleus:window 1024               # enough for SETTINGS + HEADERS + partial DATA
         option nukleus:transmission "duplex"
 connected
 
