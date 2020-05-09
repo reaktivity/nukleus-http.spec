@@ -108,4 +108,14 @@ public class ControlIT
     {
         k3po.finish();
     }
+
+    @Test
+    @Specification({
+        "route/server.path.prefix/nukleus",
+        "route/server.path.prefix/controller"
+    })
+    public void shouldRouteServerWithPathPrefix() throws Exception
+    {
+        k3po.finish();
+    }
 }

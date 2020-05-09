@@ -92,6 +92,19 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
+            "${spec}/http.unknown.path/client",
+            "${spec}/http.unknown.path/server",
+    })
+    public void httpUnknownPath() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
             "${spec}/http.post.exchange/client",
             "${spec}/http.post.exchange/server",
     })
@@ -343,6 +356,19 @@ public class ConnectionManagementIT
             "${spec}/http.authority.default.port/server",
     })
     public void authorityWithoutPort() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
+
+    @Test
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    @Specification({
+            "${spec}/http.path.prefix/client",
+            "${spec}/http.path.prefix/server",
+    })
+    public void pathPrefix() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
