@@ -38,16 +38,28 @@ public class SettingsIT
     public final TestRule chain = outerRule(k3po).around(timeout);
 
     @Test
-    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
-            "${spec}/max.concurrent.streams/client",
-            "${spec}/max.concurrent.streams/server",
+        "${spec}/max.concurrent.streams/client",
+        "${spec}/max.concurrent.streams/server",
     })
-    public void connectionEstablished() throws Exception
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    public void maxConcurrentStreams() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
         k3po.finish();
     }
 
+    @Test
+    @Specification({
+        "${spec}/max.header.list.size/client",
+        "${spec}/max.header.list.size/server",
+    })
+    @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
+    public void maxHeaderListSize() throws Exception
+    {
+        k3po.start();
+        k3po.notifyBarrier("ROUTED_SERVER");
+        k3po.finish();
+    }
 }
