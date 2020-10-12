@@ -14,8 +14,6 @@
 # under the License.
 #
 
-property data ${http:randomBytes(42768)}
-
 connect await ROUTED_CLIENT
         "nukleus://streams/http2#0"
         option nukleus:window 8192
@@ -31,7 +29,7 @@ write nukleus:begin.ext ${http:beginEx()
                               .build()}
 connected
 
-write ${data}
+write ${http:randomBytes(42768)}
 write close
 
 read nukleus:begin.ext ${http:beginEx()

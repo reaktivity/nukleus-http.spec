@@ -118,10 +118,10 @@ public class ConnectionManagementIT
     @Test
     @ScriptProperty("serverTransport \"nukleus://streams/http2#0\"")
     @Specification({
-        "${spec}/http.post.exchange.with.large.payload.before.settings/client",
-        "${spec}/http.post.exchange.with.large.payload.before.settings/server"
+        "${spec}/http.post.exchange.before.settings.exchange/client",
+        "${spec}/http.post.exchange.before.settings.exchange/server"
     })
-    public void httpPostExchangeWithLargePayloadBeforeSettings() throws Exception
+    public void httpPostExchangeBeforeSettingsExchange() throws Exception
     {
         k3po.start();
         k3po.notifyBarrier("ROUTED_SERVER");
