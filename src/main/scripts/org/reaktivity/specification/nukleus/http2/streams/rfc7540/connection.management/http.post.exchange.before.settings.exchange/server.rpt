@@ -17,7 +17,7 @@
 property serverTransport "nukleus://streams/target#0"
 
 accept ${serverTransport}
-        option nukleus:window 32768
+        option nukleus:window 65535
         option nukleus:transmission "half-duplex"
         option nukleus:update "stream"
 accepted
@@ -32,20 +32,14 @@ read nukleus:begin.ext ${http:beginEx()
 
 connected
 
-read [0..42768]
+read [0..75535]
 read closed
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                              .header(":status", "200")
+                              .header(":status", "204")
                               .header("server", "CERN/3.0 libwww/2.17")
-                              .header("date", "Wed, 01 Feb 2017 19:12:46 GMT")
-                              .header("content-type", "text/html; charset=UTF-8")
-                              .header("content-length", "113")
                               .build()}
-
-write "<html>"
-      "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-      "<body><script src=\"script.js\"></script></body>"
-      "</html>"
 write flush
+
+write close
