@@ -73,8 +73,6 @@ read [0x00 0x00 0x00]                   # length = 0
      [0x01]                             # ACK
      [0x00 0x00 0x00 0x00]              # stream_id = 0
 
-
-
 read [0x00 0x00 0x5d]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
