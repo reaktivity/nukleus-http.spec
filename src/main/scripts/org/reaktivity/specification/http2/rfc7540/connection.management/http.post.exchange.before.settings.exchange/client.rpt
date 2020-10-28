@@ -20,7 +20,6 @@ connect await ROUTED_SERVER
         option nukleus:transmission "duplex"
 connected
 
-# client connection preface
 write "PRI * HTTP/2.0\r\n"
       "\r\n"
       "SM\r\n"
@@ -66,12 +65,65 @@ write [0x00 0x00 0x13]                  # length = 19
       [0x00]                            # NO_END_STREAM
       [0x00 0x00 0x00 0x01]             # stream_id = 1
       ${http:randomBytes(16384)}
-      [0x00 0x27 0x10]                  # length = 10000
+      [0x00 0x40 0x00]                  # length = 16384
       [0x00]                            # HTTP2 DATA frame
-      [0x01]                            # END_STREAM
+      [0x00]                            # NO_END_STREAM
       [0x00 0x00 0x00 0x01]             # stream_id = 1
-      ${http:randomBytes(10000)}
+      ${http:randomBytes(16384)}
+      [0x00 0x3f 0xff]                  # length = 16383
+      [0x00]                            # HTTP2 DATA frame
+      [0x00]                            # NO_END_STREAM
+      [0x00 0x00 0x00 0x01]             # stream_id = 1
+      ${http:randomBytes(16383)}
 write flush
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x00]             # stream_id=0
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x01]             # stream_id=1
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x00]             # stream_id=0
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x01]             # stream_id=1
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x00]             # stream_id=0
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x01]             # stream_id=1
+     [0x00 0x00 0x40 0x00]             # window size increment = 16384
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x00]             # stream_id=0
+     [0x00 0x00 0x3f 0xff]             # window size increment = 16383
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x01]             # stream_id=1
+     [0x00 0x00 0x3f 0xff]             # window size increment = 16383
 
 write [0x00 0x00 0x00]                  # length = 0
       [0x04]                            # HTTP2 SETTINGS frame
@@ -79,21 +131,33 @@ write [0x00 0x00 0x00]                  # length = 0
       [0x00 0x00 0x00 0x00]             # stream_id = 0
 write flush
 
-read [0x00 0x00 0x59]                                      # length
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x00]             # stream_id=0
+     [0x00 0x00 0xff 0xff]             # window size increment = 65535
+
+read [0x00 0x00 0x04]                  # length
+     [0x08]                            # WINDOW_UPDATE frame
+     [0x00]                            # no flags
+     [0x00 0x00 0x00 0x01]             # stream_id=1
+     [0x00 0x00 0xff 0xff]             # window size increment = 65535
+
+write [0x00 0x27 0x10]                  # length = 10000
+      [0x00]                            # HTTP2 DATA frame
+      [0x01]                            # END_STREAM
+      [0x00 0x00 0x00 0x01]             # stream_id = 1
+      ${http:randomBytes(10000)}
+write flush
+
+read [0x00 0x00 0x18]                                      # length
      [0x01]                                                # HTTP2 HEADERS frame
      [0x04]                                                # END_HEADERS
      [0x00 0x00 0x00 0x01]                                 # stream_id=1
-     [0x88]                                                # :status: 200
+     [0x89]                                                # :status: 204
      [0x0f 0x27] [0x14] "CERN/3.0 libwww/2.17"             # server
-     [0x0f 0x12] [0x1d] "Wed, 01 Feb 2017 19:12:46 GMT"    # date
-     [0x0f 0x10] [0x18] "text/html; charset=UTF-8"         # content-type
-     [0x0f 0x0d] [0x03] "113"                              # content-length
 
-read [0x00 0x00 0x71]                          # length = 113
-     [0x00]                                    # HTTP2 DATA frame
-     [0x00]                                    # no flags
-     [0x00 0x00 0x00 0x01]                     # stream_id=1
-     "<html>"
-     "<head><link rel=\"stylesheet\" href=\"styles.css\"></head>"
-     "<body><script src=\"script.js\"></script></body>"
-     "</html>"
+read [0x00 0x00 0x00]                 # length = 0
+     [0x00]                           # HTTP2 DATA frame
+     [0x01]                           # END_STREAM
+     [0x00 0x00 0x00 0x01]            # stream_id = 1
