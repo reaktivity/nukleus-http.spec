@@ -25,14 +25,12 @@ accepted
 
 read nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
-                             .header(":method", "POST")
+                             .header(":method", "GET")
                              .header(":scheme", "http")
                              .header(":path", "/script.js")
                              .header(":authority", "localhost:8080")
                              .build()}
 connected
-
-read "Hello, world"
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
@@ -51,15 +49,13 @@ write flush
 accepted
 read nukleus:begin.ext ${http:beginEx()
                              .typeId(nukleus:id("http"))
-                             .header(":method", "POST")
+                             .header(":method", "GET")
                              .header(":scheme", "http")
                              .header(":path", "/style.css")
                              .header(":authority", "localhost:8080")
                              .build()}
 
 connected
-
-read "Hello, world"
 
 write nukleus:begin.ext ${http:beginEx()
                               .typeId(nukleus:id("http"))
