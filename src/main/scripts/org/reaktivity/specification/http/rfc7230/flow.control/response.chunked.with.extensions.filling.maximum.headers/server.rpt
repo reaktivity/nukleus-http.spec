@@ -36,5 +36,5 @@ write flush
 
 write "chunk\r\n"
 write flush
-write "0\r\n"
+write "0\r\n\r\n"
 write flush
