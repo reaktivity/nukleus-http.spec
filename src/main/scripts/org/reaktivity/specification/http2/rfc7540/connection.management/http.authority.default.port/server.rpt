@@ -22,6 +22,12 @@ accept ${serverTransport}
 accepted
 connected
 
+# client connection preface
+read "PRI * HTTP/2.0\r\n"
+     "\r\n"
+     "SM\r\n"
+     "\r\n"
+
 # server connection preface - SETTINGS frame
 write [0x00 0x00 0x12]                   # length = 18
       [0x04]                             # HTTP2 SETTINGS frame
@@ -32,11 +38,10 @@ write [0x00 0x00 0x12]                   # length = 18
       [0x00 0x06 0x00 0x00 0x20 0x00]    # SETTINGS_MAX_HEADER_LIST_SIZE(0x06) = 8192
 write flush
 
-# client connection preface
-read "PRI * HTTP/2.0\r\n"
-     "\r\n"
-     "SM\r\n"
-     "\r\n"
+read [0x00 0x00 0x00]                   # length = 0
+     [0x04]                             # HTTP2 SETTINGS frame
+     [0x01]                             # ACK
+     [0x00 0x00 0x00 0x00]              # stream_id = 0
 
 read  [0x00 0x00 0x0c]                   # length = 12
       [0x04]                             # HTTP2 SETTINGS frame
@@ -59,11 +64,6 @@ read [0x00 0x00 0x0e]                   # length = 9
      [0x87]                             # :scheme: https
      [0x84]                             # :path: /
      [0x01] [0x09] "localhost"          # :authority: localhost
-
-read [0x00 0x00 0x00]                   # length = 0
-     [0x04]                             # HTTP2 SETTINGS frame
-     [0x01]                             # ACK
-     [0x00 0x00 0x00 0x00]              # stream_id = 0
 
 write [0x00 0x00 0x59]                                      # length
       [0x01]                                                # HTTP2 HEADERS frame
