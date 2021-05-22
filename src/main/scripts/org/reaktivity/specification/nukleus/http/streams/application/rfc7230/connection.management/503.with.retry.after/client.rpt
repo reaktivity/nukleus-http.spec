@@ -33,7 +33,7 @@ write close
 
 
 connect await REQUEST_ONE_RECEIVED
-        "nukleus://streams/http#0"
+        "nukleus://streams/app#0"
     option nukleus:window 8192
     option nukleus:transmission "half-duplex"
 

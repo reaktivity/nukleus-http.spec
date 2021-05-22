@@ -9,7 +9,7 @@
             {
                 "overrides":
                 {
-                    ":authority": "localhost:8080"
+                    ":authority": "otherhost:8181"
                 }
             },
             "exit": "app#0"

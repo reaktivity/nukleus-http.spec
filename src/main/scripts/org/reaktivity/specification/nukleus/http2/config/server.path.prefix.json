@@ -12,7 +12,10 @@
                     "when":
                     [
                         {
-                            ":path": "/api/*"
+                            "headers":
+                            {
+                                ":path": "/api/*"
+                            }
                         }
                     ]
                 }

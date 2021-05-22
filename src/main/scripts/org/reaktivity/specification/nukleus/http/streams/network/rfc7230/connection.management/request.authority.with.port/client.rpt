@@ -17,6 +17,9 @@
 connect "nukleus://streams/net#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
+
+write nukleus:begin.ext ${nukleus:id("tls")}
+
 connected
 
 write "GET / HTTP/1.1" "\r\n"

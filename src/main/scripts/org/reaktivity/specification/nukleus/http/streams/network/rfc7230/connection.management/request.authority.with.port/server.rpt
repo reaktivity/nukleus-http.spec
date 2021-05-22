@@ -18,6 +18,9 @@ accept "nukleus://streams/net#0"
   option nukleus:window 8192
   option nukleus:transmission "duplex"
 accepted
+
+read nukleus:begin.ext ${nukleus:id("tls")}
+
 connected
 
 read "GET / HTTP/1.1" "\r\n"
