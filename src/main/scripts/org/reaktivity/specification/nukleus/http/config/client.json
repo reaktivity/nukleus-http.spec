@@ -12,10 +12,7 @@
                     "when":
                     [
                         {
-                            "headers":
-                            {
-                                ":authority": "localhost:8080"
-                            }
+                            "authority": "localhost:8080"
                         }
                     ]
                 }
